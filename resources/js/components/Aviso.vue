@@ -30,12 +30,29 @@
                             <trix-editor input="contenido_aviso" class="trix-editor"></trix-editor>
                         </div>
                     </div>
-                    
                 </div>
                 <!--FIN terjeta IZQUIERDA -->
 
                 <!--terjeta DERECHA -->
                 <div class="card derecha">
+                    <div class="form-group" style="margin: 0; border-bottom: 1px solid #C6D7D1;">
+                        <table class="table" style="margin: 0;">
+                            <tbody>
+                                <tr>
+                                    <td style="border-top: none;">Envío a...</td>
+                                    <td style="border-top: none;">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                        todas las carreras.
+                                    </td>
+                                    <td style="border-top: none;">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option2">
+                                        solo una carrera.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="form-group">
                         <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Carreras</label>
                         <div class="col-md">
@@ -50,7 +67,6 @@
                     <div class="container">
                         <div class="row">
                             <div class="col" style="padding: 0 !important;">
-                                
                                 <div class="form-group">
                                     <label class="col-md text-center" for="text-input">Turno</label>
                                     <div class="col-md">
@@ -63,8 +79,6 @@
                                         </select>
                                     </div>
                                 </div>
-
-
                             </div>
                             <div class="col" style="padding: 0 !important;">
                                 <div class="form-group">
@@ -99,6 +113,9 @@
         </div>
         <!-- Fin ejemplo de tabla Listado -->
     </div>
+
+
+
     <!--Inicio del modal agregar/actualizar-->
     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -165,29 +182,6 @@
         <!-- /.modal-dialog -->
     </div>
     <!--Fin del modal-->
-    <!-- Inicio del modal Eliminar -->
-    <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-danger" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Eliminar Carrera</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Estas seguro de eliminar la carrera?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-danger">Eliminar</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- Fin del modal Eliminar -->
     
 </main>
 </template>
@@ -764,9 +758,11 @@
     }
     .izquierda{
         margin: 0 !important;
+        border-top: none;
     }
     .derecha{
         margin: 0 !important;
         max-width: 422px !important;
+        border-top: none;
     }
 </style>
