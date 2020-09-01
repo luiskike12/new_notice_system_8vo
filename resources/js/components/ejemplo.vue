@@ -1,7 +1,8 @@
 <template>
+    <div class="container">
+        <h1>Prueba</h1>
+    </div>
 
-    <h1>Esto es un titulo de ejemplo</h1>
-    
 </template>
 
 <script>
