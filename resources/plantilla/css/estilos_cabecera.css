@@ -1,0 +1,150 @@
+@charset "utf-8";
+/* CSS Document  */
+
+/*  
+################################# Menu desplegable NOTIFICACIONES ####################################
+*/
+#menu-notificaciones{
+	margin: 0;
+	padding: 0;
+}
+
+#menu-notificaciones #btn-menu-notificaciones{
+	display: none; /* ocultar el checkbox*/
+}
+
+#menu-notificaciones label{
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+
+#menu-notificaciones label:hover {
+	cursor: pointer;
+}
+
+/* Desplegar el menu del usuario*/
+#menu-notificaciones #despliega-menu-notificaciones{
+	position: absolute;
+	/*transition: all 0.5s;*/
+}
+
+#menu-notificaciones #despliega-menu-notificaciones ul{
+	/* controlar el contenedor de despliegue del usuario*/
+	margin: 0;     
+	padding: 0;
+	list-style: none;
+	background: #F0FFF0;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones li{
+	border-bottom: 1px solid #D2D2D2;
+	padding: 8px;
+	width: 150px;
+	text-align: left;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones #cabecera-item{
+	border-top: 1px solid #D2D2D2;
+	border-left: 1px solid #D2D2D2;
+	border-right: 1px solid #D2D2D2;
+	text-align:center;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones strong{
+	color: #696969;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones #item{
+	border-left: 1px solid #D2D2D2;
+	border-right: 1px solid #D2D2D2;
+	background: #FFFFFF;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones #item:hover{
+	background: #F0FFF0;
+}
+
+#menu-notificaciones #despliega-menu-notificaciones a{
+	text-decoration: none;
+	color: #000000;
+}
+
+#menu-notificaciones #btn-menu-notificaciones:checked ~ #despliega-menu-notificaciones{
+	display: none;
+}
+
+
+/*  
+################################# Menu desplegable USUARIO ####################################
+*/
+#menu-usuario{
+	margin: 0;
+	padding: 0;
+}
+
+#menu-usuario #btn-menu-usuario{
+	display: none; /* ocultar el checkbox*/
+}
+
+#menu-usuario label{
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+
+#menu-usuario label:hover {
+	cursor: pointer;
+}
+
+/* Desplegar el menu del usuario*/
+#menu-usuario #despliega-menu-usuario{
+	position: absolute;
+	/*transition: all 0.5s;*/
+}
+
+#menu-usuario #despliega-menu-usuario ul{
+	/* controlar el contenedor de despliegue del usuario*/
+	margin: 0;     
+	padding: 0;
+	list-style: none;
+	background: #F0FFF0;
+}
+
+#menu-usuario #despliega-menu-usuario li{
+	border-bottom: 1px solid #D2D2D2;
+	padding: 8px;
+	width: 150px;
+	text-align: left;
+}
+
+#menu-usuario #despliega-menu-usuario #cabecera-item{
+	border-top: 1px solid #D2D2D2;
+	border-left: 1px solid #D2D2D2;
+	border-right: 1px solid #D2D2D2;
+	text-align:center;
+}
+
+#menu-usuario #despliega-menu-usuario strong{
+	color: #696969;
+}
+
+#menu-usuario #despliega-menu-usuario #item{
+	border-left: 1px solid #D2D2D2;
+	border-right: 1px solid #D2D2D2;
+	background: #FFFFFF;
+}
+
+#menu-usuario #despliega-menu-usuario #item:hover{
+	background: #F0FFF0;
+}
+
+#menu-usuario #despliega-menu-usuario a{
+	text-decoration: none;
+	color: #000000;
+}
+
+#menu-usuario #btn-menu-usuario:checked ~ #despliega-menu-usuario{
+	display: none;
+}
+/* a los 991px cambiar la posision del nav desplegable */
