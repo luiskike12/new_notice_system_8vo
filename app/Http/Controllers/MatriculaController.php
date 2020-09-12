@@ -115,4 +115,21 @@ class MatriculaController extends Controller
 
     }
 
+    public function eliminar(Request $request){
+
+        try{
+            DB::beginTransaction();
+
+            $matricula = $request->id;
+
+            $datos_eliminados = Matricula::find($matricula);
+            $datos_eliminados->delete();
+            
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+
+    }
+
 }

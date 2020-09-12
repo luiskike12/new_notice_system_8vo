@@ -14,6 +14,9 @@
     <link href="css/plantilla.css" rel="stylesheet">
     <link rel="stylesheet" type = "text/css" href="css/trix.css">
 
+    <!-- bootstrap-datepicker sandbox -->
+    <link href="css/bootstrap-datepicker.css" rel="stylesheet">
+
 </head>
 
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
@@ -116,6 +119,10 @@
     <script src="js/app.js"></script>
     <script src="js/plantilla.js"></script>
     <script type="text/javascript" src="js/trix.js"></script>
+     <!-- bootstrap-datepicker sandbox -->
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker.es.min.js"></script>
+
 </body>
 
 </html>

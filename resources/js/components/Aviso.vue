@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     
-                    <div class="container">
+                    <div class="container-1">
                         <div class="row">
                             <div class="col" style="padding: 0 !important;">
                                 <div class="form-group">
@@ -101,6 +101,67 @@
                             </div>
                         </div>
                     </div>
+                    <!-- fecha programada -->
+                    <div class="form-group" style="margin: 0;">
+                        <table class="table" style="margin: 0;">
+                            <thead>
+                                <tr>
+                                    <th colspan="4" class="text-center" style="border-bottom: none;">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                                        Envío programado
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center" style="border-top: none; padding-right: 0;">
+                                        <span class="input-group-addon" style="border-right: none;">Fecha:</span>
+                                    </td>
+                                    <td class="text-center" style="border-top: none; padding-left: 0;">
+                                        <!-- datepicker -->
+                                        <div class="input-group date asignar-fecha">
+                                            <input type="text" class="form-control">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="text-center" style="border-top: none; padding-right: 0;">
+                                        <span class="input-group-addon" style="border-right: none;">Hora:</span>
+                                    </td>
+                                    <td class="text-center" style="border-top: none; padding-left: 0;">
+                                        <!-- datepicker -->
+                                        <div class="input-group date asignar-fecha">
+                                            <input type="text" class="form-control">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> 
+
+                    <div class="form-group" style="margin: 0;">
+                        <table class="table" style="margin: 0;">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center" style="border-top: none;">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                        Solo guardar.
+                                    </td>
+                                    <td class="text-center" style="border-top: none;">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option2">
+                                        Guardar y enviar.
+                                    </td>
+                                    <td class="text-center" style="border-top: none;">
+                                        <button type="button" class="btn btn-primary">Enviar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>    
 
                 </div>
                 <!--FIN terjeta DERECHA -->
@@ -405,259 +466,7 @@
                         
                     }
                 })
-            },
-            activarVespertino(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Desea activar el turno Vespertino?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/activar_vespertino', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Activado!',
-                            'El turno ha sido activado con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
-            desactivarVespertino(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Esta seguro de desactivar el turno Vespertino?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/desactivar_vespertino', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Desactivado!',
-                            'El turno ha sido desactivada con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
-            activarNocturno(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Desea activar el turno Nocturno?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/activar_nocturno', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Activado!',
-                            'El turno ha sido activado con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
-            desactivarNocturno(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Esta seguro de desactivar el turno Nocturno?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/desactivar_nocturno', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Desactivado!',
-                            'El turno ha sido desactivada con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
-            activarMixto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Desea activar el turno Mixto?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/activar_turno_mixto', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Activado!',
-                            'El turno ha sido activado con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
-            desactivarMixto(id){
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: 'btn btn-success',
-                        cancelButton: 'btn btn-danger'
-                    },
-                    buttonsStyling: false
-                })
-
-                swalWithBootstrapButtons.fire({
-                    title: 'Esta seguro de desactivar el turno Mixto?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Aceptar!',
-                    cancelButtonText: 'Cancelar',
-                    reverseButtons: true
-                    }).then((result) => {
-                    if (result.value) {
-
-                        let me = this;
-                        axios.put('/carrera/desactivar_turno_mixto', {
-                            'id' : id
-                        }).then(function (response){
-                            me.listarCarrera(1, '', 'nombre');
-                            swalWithBootstrapButtons.fire(
-                            'Turno Desactivado!',
-                            'El turno ha sido desactivada con éxito.',
-                            'success'
-                            )
-                        }).catch(function (error){
-                            console.log(error)
-                        });
-
-                        
-                    } else if (
-                        /* Read more about handling dismissals below */
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        
-                    }
-                })
-            },
+            }, 
             validarCarrera(){// se puede modificar, solo los mensajes de validacion
                 this.errorCarrera = 0;
                 this.errorMostrarMsjCarrera = [];
@@ -718,6 +527,14 @@
         },
         mounted() {//no modificar
             this.listarCarrera(1, this.buscar, this.criterio);
+
+            $('.asignar-fecha').datepicker({
+                format: "dd/mm/yyyy",
+                language: "es",
+                autoclose: true,
+                todayHighlight: true
+            });
+
         }
     }
 </script>
@@ -765,4 +582,7 @@
         max-width: 422px !important;
         border-top: none;
     }
+    /*.container-1{
+        border: 1px solid black;
+    }*/
 </style>

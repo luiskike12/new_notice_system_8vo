@@ -47,6 +47,7 @@ Route::put('/user/activar', 'UserController@activar');
 Route::get('/matricula', 'MatriculaController@index');
 Route::post('/matricula/registrar', 'MatriculaController@registrar');
 Route::put('/matricula/actualizar', 'MatriculaController@actualizar');
+Route::delete('/matricula/eliminar', 'MatriculaController@eliminar');
 Route::put('/matricula/desactivar', 'MatriculaController@desactivar');
 Route::put('/matricula/activar', 'MatriculaController@activar');
 
@@ -54,6 +55,9 @@ Route::put('/matricula/activar', 'MatriculaController@activar');
 Route::get('/alumno', 'AlumnoController@index');
 Route::post('/alumno/registrar', 'AlumnoController@registrar');
 Route::put('/alumno/actualizar', 'AlumnoController@actualizar');
+Route::delete('/alumno/eliminar', 'AlumnoController@eliminar');
 Route::get('/alumno/listarTurnos', 'AlumnoController@listarTurnos');
 Route::get('/alumno/confirmar_matricula', 'AlumnoController@confirmarMatricula');
+
+//Rutas del controlador Avisos
 

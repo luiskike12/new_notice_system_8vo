@@ -117,4 +117,24 @@ class AlumnoController extends Controller
         return ['elementos_alumno'=>$alumno];
     }
 
+    public function eliminar(Request $request){
+        try{
+            DB::beginTransaction();
+
+            $id_matricula = $request->id_alumno;
+
+            DB::table('alumnos')
+            ->where('id_matricula', '=', $id_matricula)
+            ->delete();
+
+            $se_cumplio = DB::table('matriculas')
+            ->where('id', '=', $id_matricula)
+            ->update(['condicion' => 0]);
+
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
 }

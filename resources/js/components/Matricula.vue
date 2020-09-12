@@ -48,7 +48,7 @@
                                 <button type="button" @click="abrirModal('matricula', 'actualizar', matricula)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
                                 </button> &nbsp;
-                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">
+                                <button type="button" @click="abrirModal('matricula', 'eliminar', matricula)"  class="btn btn-danger btn-sm">
                                     <i class="icon-trash"></i>
                                 </button>
                             </td>
@@ -181,22 +181,23 @@
         <!-- /.modal-dialog -->
     </div>
     <!--Fin del modal-->
+
     <!-- Inicio del modal Eliminar -->
-    <div class="modal fade" id="modalEliminar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal_eliminar}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-danger" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Eliminar Usuario</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <h4 class="modal-title" v-text="tituloModal"></h4>
+                    <button type="button" class="close"  @click="cerrarModal()" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Estas seguro de eliminar el usuario?</p>
+                    <p>Estas seguro de eliminar esta matrícula?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                    <button type="button" class="btn btn-danger" @click="eliminarMatricula()">Eliminar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -226,6 +227,7 @@
 
                 //variables para las funciones especificas del componente
                 modal : 0,
+                modal_eliminar : 0,
                 tituloModal : '',
                 tipoAccion : 0,
                 errorUsers : 0,
@@ -350,6 +352,21 @@
                     console.log(error)
                 });
             },
+            eliminarMatricula(){
+
+                let me = this;
+
+                axios.delete('/matricula/eliminar', {
+                    params : {
+                        id : this.id_matricula
+                    }
+                }).then(function (response){
+                    me.cerrarModal();
+                    me.listarMatriculas(1, '', 'matricula');
+                }).catch(function (error){
+                    console.log(error)
+                });
+            },
             switchON(id){// se puede modificar, solo lo que esta en español
 
                 let me = this;
@@ -400,6 +417,7 @@
             },
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
+                this.modal_eliminar = 0;//no
                 this.tituloModal = '';//no
                 this.id_matricula = 0;
                 this.num_lista = 0;
@@ -435,6 +453,13 @@
                                 this.matricula = data['matricula'];
                                 this.nombre = data['nombre'];
                                 this.tipoAccion = 2;//no
+                                break;
+                            }
+                            case 'eliminar':
+                            {
+                                this.modal_eliminar = 1;//no
+                                this.tituloModal = 'Eliminar Matrícula';
+                                this.id_matricula = data['id'];
                                 break;
                             }
                         }

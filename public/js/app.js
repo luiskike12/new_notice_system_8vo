@@ -2094,6 +2094,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2111,6 +2112,7 @@ __webpack_require__.r(__webpack_exports__);
       t_mixto: 0,
       //variables para las funciones especificas del componente
       modal: 0,
+      modal_eliminar: 0,
       tituloModal: '',
       tipoAccion: 0,
       errorUsers: 0,
@@ -2225,6 +2227,19 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
+    eliminarAlumno: function eliminarAlumno() {
+      var me = this;
+      axios["delete"]('/alumno/eliminar', {
+        params: {
+          id_alumno: this.id_matricula
+        }
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarAlumnos(1, '', 'correo');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     validarAlumno: function validarAlumno() {
       // se puede modificar, solo los mensajes de validacion
       this.errorUsers = 0;
@@ -2251,6 +2266,8 @@ __webpack_require__.r(__webpack_exports__);
     cerrarModal: function cerrarModal() {
       //modificar solo variables
       this.modal = 0; //no
+
+      this.modal_eliminar = 0; //no
 
       this.tituloModal = ''; //no
 
@@ -2288,6 +2305,14 @@ __webpack_require__.r(__webpack_exports__);
                   this.seleccionarTurno(this.id_matricula);
                   break;
                 }
+
+              case 'eliminar':
+                {
+                  this.modal_eliminar = 1;
+                  this.tituloModal = 'Eliminar Alumno';
+                  this.id_matricula = data['id_matricula'];
+                  break;
+                }
             }
           }
       }
@@ -2310,6 +2335,69 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2708,204 +2796,6 @@ __webpack_require__.r(__webpack_exports__);
         result.dismiss === Swal.DismissReason.cancel) {}
       });
     },
-    activarVespertino: function activarVespertino(id) {
-      var _this3 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Desea activar el turno Vespertino?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this3;
-          axios.put('/carrera/activar_vespertino', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Activado!', 'El turno ha sido activado con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    desactivarVespertino: function desactivarVespertino(id) {
-      var _this4 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Esta seguro de desactivar el turno Vespertino?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this4;
-          axios.put('/carrera/desactivar_vespertino', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Desactivado!', 'El turno ha sido desactivada con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    activarNocturno: function activarNocturno(id) {
-      var _this5 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Desea activar el turno Nocturno?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this5;
-          axios.put('/carrera/activar_nocturno', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Activado!', 'El turno ha sido activado con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    desactivarNocturno: function desactivarNocturno(id) {
-      var _this6 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Esta seguro de desactivar el turno Nocturno?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this6;
-          axios.put('/carrera/desactivar_nocturno', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Desactivado!', 'El turno ha sido desactivada con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    activarMixto: function activarMixto(id) {
-      var _this7 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Desea activar el turno Mixto?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this7;
-          axios.put('/carrera/activar_turno_mixto', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Activado!', 'El turno ha sido activado con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    desactivarMixto: function desactivarMixto(id) {
-      var _this8 = this;
-
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Esta seguro de desactivar el turno Mixto?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this8;
-          axios.put('/carrera/desactivar_turno_mixto', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Desactivado!', 'El turno ha sido desactivada con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
     validarCarrera: function validarCarrera() {
       // se puede modificar, solo los mensajes de validacion
       this.errorCarrera = 0;
@@ -2976,6 +2866,12 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     //no modificar
     this.listarCarrera(1, this.buscar, this.criterio);
+    $('.asignar-fecha').datepicker({
+      format: "dd/mm/yyyy",
+      language: "es",
+      autoclose: true,
+      todayHighlight: true
+    });
   }
 });
 
@@ -3963,6 +3859,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4001,6 +3898,7 @@ __webpack_require__.r(__webpack_exports__);
       }],
       //variables para las funciones especificas del componente
       modal: 0,
+      modal_eliminar: 0,
       tituloModal: '',
       tipoAccion: 0,
       errorUsers: 0,
@@ -4129,6 +4027,19 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
+    eliminarMatricula: function eliminarMatricula() {
+      var me = this;
+      axios["delete"]('/matricula/eliminar', {
+        params: {
+          id: this.id_matricula
+        }
+      }).then(function (response) {
+        me.cerrarModal();
+        me.listarMatriculas(1, '', 'matricula');
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
     switchON: function switchON(id) {
       // se puede modificar, solo lo que esta en español
       var me = this; //          url del controlador
@@ -4186,6 +4097,8 @@ __webpack_require__.r(__webpack_exports__);
       //modificar solo variables
       this.modal = 0; //no
 
+      this.modal_eliminar = 0; //no
+
       this.tituloModal = ''; //no
 
       this.id_matricula = 0;
@@ -4230,6 +4143,15 @@ __webpack_require__.r(__webpack_exports__);
                   this.nombre = data['nombre'];
                   this.tipoAccion = 2; //no
 
+                  break;
+                }
+
+              case 'eliminar':
+                {
+                  this.modal_eliminar = 1; //no
+
+                  this.tituloModal = 'Eliminar Matrícula';
+                  this.id_matricula = data['id'];
                   break;
                 }
             }
@@ -9851,7 +9773,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
 
 // exports
 
@@ -9870,7 +9792,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
 
 // exports
 
@@ -9908,7 +9830,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -42071,7 +41993,23 @@ var render = function() {
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
                       _vm._v("  \r\n                                "),
-                      _vm._m(3, true)
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.abrirModal(
+                                "alumno",
+                                "eliminar",
+                                alumno
+                              )
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "icon-trash" })]
+                      )
                     ]),
                     _vm._v(" "),
                     _c("th", {
@@ -42539,7 +42477,89 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm._m(4)
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        class: { mostrar: _vm.modal_eliminar },
+        staticStyle: { display: "none" },
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-danger",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", {
+                  staticClass: "modal-title",
+                  domProps: { textContent: _vm._s(_vm.tituloModal) }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "aria-label": "Close" },
+                    on: {
+                      click: function($event) {
+                        return _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [_vm._v("Cerrar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.eliminarAlumno()
+                      }
+                    }
+                  },
+                  [_vm._v("Eliminar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -42596,93 +42616,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-danger btn-sm",
-        attrs: {
-          type: "button",
-          "data-toggle": "modal",
-          "data-target": "#modalEliminar"
-        }
-      },
-      [_c("i", { staticClass: "icon-trash" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        staticStyle: { display: "none" },
-        attrs: {
-          id: "modalEliminar",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "myModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-danger",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", { staticClass: "modal-title" }, [
-                  _vm._v("Eliminar Usuario")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [_vm._v("Estas seguro de eliminar el usuario?")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Cerrar")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-danger", attrs: { type: "button" } },
-                  [_vm._v("Eliminar")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("p", [_vm._v("Estas seguro de eliminar el alumno?")])
+    ])
   }
 ]
 render._withStripped = true
@@ -42870,7 +42806,7 @@ var render = function() {
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "container" }, [
+              _c("div", { staticClass: "container-1" }, [
                 _c("div", { staticClass: "row" }, [
                   _c(
                     "div",
@@ -43056,7 +42992,11 @@ var render = function() {
                     ]
                   )
                 ])
-              ])
+              ]),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4)
             ])
           ])
         ]
@@ -43486,6 +43426,204 @@ var staticRenderFns = [
                   "\r\n                                        solo una carrera.\r\n                                    "
                 )
               ])
+            ])
+          ])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-group", staticStyle: { margin: "0" } },
+      [
+        _c("table", { staticClass: "table", staticStyle: { margin: "0" } }, [
+          _c("thead", [
+            _c("tr", [
+              _c(
+                "th",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-bottom": "none" },
+                  attrs: { colspan: "4" }
+                },
+                [
+                  _c("input", {
+                    staticClass: "form-check-input",
+                    attrs: { type: "checkbox", id: "gridCheck" }
+                  }),
+                  _vm._v(
+                    "\r\n                                        Envío programado\r\n                                    "
+                  )
+                ]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("tbody", [
+            _c("tr", [
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none", "padding-right": "0" }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "input-group-addon",
+                      staticStyle: { "border-right": "none" }
+                    },
+                    [_vm._v("Fecha:")]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none", "padding-left": "0" }
+                },
+                [
+                  _c("div", { staticClass: "input-group date asignar-fecha" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "input-group-addon" }, [
+                      _c("i", {
+                        staticClass: "fa fa-calendar",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none", "padding-right": "0" }
+                },
+                [
+                  _c(
+                    "span",
+                    {
+                      staticClass: "input-group-addon",
+                      staticStyle: { "border-right": "none" }
+                    },
+                    [_vm._v("Hora:")]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none", "padding-left": "0" }
+                },
+                [
+                  _c("div", { staticClass: "input-group date asignar-fecha" }, [
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text" }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "input-group-addon" }, [
+                      _c("i", {
+                        staticClass: "fa fa-calendar",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "form-group", staticStyle: { margin: "0" } },
+      [
+        _c("table", { staticClass: "table", staticStyle: { margin: "0" } }, [
+          _c("tbody", [
+            _c("tr", [
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none" }
+                },
+                [
+                  _c("input", {
+                    staticClass: "form-check-input",
+                    attrs: {
+                      type: "radio",
+                      name: "inlineRadioOptions",
+                      id: "inlineRadio1",
+                      value: "option1"
+                    }
+                  }),
+                  _vm._v(
+                    "\r\n                                        Solo guardar.\r\n                                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none" }
+                },
+                [
+                  _c("input", {
+                    staticClass: "form-check-input",
+                    attrs: {
+                      type: "radio",
+                      name: "inlineRadioOptions",
+                      id: "inlineRadio1",
+                      value: "option2"
+                    }
+                  }),
+                  _vm._v(
+                    "\r\n                                        Guardar y enviar.\r\n                                    "
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "td",
+                {
+                  staticClass: "text-center",
+                  staticStyle: { "border-top": "none" }
+                },
+                [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button" }
+                    },
+                    [_vm._v("Enviar")]
+                  )
+                ]
+              )
             ])
           ])
         ])
@@ -44708,7 +44846,23 @@ var render = function() {
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
                       _vm._v("  \r\n                                "),
-                      _vm._m(2, true)
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger btn-sm",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.abrirModal(
+                                "matricula",
+                                "eliminar",
+                                matricula
+                              )
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "icon-trash" })]
+                      )
                     ]),
                     _vm._v(" "),
                     _c("th", {
@@ -44808,7 +44962,7 @@ var render = function() {
                                     [_vm._v("Desactivado")]
                                   ),
                                   _vm._v(" "),
-                                  _vm._m(3, true)
+                                  _vm._m(2, true)
                                 ])
                               : _c("div", [
                                   _c(
@@ -45285,7 +45439,89 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm._m(4)
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        class: { mostrar: _vm.modal_eliminar },
+        staticStyle: { display: "none" },
+        attrs: {
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-danger",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h4", {
+                  staticClass: "modal-title",
+                  domProps: { textContent: _vm._s(_vm.tituloModal) }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: { type: "button", "aria-label": "Close" },
+                    on: {
+                      click: function($event) {
+                        return _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.cerrarModal()
+                      }
+                    }
+                  },
+                  [_vm._v("Cerrar")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-danger",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.eliminarMatricula()
+                      }
+                    }
+                  },
+                  [_vm._v("Eliminar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -45331,23 +45567,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-danger btn-sm",
-        attrs: {
-          type: "button",
-          "data-toggle": "modal",
-          "data-target": "#modalEliminar"
-        }
-      },
-      [_c("i", { staticClass: "icon-trash" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("span", { staticClass: "badge badge-success" }, [
       _c("i", { staticClass: "fa fa-user-circle" })
     ])
@@ -45356,76 +45575,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        staticStyle: { display: "none" },
-        attrs: {
-          id: "modalEliminar",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "myModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-danger",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", { staticClass: "modal-title" }, [
-                  _vm._v("Eliminar Usuario")
-                ]),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: {
-                      type: "button",
-                      "data-dismiss": "modal",
-                      "aria-label": "Close"
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("p", [_vm._v("Estas seguro de eliminar el usuario?")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Cerrar")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-danger", attrs: { type: "button" } },
-                  [_vm._v("Eliminar")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+    return _c("div", { staticClass: "modal-body" }, [
+      _c("p", [_vm._v("Estas seguro de eliminar esta matrícula?")])
+    ])
   }
 ]
 render._withStripped = true
