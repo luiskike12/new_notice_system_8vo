@@ -109,7 +109,8 @@ class AlumnoController extends Controller
 
     public function confirmarMatricula(Request $request){      
         $matricula = $request->matricula;
-        $alumno = DB::select('SELECT m.id, c.turno_matutino, c.turno_vespertino, c.turno_nocturno, c.turno_mixto
+        $alumno = DB::select('SELECT m.id, c.turno_matutino, c.turno_vespertino, c.turno_nocturno, c.turno_mixto,
+        c.num_grados, c.nombre
         FROM matriculas m INNER JOIN carreras c ON m.id_carrera = c.id
         WHERE m.matricula = :matricula_alumno AND m.switch = :activo AND m.condicion = :NoRegistrado',
         ['matricula_alumno'=>$matricula, 'activo'=>1,'NoRegistrado'=>0]);
