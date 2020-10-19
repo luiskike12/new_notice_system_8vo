@@ -53,6 +53,7 @@ Route::put('/matricula/activar', 'MatriculaController@activar');
 
 //Rutas del controlador Alumnos
 Route::get('/alumno', 'AlumnoController@index');
+Route::post('/alumno/loginApp', 'AlumnoController@loginApp');
 Route::post('/alumno/registrar', 'AlumnoController@registrar');
 Route::put('/alumno/actualizar', 'AlumnoController@actualizar');
 Route::delete('/alumno/eliminar', 'AlumnoController@eliminar');

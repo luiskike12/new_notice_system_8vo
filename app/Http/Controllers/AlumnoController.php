@@ -7,9 +7,33 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Alumno;
 use App\Matricula;
+use Illuminate\Support\Facades\Hash;
 
 class AlumnoController extends Controller
 {
+    public function loginApp(Request $request)
+    {
+        try{
+            $alumno = DB::select('SELECT * FROM alumnos WHERE correo = :a_correo',['a_correo'=>$request->correo]);
+            
+            // if dont exist
+            if(count($alumno) == 0){
+                return ['resp' => false];
+            }
+            // password validation
+            if(Hash::check($request->password, $alumno[0]->password)){
+                return [
+                    'resp' => true,
+                    'data' => $alumno[0]
+                ];
+            } else {
+                return ['resp' => false];
+            }
+        } catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
     public function index(Request $request)
     {
         //if(!$request->ajax())return redirect('/');
