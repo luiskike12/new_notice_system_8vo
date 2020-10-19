@@ -18,7 +18,10 @@ class AlumnoController extends Controller
             
             // if dont exist
             if(count($alumno) == 0){
-                return ['resp' => false];
+                return [
+                    'resp' => false,
+                    'msg' => 'Correo no registrado'
+                ];
             }
             // password validation
             if(Hash::check($request->password, $alumno[0]->password)){
@@ -27,7 +30,10 @@ class AlumnoController extends Controller
                     'data' => $alumno[0]
                 ];
             } else {
-                return ['resp' => false];
+                return [
+                    'resp' => false,
+                    'msg' => 'Contraseña incorrecta'
+                ];
             }
         } catch (Exception $e){
             DB::rollBack();
