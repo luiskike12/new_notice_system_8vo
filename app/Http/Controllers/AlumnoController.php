@@ -25,9 +25,23 @@ class AlumnoController extends Controller
             }
             // password validation
             if(Hash::check($request->password, $alumno[0]->password)){
+                $matricula = DB::select('SELECT * FROM matriculas WHERE id = :a_id_matricula',['a_id_matricula'=>$alumno[0]->id_matricula]);
+                $carrera = DB::select('SELECT * FROM carreras WHERE id = :a_id_carrera',['a_id_carrera'=>$matricula[0]->id_carrera]);
                 return [
                     'resp' => true,
-                    'data' => $alumno[0]
+                    'data' => [
+                        'alumno' => [
+                            'correo' => $alumno[0]->correo,
+                            'grado' => $alumno[0]->grado,
+                            'turno' => $alumno[0]->turno
+                        ],
+                        'matricula' => [
+                            'id' => $matricula[0]->id,
+                            'matricula' => $matricula[0]->matricula,
+                            'nombre' => $matricula[0]->nombre
+                        ],
+                        'carrera' => $carrera[0]
+                    ]
                 ];
             } else {
                 return [
@@ -139,8 +153,8 @@ class AlumnoController extends Controller
 
     public function confirmarMatricula(Request $request){      
         $matricula = $request->matricula;
-        $alumno = DB::select('SELECT m.id, c.turno_matutino, c.turno_vespertino, c.turno_nocturno, c.turno_mixto,
-        c.num_grados, c.nombre
+        $alumno = DB::select('SELECT m.id, m.nombre AS nombre_alumno,
+        c.turno_matutino, c.turno_vespertino, c.turno_nocturno, c.turno_mixto, c.num_grados, c.nombre
         FROM matriculas m INNER JOIN carreras c ON m.id_carrera = c.id
         WHERE m.matricula = :matricula_alumno AND m.switch = :activo AND m.condicion = :NoRegistrado',
         ['matricula_alumno'=>$matricula, 'activo'=>1,'NoRegistrado'=>0]);
