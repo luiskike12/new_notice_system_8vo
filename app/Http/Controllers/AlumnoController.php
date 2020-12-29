@@ -113,7 +113,7 @@ class AlumnoController extends Controller
         FROM matriculas m INNER JOIN carreras c ON m.id_carrera = c.id
         WHERE m.matricula = :matricula_alumno AND m.switch = :activo AND m.condicion = :NoRegistrado',
         ['matricula_alumno'=>$matricula, 'activo'=>1,'NoRegistrado'=>0]);
-
+        
         return ['elementos_alumno'=>$alumno];
     }
 
