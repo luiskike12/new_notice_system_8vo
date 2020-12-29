@@ -24,6 +24,12 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Documento</label>
+                        <div class="col-md">
+                            <input type="file" class="form-control" placeholder="Seleccione un documento">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Contenido del aviso</label>
                         <div class="col-md">
                             <input type="hidden" id="contenido_aviso"  v-model="contenido_aviso">
@@ -68,7 +74,7 @@
                         <div class="row">
                             <div class="col" style="padding: 0 !important;">
                                 <div class="form-group">
-                                    <label class="col-md text-center" for="text-input">Turno</label>
+                                    <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Turno</label>
                                     <div class="col-md">
                                         <select class="form-control" v-model="turno">
                                             <option value="0" disabled selected>Seleccione un turno</option>
@@ -82,7 +88,7 @@
                             </div>
                             <div class="col" style="padding: 0 !important;">
                                 <div class="form-group">
-                                    <label class="col-md text-center" for="text-input">Grado</label>
+                                    <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Grado</label>
                                     <div class="col-md">
                                         <select class="form-control" v-model="grado">
                                             <option value="0" disabled selected>Seleccione el grado</option>
@@ -131,12 +137,14 @@
                                     </td>
                                     <td class="text-center" style="border-top: none; padding-left: 0;">
                                         <!-- datepicker -->
+
                                         <div class="input-group date asignar-fecha">
                                             <input type="text" class="form-control">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                             </span>
                                         </div>
+                                        
                                     </td>
                                 </tr>
                             </tbody>
