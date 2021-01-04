@@ -2562,245 +2562,138 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      //Variables para guardar y actualizar en la DB, se pueden modificar
-      carrera_id: 0,
-      nombre: '',
-      carrera: '',
-      titulo_aviso: '',
-      tipo_modalidad: '',
-      contenido_aviso: '',
+      //Variables para guardar y actualizar el aviso
+      tipo_envio: 0,
+      id_carrera: 1,
       turno: 0,
       grado: 0,
-      //variables para las funciones especificas del componente
+      titulo_aviso: '',
+      documento: '',
+      contenido_aviso: '',
+      //Identificadores de apoyo en el select Turno
+      t_matutino: 0,
+      t_vespertino: 0,
+      t_nocturno: 0,
+      t_mixto: 0,
+      //Arrays para mostrar datos en select
       arrayCarrera: [],
-      modal: 0,
-      tituloModal: '',
-      tipoAccion: 0,
-      errorCarrera: 0,
-      errorMostrarMsjCarrera: [],
-      pagination: {
-        'total': 0,
-        'current_page': 0,
-        'per_page': 0,
-        'last_page': 0,
-        'from': 0,
-        'to': 0
-      },
-      offset: 3,
-      criterio: 'nombre',
-      buscar: ''
+      array_num_grados: [],
+      //identificadores de validacion
+      errorCarrera: 0
     };
   },
-  computed: {
-    isActived: function isActived() {
-      return this.pagination.current_page;
-    },
-    //calcula los elementos de la funcion
-    pagesNumber: function pagesNumber() {
-      if (!this.pagination.to) {
-        return [];
-      }
-
-      var from = this.pagination.current_page - this.offset;
-
-      if (from < 1) {
-        from = 1;
-      }
-
-      var to = from + this.offset * 2;
-
-      if (to >= this.pagination.last_page) {
-        to = this.pagination.last_page;
-      }
-
-      var pagesArray = [];
-
-      while (from <= to) {
-        pagesArray.push(from);
-        from++;
-      }
-
-      return pagesArray;
-    }
-  },
   methods: {
-    listarCarrera: function listarCarrera(page, buscar, criterio) {
+    obtener_carreras: function obtener_carreras() {
+      //se puede modificar
+      //obtener el valor de un <select>
       var me = this;
-      var url = '/carrera?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio; //devuelve lo que regresa el controlador de la url /carrera
-
+      var url = '/carrera/selectCarrera';
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayCarrera = respuesta.carreras.data;
-        me.pagination = respuesta.pagination;
+        me.arrayCarrera = respuesta.carreras;
       })["catch"](function (error) {
         console.log(error);
       }).then(function () {// always executed
       });
     },
-    cambiarPagina: function cambiarPagina(page, buscar, criterio) {
-      //No mover
-      var me = this; //actualiza la pagina actual
+    mostrar_turnos_y_grados_carrera: function mostrar_turnos_y_grados_carrera(event) {
+      this.turno = 0;
+      this.grado = 0;
+      this.array_num_grados = [];
+      this.t_matutino = 0;
+      this.t_vespertino = 0;
+      this.t_nocturno = 0;
+      this.t_mixto = 0;
 
-      me.pagination.current_page = page; //Envia la peticion para visualizar la data de esa pagina, es para buscar
+      if (event.target.value != 0) {
+        var grados = 0;
 
-      me.listarCarrera(page, buscar, criterio);
-    },
-    obtenerPlanEstudio: function obtenerPlanEstudio(event) {
-      //se puede modificar
-      //obtener el valor de un <select>
-      this.carrera = event.target.value;
-    },
-    obtenerModalidad: function obtenerModalidad(event) {
-      //se puede modificar
-      //obtener el valor de un <select>
-      this.tipo_modalidad = event.target.value;
-    },
-    registrarCarrera: function registrarCarrera() {
-      //se puede modificar, funcion guardar
-      if (this.validarCarrera()) {
-        return;
+        for (var i = 0; i < this.arrayCarrera.length; i++) {
+          if (this.arrayCarrera[i]["id"] == this.id_carrera) {
+            this.t_matutino = this.arrayCarrera[i]["turno_matutino"];
+            this.t_vespertino = this.arrayCarrera[i]["turno_vespertino"];
+            this.t_nocturno = this.arrayCarrera[i]["turno_nocturno"];
+            this.t_mixto = this.arrayCarrera[i]["turno_mixto"];
+            grados = this.arrayCarrera[i]["num_grados"];
+          }
+        }
+
+        for (var i = 1; i <= grados; i++) {
+          this.array_num_grados.push({
+            num: i
+          });
+        }
       }
+    },
+    tipo_de_envio: function tipo_de_envio(event) {
+      this.seleccion_de_envio();
+    },
+    seleccion_de_envio: function seleccion_de_envio() {
+      if (this.tipo_envio == 1) {
+        this.id_carrera = 1;
+        this.turno = 0;
+        this.grado = 0; //Identificadores de apoyo en el select Turno
 
-      var me = this; //          url del controlador donde se guarda
+        this.t_matutino = 0;
+        this.t_vespertino = 0;
+        this.t_nocturno = 0;
+        this.t_mixto = 0; //Arrays para mostrar datos en select
 
-      axios.post('/carrera/registrar', {
-        //Clave  :    Valor    (poner las variables tal y como estan en la DB)
-        'nombre': this.nombre,
-        'carrera': this.carrera,
-        'titulo_aviso': this.titulo_aviso,
-        'tipo_modalidad': this.tipo_modalidad
-      }).then(function (response) {
+        this.arrayCarrera = [];
+        this.array_num_grados = [];
+      } else if (this.tipo_envio == 0) {
+        this.obtener_carreras();
+      }
+    },
+    getDocumento: function getDocumento(event) {
+      var file = event.target.files[0];
+      this.documento = file;
+    },
+    guardar_aviso: function guardar_aviso() {
+      // if(this.validarCarrera()){
+      //     return;
+      // }
+      var me = this;
+      this.contenido_aviso = document.getElementById('contenido_aviso').value;
+      var data = new FormData();
+      data.append('id_carrera', this.id_carrera);
+      data.append('turno', this.turno);
+      data.append('grado', this.grado);
+      data.append('titulo', this.titulo_aviso);
+      data.append('contenido', this.contenido_aviso);
+      data.append('documento', this.documento);
+      data.append('general', this.tipo_envio);
+      axios.post('/aviso/guardar_aviso', data).then(function (response) {
         //no modificar
-        me.cerrarModal();
-        me.listarCarrera(1, '', 'nombre');
+        // always executed
+        //console.log(response.data)
+        me.limpiar_campos();
       })["catch"](function (error) {
         console.log(error);
       });
+      console.log(this.contenido_aviso);
     },
-    actualizarCarrera: function actualizarCarrera() {
-      //se puede modificar, aqui se actualiza
-      if (this.validarCarrera()) {
-        return;
-      }
+    limpiar_campos: function limpiar_campos() {
+      document.getElementById('contenido_aviso').value = ""; //Variables para guardar y actualizar el aviso
+      //this.tipo_envio = 0;
 
-      var me = this; //          url del controlador
+      this.id_carrera = 1;
+      this.turno = 0;
+      this.grado = 0;
+      this.titulo_aviso = '';
+      this.documento = '';
+      this.contenido_aviso = ''; //Identificadores de apoyo en el select Turno
 
-      axios.put('/carrera/actualizar', {
-        'nombre': this.nombre,
-        'carrera': this.carrera,
-        'titulo_aviso': this.titulo_aviso,
-        'tipo_modalidad': this.tipo_modalidad,
-        'id': this.carrera_id
-      }).then(function (response) {
-        //no modificar
-        me.cerrarModal();
-        me.listarCarrera(1, '', 'nombre');
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    activarMatutino: function activarMatutino(id) {
-      var _this = this;
+      this.t_matutino = 0;
+      this.t_vespertino = 0;
+      this.t_nocturno = 0;
+      this.t_mixto = 0; //Arrays para mostrar datos en select
 
-      // se puede modificar, solo lo que esta en español
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Desea activar el turno Matutino?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this; //          url del controlador
-
-          axios.put('/carrera/activar_matutino', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Activado!', 'El turno ha sido activado con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
-    },
-    desactivarMatutino: function desactivarMatutino(id) {
-      var _this2 = this;
-
-      //se puede modificar, solo lo que esta en español
-      var swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          confirmButton: 'btn btn-success',
-          cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-      });
-      swalWithBootstrapButtons.fire({
-        title: 'Esta seguro de desactivar el turno Matutino?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Aceptar!',
-        cancelButtonText: 'Cancelar',
-        reverseButtons: true
-      }).then(function (result) {
-        if (result.value) {
-          var me = _this2; //          url del controlador
-
-          axios.put('/carrera/desactivar_matutino', {
-            'id': id
-          }).then(function (response) {
-            me.listarCarrera(1, '', 'nombre');
-            swalWithBootstrapButtons.fire('Turno Desactivado!', 'El turno ha sido desactivada con éxito.', 'success');
-          })["catch"](function (error) {
-            console.log(error);
-          });
-        } else if (
-        /* Read more about handling dismissals below */
-        result.dismiss === Swal.DismissReason.cancel) {}
-      });
+      this.arrayCarrera = [];
+      this.array_num_grados = [];
     },
     validarCarrera: function validarCarrera() {
       // se puede modificar, solo los mensajes de validacion
@@ -2816,62 +2709,11 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return this.errorCarrera;
-    },
-    cerrarModal: function cerrarModal() {
-      //modificar solo variables
-      this.modal = 0; //no
-
-      this.tituloModal = ''; //no
-
-      this.nombre = '';
-      this.carrera = '';
-      this.titulo_aviso = '';
-      this.tipo_modalidad = '';
-    },
-    abrirModal: function abrirModal(modelo, accion) {
-      var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-
-      //modificar solo variables
-      switch (modelo) {
-        case "carrera":
-          {
-            switch (accion) {
-              case 'registrar':
-                {
-                  this.modal = 1; //no
-
-                  this.tituloModal = 'Registrar Carrera';
-                  this.nombre = '';
-                  this.carrera = '';
-                  this.titulo_aviso = '';
-                  this.tipo_modalidad = '';
-                  this.tipoAccion = 1; //no
-
-                  break;
-                }
-
-              case 'actualizar':
-                {
-                  this.modal = 1; //no
-
-                  this.tituloModal = 'Actualizar carrera';
-                  this.tipoAccion = 2; //no
-
-                  this.carrera_id = data['id'];
-                  this.nombre = data['nombre'];
-                  this.carrera = data['carrera'];
-                  this.titulo_aviso = data['titulo_aviso'];
-                  this.tipo_modalidad = data['tipo_modalidad'];
-                  break;
-                }
-            }
-          }
-      }
     }
   },
   mounted: function mounted() {
     //no modificar
-    this.listarCarrera(1, this.buscar, this.criterio);
+    this.seleccion_de_envio();
     $('.asignar-fecha').datepicker({
       format: "dd/mm/yyyy",
       language: "es",
@@ -9798,7 +9640,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
 
 // exports
 
@@ -42658,711 +42500,646 @@ var render = function() {
         [
           _vm._m(1),
           _vm._v(" "),
-          _c("div", { staticClass: "card-group" }, [
-            _c("div", { staticClass: "card izquierda" }, [
-              _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "col-md form-control-label font-weight-bold text-center",
-                    attrs: { for: "email-input" }
-                  },
-                  [_vm._v("Título del aviso")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md" }, [
-                  _c("input", {
-                    directives: [
+          _c(
+            "form",
+            {
+              staticClass: "form-horizontal",
+              attrs: { enctype: "multipart/form-data" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  return _vm.guardar_aviso($event)
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "card-group" }, [
+                _c("div", { staticClass: "card izquierda" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.titulo_aviso,
-                        expression: "titulo_aviso"
-                      }
-                    ],
-                    staticClass: "form-control",
-                    attrs: {
-                      type: "text",
-                      placeholder: "Ingrese un título a su aviso"
-                    },
-                    domProps: { value: _vm.titulo_aviso },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.titulo_aviso = $event.target.value
-                      }
-                    }
-                  })
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(2),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "col-md form-control-label font-weight-bold text-center",
-                    attrs: { for: "email-input" }
-                  },
-                  [_vm._v("Contenido del aviso")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-md" },
-                  [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.contenido_aviso,
-                          expression: "contenido_aviso"
-                        }
-                      ],
-                      attrs: { type: "hidden", id: "contenido_aviso" },
-                      domProps: { value: _vm.contenido_aviso },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.contenido_aviso = $event.target.value
-                        }
-                      }
-                    }),
+                        staticClass:
+                          "col-md form-control-label font-weight-bold text-center",
+                        attrs: { for: "email-input" }
+                      },
+                      [_vm._v("Título del aviso")]
+                    ),
                     _vm._v(" "),
-                    _c("trix-editor", {
-                      staticClass: "trix-editor",
-                      attrs: { input: "contenido_aviso" }
-                    })
-                  ],
-                  1
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card derecha" }, [
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "col-md form-control-label font-weight-bold text-center",
-                    attrs: { for: "email-input" }
-                  },
-                  [_vm._v("Carreras")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md" }, [
-                  _c(
-                    "select",
-                    {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.carrera,
-                          expression: "carrera"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      on: {
-                        change: [
-                          function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.carrera = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          },
-                          function($event) {
-                            return _vm.obtenerPlanEstudio($event)
+                    _c("div", { staticClass: "col-md" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.titulo_aviso,
+                            expression: "titulo_aviso"
                           }
-                        ]
-                      }
-                    },
-                    [
-                      _c(
-                        "option",
-                        { attrs: { value: "", disabled: "", selected: "" } },
-                        [_vm._v("Seleccione una opción")]
-                      ),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "6" } }, [
-                        _vm._v("Semestral")
-                      ]),
-                      _vm._v(" "),
-                      _c("option", { attrs: { value: "4" } }, [
-                        _vm._v("Cuatrimestral")
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "container-1" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col",
-                      staticStyle: { padding: "0 !important" }
-                    },
-                    [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-md form-control-label font-weight-bold text-center",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Turno")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md" }, [
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.turno,
-                                  expression: "turno"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.turno = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                }
-                              }
-                            },
-                            [
-                              _c(
-                                "option",
-                                {
-                                  attrs: {
-                                    value: "0",
-                                    disabled: "",
-                                    selected: ""
-                                  }
-                                },
-                                [_vm._v("Seleccione un turno")]
-                              ),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("Matutino")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("Vespertino")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("Nocturno")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "4" } }, [
-                                _vm._v("Mixto")
-                              ])
-                            ]
-                          )
-                        ])
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "col",
-                      staticStyle: { padding: "0 !important" }
-                    },
-                    [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c(
-                          "label",
-                          {
-                            staticClass:
-                              "col-md form-control-label font-weight-bold text-center",
-                            attrs: { for: "text-input" }
-                          },
-                          [_vm._v("Grado")]
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col-md" }, [
-                          _c(
-                            "select",
-                            {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.grado,
-                                  expression: "grado"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              on: {
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.grado = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                }
-                              }
-                            },
-                            [
-                              _c(
-                                "option",
-                                {
-                                  attrs: {
-                                    value: "0",
-                                    disabled: "",
-                                    selected: ""
-                                  }
-                                },
-                                [_vm._v("Seleccione el grado")]
-                              ),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("1º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("2º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("3º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "4" } }, [
-                                _vm._v("4º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "1" } }, [
-                                _vm._v("5º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "2" } }, [
-                                _vm._v("6º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "3" } }, [
-                                _vm._v("7º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "4" } }, [
-                                _vm._v("8º")
-                              ]),
-                              _vm._v(" "),
-                              _c("option", { attrs: { value: "4" } }, [
-                                _vm._v("9º")
-                              ])
-                            ]
-                          )
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(4),
-              _vm._v(" "),
-              _vm._m(5)
-            ])
-          ])
-        ]
-      )
-    ]),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        class: { mostrar: _vm.modal },
-        staticStyle: { display: "none" },
-        attrs: {
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "myModalLabel",
-          "aria-hidden": "true"
-        }
-      },
-      [
-        _c(
-          "div",
-          {
-            staticClass: "modal-dialog modal-primary modal-lg",
-            attrs: { role: "document" }
-          },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", {
-                  staticClass: "modal-title",
-                  domProps: { textContent: _vm._s(_vm.tituloModal) }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Ingrese el título del aviso"
+                        },
+                        domProps: { value: _vm.titulo_aviso },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.titulo_aviso = $event.target.value
+                          }
+                        }
+                      })
                     ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c(
-                  "form",
-                  {
-                    staticClass: "form-horizontal",
-                    attrs: {
-                      action: "",
-                      method: "post",
-                      enctype: "multipart/form-data"
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "form-group row" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 form-control-label",
-                          attrs: { for: "text-input" }
-                        },
-                        [_vm._v("Nombre")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.nombre,
-                              expression: "nombre"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Nombre de la carrera"
-                          },
-                          domProps: { value: _vm.nombre },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.nombre = $event.target.value
-                            }
-                          }
-                        })
-                      ])
-                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass:
+                          "col-md form-control-label font-weight-bold text-center",
+                        attrs: { for: "email-input" }
+                      },
+                      [_vm._v("Documento")]
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group row" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 form-control-label",
-                          attrs: { for: "email-input" }
+                    _c("div", { staticClass: "col-md" }, [
+                      _c("input", {
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "file",
+                          placeholder: "Seleccione un documento"
                         },
-                        [_vm._v("Plan de estudios")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.carrera,
-                                expression: "carrera"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            on: {
-                              change: [
-                                function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.carrera = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                },
-                                function($event) {
-                                  return _vm.obtenerPlanEstudio($event)
-                                }
-                              ]
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              {
-                                attrs: { value: "", disabled: "", selected: "" }
-                              },
-                              [_vm._v("Seleccione una opción")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "6" } }, [
-                              _vm._v("Semestral")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "4" } }, [
-                              _vm._v("Cuatrimestral")
-                            ])
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group row" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 form-control-label",
-                          attrs: { for: "email-input" }
-                        },
-                        [_vm._v("Modalidad")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.tipo_modalidad,
-                                expression: "tipo_modalidad"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            on: {
-                              change: [
-                                function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.tipo_modalidad = $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                },
-                                function($event) {
-                                  return _vm.obtenerModalidad($event)
-                                }
-                              ]
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              {
-                                attrs: { value: "", disabled: "", selected: "" }
-                              },
-                              [_vm._v("Seleccione una opción")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "1" } }, [
-                              _vm._v("Escolarizado")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "2" } }, [
-                              _vm._v("Semiescolarizado")
-                            ])
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "form-group row" }, [
-                      _c(
-                        "label",
-                        {
-                          staticClass: "col-md-3 form-control-label",
-                          attrs: { for: "email-input" }
-                        },
-                        [_vm._v("No. Grados")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-9" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.titulo_aviso,
-                              expression: "titulo_aviso"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Número de grados que tiene la carrera"
-                          },
-                          domProps: { value: _vm.titulo_aviso },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.titulo_aviso = $event.target.value
-                            }
-                          }
-                        })
-                      ])
-                    ]),
+                        on: { change: _vm.getDocumento }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
+                      {
+                        staticClass:
+                          "col-md form-control-label font-weight-bold text-center",
+                        attrs: { for: "email-input" }
+                      },
+                      [_vm._v("Contenido del aviso")]
+                    ),
                     _vm._v(" "),
                     _c(
                       "div",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.errorCarrera,
-                            expression: "errorCarrera"
-                          }
-                        ],
-                        staticClass: "form-group row div-error"
-                      },
+                      { staticClass: "col-md" },
                       [
-                        _c(
-                          "div",
-                          { staticClass: "text-center text-error" },
-                          _vm._l(_vm.errorMostrarMsjCarrera, function(error) {
-                            return _c("div", {
-                              key: error,
-                              domProps: { textContent: _vm._s(error) }
-                            })
-                          }),
-                          0
-                        )
-                      ]
+                        _c("input", {
+                          attrs: { type: "hidden", id: "contenido_aviso" }
+                        }),
+                        _vm._v(" "),
+                        _c("trix-editor", {
+                          staticClass: "trix-editor",
+                          attrs: { input: "contenido_aviso" }
+                        })
+                      ],
+                      1
                     )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card derecha" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "form-group",
+                      staticStyle: {
+                        margin: "0",
+                        "border-bottom": "1px solid #C6D7D1"
                       }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                ),
-                _vm._v(" "),
-                _vm.tipoAccion == 1
-                  ? _c(
-                      "button",
+                    },
+                    [
+                      _c(
+                        "table",
+                        { staticClass: "table", staticStyle: { margin: "0" } },
+                        [
+                          _c("tbody", [
+                            _c("tr", [
+                              _c(
+                                "td",
+                                { staticStyle: { "border-top": "none" } },
+                                [_vm._v("Envío a...")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticStyle: { "border-top": "none" } },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.tipo_envio,
+                                        expression: "tipo_envio"
+                                      }
+                                    ],
+                                    staticClass: "form-check-input",
+                                    attrs: {
+                                      type: "radio",
+                                      id: "radio_todas",
+                                      value: "1"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(_vm.tipo_envio, "1")
+                                    },
+                                    on: {
+                                      change: [
+                                        function($event) {
+                                          _vm.tipo_envio = "1"
+                                        },
+                                        function($event) {
+                                          return _vm.tipo_de_envio($event)
+                                        }
+                                      ]
+                                    }
+                                  }),
+                                  _vm._v(
+                                    "\r\n                                            todas las carreras.\r\n                                        "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticStyle: { "border-top": "none" } },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.tipo_envio,
+                                        expression: "tipo_envio"
+                                      }
+                                    ],
+                                    staticClass: "form-check-input",
+                                    attrs: {
+                                      type: "radio",
+                                      id: "radio_una",
+                                      value: "0"
+                                    },
+                                    domProps: {
+                                      checked: _vm._q(_vm.tipo_envio, "0")
+                                    },
+                                    on: {
+                                      change: [
+                                        function($event) {
+                                          _vm.tipo_envio = "0"
+                                        },
+                                        function($event) {
+                                          return _vm.tipo_de_envio($event)
+                                        }
+                                      ]
+                                    }
+                                  }),
+                                  _vm._v(
+                                    "\r\n                                            solo una carrera.\r\n                                        "
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "label",
                       {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.registrarCarrera()
-                          }
-                        }
+                        staticClass:
+                          "col-md form-control-label font-weight-bold text-center",
+                        attrs: { for: "email-input" }
                       },
-                      [_vm._v("Guardar")]
-                    )
-                  : _vm._e(),
-                _vm._v(" "),
-                _vm.tipoAccion == 2
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            return _vm.actualizarCarrera()
-                          }
-                        }
-                      },
-                      [_vm._v("Actualizar")]
-                    )
-                  : _vm._e()
+                      [_vm._v("Carreras")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md" }, [
+                      _vm.tipo_envio == 1
+                        ? _c("div", [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.id_carrera,
+                                    expression: "id_carrera"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.id_carrera = $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      value: "1",
+                                      disabled: "",
+                                      selected: ""
+                                    }
+                                  },
+                                  [_vm._v("Todas las carreras")]
+                                )
+                              ]
+                            )
+                          ])
+                        : _vm.tipo_envio == 0
+                        ? _c("div", [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.id_carrera,
+                                    expression: "id_carrera"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                on: {
+                                  change: [
+                                    function($event) {
+                                      var $$selectedVal = Array.prototype.filter
+                                        .call($event.target.options, function(
+                                          o
+                                        ) {
+                                          return o.selected
+                                        })
+                                        .map(function(o) {
+                                          var val =
+                                            "_value" in o ? o._value : o.value
+                                          return val
+                                        })
+                                      _vm.id_carrera = $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    },
+                                    function($event) {
+                                      return _vm.mostrar_turnos_y_grados_carrera(
+                                        $event
+                                      )
+                                    }
+                                  ]
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  {
+                                    attrs: {
+                                      value: "1",
+                                      disabled: "",
+                                      selected: ""
+                                    }
+                                  },
+                                  [_vm._v("Seleccione una carrera")]
+                                ),
+                                _vm._v(" "),
+                                _vm._l(_vm.arrayCarrera, function(carrera) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: carrera.id,
+                                      domProps: { value: carrera.id }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\r\n                                            " +
+                                          _vm._s(carrera.nombre) +
+                                          " - " +
+                                          _vm._s(carrera.tipo_modalidad) +
+                                          "\r\n                                        "
+                                      )
+                                    ]
+                                  )
+                                })
+                              ],
+                              2
+                            )
+                          ])
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "container-1" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col",
+                          staticStyle: { padding: "0 !important" }
+                        },
+                        [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass:
+                                  "col-md form-control-label font-weight-bold text-center",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Turno")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md" }, [
+                              _vm.tipo_envio == 1
+                                ? _c("div", [_vm._m(2)])
+                                : _vm.tipo_envio == 0
+                                ? _c("div", [
+                                    _vm.id_carrera != 0
+                                      ? _c("div", [
+                                          _c(
+                                            "select",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.turno,
+                                                  expression: "turno"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              attrs: { id: "turno" },
+                                              on: {
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.turno = $event.target
+                                                    .multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "option",
+                                                {
+                                                  attrs: {
+                                                    value: "0",
+                                                    disabled: "",
+                                                    selected: ""
+                                                  }
+                                                },
+                                                [_vm._v("Seleccione el turno")]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm.t_matutino == 1
+                                                ? _c(
+                                                    "option",
+                                                    { attrs: { value: "1" } },
+                                                    [_vm._v("Matutino")]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.t_vespertino == 1
+                                                ? _c(
+                                                    "option",
+                                                    { attrs: { value: "2" } },
+                                                    [_vm._v("Vespertino")]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.t_nocturno == 1
+                                                ? _c(
+                                                    "option",
+                                                    { attrs: { value: "3" } },
+                                                    [_vm._v("Nocturno")]
+                                                  )
+                                                : _vm._e(),
+                                              _vm._v(" "),
+                                              _vm.t_mixto == 1
+                                                ? _c(
+                                                    "option",
+                                                    { attrs: { value: "4" } },
+                                                    [_vm._v("Mixto")]
+                                                  )
+                                                : _vm._e()
+                                            ]
+                                          )
+                                        ])
+                                      : _c("div", [_vm._m(3)])
+                                  ])
+                                : _vm._e()
+                            ])
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "col",
+                          staticStyle: { padding: "0 !important" }
+                        },
+                        [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass:
+                                  "col-md form-control-label font-weight-bold text-center",
+                                attrs: { for: "text-input" }
+                              },
+                              [_vm._v("Grado")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md" }, [
+                              _vm.tipo_envio == 1
+                                ? _c("div", [_vm._m(4)])
+                                : _vm.tipo_envio == 0
+                                ? _c("div", [
+                                    _vm.id_carrera != 0
+                                      ? _c("div", [
+                                          _c(
+                                            "select",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.grado,
+                                                  expression: "grado"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              on: {
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.grado = $event.target
+                                                    .multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "option",
+                                                {
+                                                  attrs: {
+                                                    value: "0",
+                                                    disabled: "",
+                                                    selected: ""
+                                                  }
+                                                },
+                                                [_vm._v("Seleccione el grado")]
+                                              ),
+                                              _vm._v(" "),
+                                              _vm._l(
+                                                _vm.array_num_grados,
+                                                function(grupo) {
+                                                  return _c(
+                                                    "option",
+                                                    {
+                                                      key: grupo.num,
+                                                      domProps: {
+                                                        value: grupo.num
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\r\n                                                            " +
+                                                          _vm._s(grupo.num) +
+                                                          "º\r\n                                                        "
+                                                      )
+                                                    ]
+                                                  )
+                                                }
+                                              )
+                                            ],
+                                            2
+                                          )
+                                        ])
+                                      : _c("div", [
+                                          _c(
+                                            "select",
+                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.grado,
+                                                  expression: "grado"
+                                                }
+                                              ],
+                                              staticClass: "form-control",
+                                              on: {
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.grado = $event.target
+                                                    .multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                }
+                                              }
+                                            },
+                                            [
+                                              _c(
+                                                "option",
+                                                {
+                                                  attrs: {
+                                                    value: "0",
+                                                    disabled: "",
+                                                    selected: ""
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "Seleccione una carrera"
+                                                  )
+                                                ]
+                                              )
+                                            ]
+                                          )
+                                        ])
+                                  ])
+                                : _vm._e()
+                            ])
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(5),
+                  _vm._v(" "),
+                  _vm._m(6)
+                ])
               ])
-            ])
-          ]
-        )
-      ]
-    )
+            ]
+          )
+        ]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -43393,76 +43170,39 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c(
-        "label",
-        {
-          staticClass: "col-md form-control-label font-weight-bold text-center",
-          attrs: { for: "email-input" }
-        },
-        [_vm._v("Documento")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "file", placeholder: "Seleccione un documento" }
-        })
-      ])
-    ])
+    return _c(
+      "select",
+      { staticClass: "form-control", attrs: { id: "turno" } },
+      [
+        _c("option", { attrs: { value: "0", disabled: "", selected: "" } }, [
+          _vm._v("Todos los turnos")
+        ])
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c(
-      "div",
-      {
-        staticClass: "form-group",
-        staticStyle: { margin: "0", "border-bottom": "1px solid #C6D7D1" }
-      },
+      "select",
+      { staticClass: "form-control", attrs: { id: "turno" } },
       [
-        _c("table", { staticClass: "table", staticStyle: { margin: "0" } }, [
-          _c("tbody", [
-            _c("tr", [
-              _c("td", { staticStyle: { "border-top": "none" } }, [
-                _vm._v("Envío a...")
-              ]),
-              _vm._v(" "),
-              _c("td", { staticStyle: { "border-top": "none" } }, [
-                _c("input", {
-                  staticClass: "form-check-input",
-                  attrs: {
-                    type: "radio",
-                    name: "inlineRadioOptions",
-                    id: "inlineRadio1",
-                    value: "option1"
-                  }
-                }),
-                _vm._v(
-                  "\r\n                                        todas las carreras.\r\n                                    "
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", { staticStyle: { "border-top": "none" } }, [
-                _c("input", {
-                  staticClass: "form-check-input",
-                  attrs: {
-                    type: "radio",
-                    name: "inlineRadioOptions",
-                    id: "inlineRadio1",
-                    value: "option2"
-                  }
-                }),
-                _vm._v(
-                  "\r\n                                        solo una carrera.\r\n                                    "
-                )
-              ])
-            ])
-          ])
+        _c("option", { attrs: { value: "0", disabled: "", selected: "" } }, [
+          _vm._v("Seleccione una carrera")
         ])
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("select", { staticClass: "form-control" }, [
+      _c("option", { attrs: { value: "0", disabled: "", selected: "" } }, [
+        _vm._v("Todos los grados")
+      ])
+    ])
   },
   function() {
     var _vm = this
@@ -43488,7 +43228,7 @@ var staticRenderFns = [
                     attrs: { type: "checkbox", id: "gridCheck" }
                   }),
                   _vm._v(
-                    "\r\n                                        Envío programado\r\n                                    "
+                    "\r\n                                            Envío programado\r\n                                        "
                   )
                 ]
               )
@@ -43606,13 +43346,12 @@ var staticRenderFns = [
                     staticClass: "form-check-input",
                     attrs: {
                       type: "radio",
-                      name: "inlineRadioOptions",
-                      id: "inlineRadio1",
+                      id: "radio_guardar",
                       value: "option1"
                     }
                   }),
                   _vm._v(
-                    "\r\n                                        Solo guardar.\r\n                                    "
+                    "\r\n                                            Solo guardar.\r\n                                        "
                   )
                 ]
               ),
@@ -43628,13 +43367,12 @@ var staticRenderFns = [
                     staticClass: "form-check-input",
                     attrs: {
                       type: "radio",
-                      name: "inlineRadioOptions",
-                      id: "inlineRadio1",
+                      id: "radio_enviar",
                       value: "option2"
                     }
                   }),
                   _vm._v(
-                    "\r\n                                        Guardar y enviar.\r\n                                    "
+                    "\r\n                                            Guardar y enviar.\r\n                                        "
                   )
                 ]
               ),
@@ -43646,14 +43384,11 @@ var staticRenderFns = [
                   staticStyle: { "border-top": "none" }
                 },
                 [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "button" }
-                    },
-                    [_vm._v("Enviar")]
-                  )
+                  _c("input", {
+                    staticClass: "btn btn-primary",
+                    staticStyle: { cursor: "pointer" },
+                    attrs: { type: "submit", value: "Enviar aviso" }
+                  })
                 ]
               )
             ])
@@ -46596,7 +46331,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\r\n                "),
+          _vm._v(" Usuarios\n                "),
           _c(
             "button",
             {
@@ -46610,7 +46345,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\r\n                ")
+              _vm._v(" Nuevo\n                ")
             ]
           )
         ]),
@@ -46738,7 +46473,7 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
-                      _vm._v("  \r\n                                ")
+                      _vm._v("  \n                                ")
                     ]),
                     _vm._v(" "),
                     _c("th", {
@@ -46801,7 +46536,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                                        Activo\r\n                                    "
+                                  "\n                                        Activo\n                                    "
                                 )
                               ]
                             )
@@ -46820,7 +46555,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\r\n                                        Desactivado\r\n                                    "
+                                  "\n                                        Desactivado\n                                    "
                                 )
                               ]
                             )
@@ -47118,11 +46853,11 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\r\n                                            " +
+                                          "\n                                            " +
                                             _vm._s(carrera.nombre) +
                                             " - " +
                                             _vm._s(carrera.tipo_modalidad) +
-                                            "\r\n                                        "
+                                            "\n                                        "
                                         )
                                       ]
                                     )
@@ -60376,7 +60111,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Projects\School\NotiSchoolDashboard\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\pruebas_new_notice_system_8vo\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })

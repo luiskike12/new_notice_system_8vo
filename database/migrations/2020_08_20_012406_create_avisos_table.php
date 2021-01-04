@@ -21,7 +21,7 @@ class CreateAvisosTable extends Migration
             $table->integer('grado');
             $table->string('titulo',80);//255 caracteres
             $table->text('contenido');//65,535 caracteres
-            $table->string('imagen');
+            $table->string('documento')->nullable();
             $table->boolean('general')->default(0);
             $table->timestamps();
         });

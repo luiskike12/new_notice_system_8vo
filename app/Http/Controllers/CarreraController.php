@@ -201,7 +201,8 @@ class CarreraController extends Controller
          
         $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
         when 1 then "Escolarizado" 
-        when 2 then "Semiescolarizado" end as tipo_modalidad
+        when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
+        turno_nocturno, turno_mixto, num_grados
         FROM carreras 
         WHERE turno_matutino = :matutino OR turno_vespertino = :vespertino 
         OR turno_nocturno = :nocturno OR turno_mixto = :mixto ORDER BY nombre ASC;', 
