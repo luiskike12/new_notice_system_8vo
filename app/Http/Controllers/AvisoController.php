@@ -14,38 +14,77 @@ class AvisoController extends Controller
     public function traerAvisosAlumnosFiltros(Request $request)
     {
         try{
+            $string1 = 'SELECT a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido, a.documento, c.nombre as nombre_carrera FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera WHERE a.id_carrera = :a_carrera';
+            $string2 = '';
+            $string3 = '';
+            $string4 = '';
+            $string5 = '';
+            $enableFilters = 1;
+
+            // dinamic query
+            if($request->turno != 0){
+                $string2 = 'AND a.turno = :a_turno';
+                $enableFilters = 2;
+            }
+            if($request->grado != 0){
+                $string3 = 'AND a.grado = :a_grado';
+                $enableFilters = 3;
+            }
             if($request->filter_date){
-                $alumno = DB::select('SELECT
-                    a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido,
-                    a.documento, c.nombre as nombre_carrera
-                    FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera
-                    WHERE a.id_carrera = :a_carrera AND
-                    a.turno = :a_turno AND
-                    a.grado = :a_grado AND
-                    a.created_at BETWEEN :a_start AND :a_end
-                    ORDER BY a.created_at DESC',
-                    [
+                $string4 = 'AND a.created_at BETWEEN :a_start AND :a_end';
+            }
+            $string5 = 'ORDER BY a.created_at DESC';
+            $finalQuery = DB::raw("$string1 $string2 $string3 $string4 $string5");
+            
+            // do search
+            if($enableFilters == 1){
+                if($request->filter_date){
+                    $resultados = DB::select($finalQuery, [
+                        'a_carrera'=>$request->carrera,
+                        'a_start'=>$request->start,
+                        'a_end'=>$request->end
+                    ]);
+                    return ['avisos' => $resultados];
+                } else {
+                    $resultados = DB::select($finalQuery, [
+                        'a_carrera'=>$request->carrera
+                    ]);
+                    return ['avisos' => $resultados];
+                }
+            } else if($enableFilters == 2) {
+                if($request->filter_date){
+                    $resultados = DB::select($finalQuery, [
+                        'a_carrera'=>$request->carrera,
+                        'a_turno'=>$request->turno,
+                        'a_start'=>$request->start,
+                        'a_end'=>$request->end
+                    ]);
+                    return ['avisos' => $resultados];
+                } else {
+                    $resultados = DB::select($finalQuery, [
+                        'a_carrera'=>$request->carrera,
+                        'a_turno'=>$request->turno,
+                    ]);
+                    return ['avisos' => $resultados];
+                }
+            } else {
+                if($request->filter_date){
+                    $resultados = DB::select($finalQuery, [
                         'a_carrera'=>$request->carrera,
                         'a_turno'=>$request->turno,
                         'a_grado'=>$request->grado,
                         'a_start'=>$request->start,
                         'a_end'=>$request->end
                     ]);
-            
-                return ['avisos' => $alumno];
-            } else {
-                $alumno = DB::select('SELECT * FROM avisos WHERE
-                    (id_carrera = :a_carrera) AND
-                    (turno = :a_turno) AND
-                    (grado = :a_grado)
-                    ORDER BY created_at DESC',
-                    [
+                    return ['avisos' => $resultados];
+                } else {
+                    $resultados = DB::select($finalQuery, [
                         'a_carrera'=>$request->carrera,
                         'a_turno'=>$request->turno,
-                        'a_grado'=>$request->grado
+                        'a_grado'=>$request->grado,
                     ]);
-            
-                return ['avisos' => $alumno];
+                    return ['avisos' => $resultados];
+                }
             }
         } catch (Exception $e){
             DB::rollBack();
@@ -55,7 +94,7 @@ class AvisoController extends Controller
     public function traerAvisosAlumnos(Request $request)
     {
         try{
-            $alumno = DB::select('SELECT
+            $resultados = DB::select('SELECT
                 a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido,
                 a.documento, c.nombre as nombre_carrera
                 FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera
@@ -70,7 +109,7 @@ class AvisoController extends Controller
                     'a_grado'=>$request->grado
                 ]);
             
-            return ['avisos' => $alumno];
+            return ['avisos' => $resultados];
         } catch (Exception $e){
             DB::rollBack();
         }
