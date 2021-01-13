@@ -194,11 +194,11 @@
                                 <tbody>
                                     <tr>
                                         <td class="text-center" style="border-top: none;">
-                                            <input class="form-check-input" type="radio" id="radio_guardar" value="option1">
+                                            <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
                                             Solo guardar.
                                         </td>
                                         <td class="text-center" style="border-top: none;">
-                                            <input class="form-check-input" type="radio" id="radio_enviar" value="option2">
+                                            <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
                                             Guardar y enviar.
                                         </td>
                                         <td class="text-center" style="border-top: none;">
@@ -208,7 +208,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>    
+                        </div>  
 
                     </div>
                     <!--FIN terjeta DERECHA -->
@@ -247,6 +247,8 @@
                 array_num_grados: [],
                 //identificadores de validacion
                 errorCarrera: 0,
+                //seleccion de guardar o enviar el aviso
+                guardar_enviar: 1
             }
         },
         methods : {
@@ -335,16 +337,27 @@
 
                 axios.post('/aviso/guardar_aviso', data).then(function (response){//no modificar
                     // always executed
-                    //console.log(response.data)
                     me.limpiar_campos();
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Genial...!',
+                        text: 'Se ha enviado correctamente'
+                    })
                 }).catch(function (error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Ups...!',
+                        text: 'Algo salio mal'
+                    })
                     console.log(error)
                 });
-                console.log(this.contenido_aviso)
 
             },
             limpiar_campos(){
                 document.getElementById('contenido_aviso').value = "";
+                var element = document.querySelector("trix-editor");
+                //atajo para restablecer trix-editor
+                element.value = "";
                 //Variables para guardar y actualizar el aviso
                 //this.tipo_envio = 0;
                 this.id_carrera = 1;
@@ -361,6 +374,8 @@
                 //Arrays para mostrar datos en select
                 this.arrayCarrera = [];
                 this.array_num_grados = [];
+                //guardar o enviar aviso
+                this.guardar_enviar = 1;
             },
             validarCarrera(){// se puede modificar, solo los mensajes de validacion
                 this.errorCarrera = 0;
