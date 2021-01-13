@@ -61,4 +61,5 @@ Route::get('/alumno/listarTurnos', 'AlumnoController@listarTurnos');
 Route::get('/alumno/confirmar_matricula', 'AlumnoController@confirmarMatricula');
 
 //Rutas del controlador Avisos
+Route::get('/aviso', 'AvisoController@index');
 Route::post('/aviso/guardar_aviso', 'AvisoController@guardar_aviso');

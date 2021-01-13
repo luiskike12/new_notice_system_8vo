@@ -1,7 +1,7 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
-        <registro></registro>
+        <!-- <registro></registro> -->
     </template>
 
     <template v-if="menu==1">
@@ -25,7 +25,7 @@
     </template>
 
     <template v-if="menu==6">
-        <h1>...........................Componente de la Tabla de Avisos</h1>
+        <tabla-avisos></tabla-avisos>
     </template>
 
     <template v-if="menu==7">
