@@ -10,7 +10,57 @@ use App\Aviso;
 
 class AvisoController extends Controller
 {
-<<<<<<< HEAD
+    public function index(Request $request){
+        //if(!$request->ajax())return redirect('/');
+        
+        $buscar = $request->buscar;
+        $criterio = $request->criterio;
+        if($buscar==''){
+            //se crea un array de todo lo que devuelva el metodo
+            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+            DB::raw('CASE avisos.turno 
+            WHEN 0 THEN "General"
+            WHEN 1 THEN "Matutino"
+            WHEN 2 THEN "Vespertino"
+            WHEN 3 THEN "Nocturno" 
+            WHEN 4 THEN "Mixto" END AS turno'),
+            DB::raw('CASE avisos.grado 
+            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
+            'avisos.titulo','avisos.contenido',
+            'avisos.documento as url_documento','avisos.general')
+            ->orderBy('avisos.id', 'desc')->paginate(3);
+        }
+        else{
+            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+            DB::raw('CASE avisos.turno 
+            WHEN 0 THEN "General"
+            WHEN 1 THEN "Matutino"
+            WHEN 2 THEN "Vespertino"
+            WHEN 3 THEN "Nocturno" 
+            WHEN 4 THEN "Mixto" END AS turno'),
+            DB::raw('CASE avisos.grado 
+            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
+            'avisos.titulo','avisos.contenido',
+            'avisos.documento as url_documento','avisos.general')
+            ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+            ->orderBy('avisos.id', 'desc')->paginate(3);
+        }
+        
+        return[
+            'pagination' => [
+                'total'         => $avisos->total(),
+                'current_page'  => $avisos->currentPage(),
+                'per_page'      => $avisos->perPage(),
+                'last_page'     => $avisos->lastPage(),
+                'from'          => $avisos->firstItem(),
+                'to'            => $avisos->lastItem(),
+            ],
+            'avisos' => $avisos
+        ];
+    }
+
     public function traerAvisosAlumnosFiltros(Request $request)
     {
         try{
@@ -113,58 +163,6 @@ class AvisoController extends Controller
         } catch (Exception $e){
             DB::rollBack();
         }
-=======
-
-    public function index(Request $request){
-        //if(!$request->ajax())return redirect('/');
-        
-        $buscar = $request->buscar;
-        $criterio = $request->criterio;
-        if($buscar==''){
-            //se crea un array de todo lo que devuelva el metodo
-            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
-            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            DB::raw('CASE avisos.turno 
-            WHEN 0 THEN "General"
-            WHEN 1 THEN "Matutino"
-            WHEN 2 THEN "Vespertino"
-            WHEN 3 THEN "Nocturno" 
-            WHEN 4 THEN "Mixto" END AS turno'),
-            DB::raw('CASE avisos.grado 
-            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
-            'avisos.titulo','avisos.contenido',
-            'avisos.documento as url_documento','avisos.general')
-            ->orderBy('avisos.id', 'desc')->paginate(3);
-        }
-        else{
-            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
-            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            DB::raw('CASE avisos.turno 
-            WHEN 0 THEN "General"
-            WHEN 1 THEN "Matutino"
-            WHEN 2 THEN "Vespertino"
-            WHEN 3 THEN "Nocturno" 
-            WHEN 4 THEN "Mixto" END AS turno'),
-            DB::raw('CASE avisos.grado 
-            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
-            'avisos.titulo','avisos.contenido',
-            'avisos.documento as url_documento','avisos.general')
-            ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('avisos.id', 'desc')->paginate(3);
-        }
-        
-        return[
-            'pagination' => [
-                'total'         => $avisos->total(),
-                'current_page'  => $avisos->currentPage(),
-                'per_page'      => $avisos->perPage(),
-                'last_page'     => $avisos->lastPage(),
-                'from'          => $avisos->firstItem(),
-                'to'            => $avisos->lastItem(),
-            ],
-            'avisos' => $avisos
-        ];
->>>>>>> Rama_1
     }
 
     public function guardar_aviso(Request $request){
