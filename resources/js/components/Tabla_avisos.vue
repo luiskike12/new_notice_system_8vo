@@ -36,7 +36,7 @@
                             <th>Grado</th>
                             <th>Titulo</th>
                             <th>Contenido</th>
-                            <th>Documento</th>
+                            <!-- <th>Documento</th> -->
                             <th>Reenvio</th>
                         </tr>
                     </thead>
@@ -62,8 +62,12 @@
                                 </div>
                             </th>
                             <th v-text="aviso.titulo"></th>
-                            <th><span class="badge badge-success">Visualizar</span></th>
-                            <th v-text="aviso.url_documento"></th>
+                            <th>
+                                <button type="button" @click="abrirModal('aviso', 'contenido', aviso)"  class="btn btn-success btn-sm">
+                                    Ver
+                                </button>
+                            </th>
+                            <!-- <th v-text="aviso.url_documento"></th> -->
                             <th>
                                 <span class="badge badge-primary">Reenviar</span>
                                 <!-- <button type="button" class="badge badge-success">Reenviar</button> -->
@@ -169,9 +173,11 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
+                
                 <div class="modal-body">
-                    <p>Estas seguro de eliminar esta matrícula?</p>
+                    <p>Estas seguro de eliminar este aviso?</p>
                 </div>
+                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                     <button type="button" class="btn btn-danger" @click="eliminarMatricula()">Eliminar</button>
@@ -182,6 +188,41 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- Fin del modal Eliminar -->
+
+
+    <!-- Inicio del modal Contenido del aviso -->
+    <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal_contenido}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-success">
+                    <h4 class="modal-title" v-text="tituloModal"></h4>
+                    <button type="button" class="close"  @click="cerrarModal()" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+               <!-- contenido del aviso -->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <h4 v-text="titulo_aviso" style="text-align:center"></h4>
+                    </div>
+                    <div class="form-group">
+                        <div v-html="contenido_aviso"></div>
+                    </div>
+                    <div class="form-group">
+                        <img :src="'storage/' + documento" style="width: 250px; height: 250px; display:block; margin:auto;">
+                    </div>
+                </div>
+                <!-- Fin contenido del aviso -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- Fin del modal Contenido del aviso -->
+
     
 </main>
 </template>
@@ -191,6 +232,12 @@
         data(){
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
+                id_aviso: 0,
+                titulo_aviso: '',
+                contenido_aviso: '',
+                documento: '',
+
+
                 id_matricula : 0,
                 id_carrera : 0,
                 num_lista : 0,
@@ -205,6 +252,7 @@
                 //variables para las funciones especificas del componente
                 modal : 0,
                 modal_eliminar : 0,
+                modal_contenido : 0,
                 tituloModal : '',
                 tipoAccion : 0,
                 errorUsers : 0,
@@ -395,12 +443,17 @@
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
                 this.modal_eliminar = 0;//no
+                this.modal_contenido = 0;//no
                 this.tituloModal = '';//no
                 this.id_matricula = 0;
                 this.num_lista = 0;
                 this.id_carrera = 0;
                 this.matricula = '';
                 this.nombre = '';
+                //variables del aviso
+                this.titulo_aviso = '';
+                this.contenido_aviso = '';
+                this.documento = '';
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
@@ -408,35 +461,32 @@
                     case "aviso":
                     {
                         switch(accion){
-                            case 'registrar':
-                            {
-                                this.modal = 1;//no
-                                this.tituloModal = 'Registrar Matrícula';
-                                this.id_matricula = 0;
-                                this.id_carrera = 0;
-                                this.num_lista = 0;
-                                this.matricula = '';
-                                this.nombre = '';
-                                this.tipoAccion = 1;//no
-                                break;
-                            }
                             case 'actualizar':
                             {
                                 this.modal=1;//no
-                                this.tituloModal = 'Actualizar Matrícula';
-                                this.id_matricula = data['id'];
-                                this.id_carrera = data['id_carrera'];
-                                this.num_lista = data['num_lista'];
-                                this.matricula = data['matricula'];
-                                this.nombre = data['nombre'];
+                                this.tituloModal = 'Actualizar Aviso';
+                                // this.id_matricula = data['id'];
+                                // this.id_carrera = data['id_carrera'];
+                                // this.num_lista = data['num_lista'];
+                                // this.matricula = data['matricula'];
+                                // this.nombre = data['nombre'];
                                 this.tipoAccion = 2;//no
                                 break;
                             }
                             case 'eliminar':
                             {
                                 this.modal_eliminar = 1;//no
-                                this.tituloModal = 'Eliminar Matrícula';
-                                this.id_matricula = data['id'];
+                                this.tituloModal = 'Eliminar Aviso';
+                                // this.id_matricula = data['id'];
+                                break;
+                            }
+                            case 'contenido':
+                            {
+                                this.tituloModal = 'Contenido del Aviso';
+                                this.modal_contenido = 1;//no
+                                this.titulo_aviso = data['titulo'];
+                                this.contenido_aviso = data['contenido'];
+                                this.documento = data['url_documento'];
                                 break;
                             }
                         }
