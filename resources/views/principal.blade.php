@@ -76,7 +76,7 @@
                     <input type="checkbox" id="btn-menu-usuario" checked>
                     <label for="btn-menu-usuario">
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        Admin
+                        {{ Auth::user()->usuario }}
                         <i class="fa fa-sort-desc" aria-hidden="true"></i>
                     </label>
                     <nav id="despliega-menu-usuario" class="dropdown-menu-right">
@@ -87,11 +87,14 @@
                                     <i class="fa fa-user"></i> Perfil
                                 </li>
                             </a>
-                            <a href="">
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <li id="item">
                                     <i class="fa fa-lock"></i> Cerrar sesión
                                 </li>
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </ul>
                     </nav>
                 </div>
@@ -102,10 +105,18 @@
 
         <div class="app-body">
             
-            @include('plantilla.sidebar')
-            <!-- Contenido Principal -->
-            @yield('contenido')
-            <!-- /Fin del contenido principal -->
+            @if(Auth::check())
+                @if(Auth::user()->id_rol == 1){
+
+                    @include('plantilla.sidebar')
+
+                    <!-- Contenido Principal -->
+                    @yield('contenido')
+                    <!-- /Fin del contenido principal -->
+                }
+                @endif
+            @endif
+
         </div>
     </div>
     

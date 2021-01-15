@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
+Route::get('/main', function () {
     return view('contenido/contenido');
-});
+})->name('main');
 
 
 //Rutas del controlador Carrera
@@ -65,3 +64,11 @@ Route::get('/aviso', 'AvisoController@index');
 Route::post('/aviso/guardar_aviso', 'AvisoController@guardar_aviso');
 Route::post('/aviso/TraerAvisosAlumnos', 'AvisoController@traerAvisosAlumnos');
 Route::post('/aviso/TraerAvisosAlumnosFiltros', 'AvisoController@traerAvisosAlumnosFiltros');
+
+// Auth::routes();
+//Acceso al sistema
+Route::get('/', 'Auth\LoginController@showLoginForm');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
+Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+// Route::get('/home', 'HomeController@index')->name('home');
