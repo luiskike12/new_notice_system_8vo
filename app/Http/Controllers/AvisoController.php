@@ -30,6 +30,7 @@ class AvisoController extends Controller
             'avisos.titulo','avisos.contenido',
             'avisos.documento as url_documento','avisos.general')
             ->orderBy('avisos.id', 'desc')->paginate(3);
+            //un comentario
         }
         else{
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
