@@ -52,7 +52,7 @@
                                 </button>
                             </td>
                             <th v-text="aviso.nombre_carrera"></th>
-                            <th v-text="aviso.turno"></th>
+                            <th v-text="aviso.turno"> </th>
                             <th>
                                 <div v-if="aviso.grado == 'General'">
                                     {{aviso.grado}}
@@ -330,7 +330,7 @@
                     var respuesta = response.data;
                     me.arrayCarrera = respuesta.carreras;
                 })
-                .catch(function (error) {
+                .catch(function (error){
                     console.log(error);
                 })
                 .then(function () {
