@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use App\Aviso;
+use OneSignal;
 
 class AvisoController extends Controller
 {
@@ -166,7 +167,7 @@ class AvisoController extends Controller
     }
 
     public function guardar_aviso(Request $request){
-        //$out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $ruta_documento = null;
 
         try{
@@ -196,10 +197,21 @@ class AvisoController extends Controller
             $aviso->documento = $ruta_documento;
             $aviso->general = $request->general;
             $aviso->save();
+
+            OneSignal::sendNotificationToAll(
+                "Some Message", 
+                $url = null, 
+                $data = null, 
+                $buttons = null, 
+                $schedule = null
+            );
+            $out->writeln("-------------- WOOOHOOO!! --------------");        
             
             DB::commit();
         }catch (Exception $e){
             DB::rollBack();
+            $out->writeln("-------------- DOUH!! --------------");
+            $out->writeln($e);
         }
         
     }
