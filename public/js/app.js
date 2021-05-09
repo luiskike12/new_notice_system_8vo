@@ -42456,7 +42456,7 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
-                      _vm._v("  \n                                "),
+                      _vm._v("  \r\n                                "),
                       _c(
                         "button",
                         {
@@ -43047,7 +43047,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Alumnos\n            ")
+      _vm._v(" Alumnos\r\n            ")
     ])
   },
   function() {
@@ -43279,7 +43279,7 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(
-                                    "\n                                            todas las carreras.\n                                        "
+                                    "\r\n                                            todas las carreras.\r\n                                        "
                                   )
                                 ]
                               ),
@@ -43318,7 +43318,7 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(
-                                    "\n                                            solo una carrera.\n                                        "
+                                    "\r\n                                            solo una carrera.\r\n                                        "
                                   )
                                 ]
                               )
@@ -43449,11 +43449,11 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            " +
+                                        "\r\n                                            " +
                                           _vm._s(carrera.nombre) +
                                           " - " +
                                           _vm._s(carrera.tipo_modalidad) +
-                                          "\n                                        "
+                                          "\r\n                                        "
                                       )
                                     ]
                                   )
@@ -43670,9 +43670,9 @@ var render = function() {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                                            " +
+                                                        "\r\n                                                            " +
                                                           _vm._s(grupo.num) +
-                                                          "º\n                                                        "
+                                                          "º\r\n                                                        "
                                                       )
                                                     ]
                                                   )
@@ -43790,7 +43790,7 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(
-                                    "\n                                            Solo guardar.\n                                        "
+                                    "\r\n                                            Solo guardar.\r\n                                        "
                                   )
                                 ]
                               ),
@@ -43827,7 +43827,7 @@ var render = function() {
                                     }
                                   }),
                                   _vm._v(
-                                    "\n                                            Guardar y enviar.\n                                        "
+                                    "\r\n                                            Guardar y enviar.\r\n                                        "
                                   )
                                 ]
                               ),
@@ -43869,7 +43869,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v("Crear Aviso\n            ")
+      _vm._v("Crear Aviso\r\n            ")
     ])
   },
   function() {
@@ -43934,7 +43934,7 @@ var staticRenderFns = [
                     attrs: { type: "checkbox", id: "gridCheck" }
                   }),
                   _vm._v(
-                    "\n                                            Envío programado\n                                        "
+                    "\r\n                                            Envío programado\r\n                                        "
                   )
                 ]
               )
@@ -44075,7 +44075,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Carreras\n                "),
+          _vm._v(" Carreras\r\n                "),
           _c(
             "button",
             {
@@ -44089,7 +44089,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
+              _vm._v(" Nuevo\r\n                ")
             ]
           )
         ]),
@@ -44329,7 +44329,7 @@ var render = function() {
                       carrera.tipo_plan == 6
                         ? _c("div", [
                             _vm._v(
-                              "\n                                    Semestral\n                                "
+                              "\r\n                                    Semestral\r\n                                "
                             )
                           ])
                         : _vm._e(),
@@ -44337,7 +44337,7 @@ var render = function() {
                       carrera.tipo_plan == 4
                         ? _c("div", [
                             _vm._v(
-                              "\n                                    Cuatrimestral\n                                "
+                              "\r\n                                    Cuatrimestral\r\n                                "
                             )
                           ])
                         : _vm._e()
@@ -44347,7 +44347,7 @@ var render = function() {
                       carrera.tipo_modalidad == 1
                         ? _c("div", [
                             _vm._v(
-                              "\n                                    Escolarizado\n                                "
+                              "\r\n                                    Escolarizado\r\n                                "
                             )
                           ])
                         : _vm._e(),
@@ -44355,7 +44355,7 @@ var render = function() {
                       carrera.tipo_modalidad == 2
                         ? _c("div", [
                             _vm._v(
-                              "\n                                    Semiescolarizado\n                                "
+                              "\r\n                                    Semiescolarizado\r\n                                "
                             )
                           ])
                         : _vm._e()
@@ -44388,7 +44388,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Activo\n                                        "
+                                        "\r\n                                            Activo\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44407,7 +44407,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Desactivado\n                                        "
+                                        "\r\n                                            Desactivado\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44447,7 +44447,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Activo\n                                        "
+                                        "\r\n                                            Activo\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44468,7 +44468,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Desactivado\n                                        "
+                                        "\r\n                                            Desactivado\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44508,7 +44508,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Activo\n                                        "
+                                        "\r\n                                            Activo\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44527,7 +44527,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Desactivado\n                                        "
+                                        "\r\n                                            Desactivado\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44573,7 +44573,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Activo\n                                        "
+                                        "\r\n                                            Activo\r\n                                        "
                                       )
                                     ]
                                   )
@@ -44592,7 +44592,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                            Desactivado\n                                        "
+                                        "\r\n                                            Desactivado\r\n                                        "
                                       )
                                     ]
                                   )
@@ -45123,7 +45123,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Matrículas\n                "),
+          _vm._v(" Matrículas\r\n                "),
           _c(
             "button",
             {
@@ -45137,7 +45137,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
+              _vm._v(" Nuevo\r\n                ")
             ]
           )
         ]),
@@ -45261,7 +45261,7 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
-                      _vm._v("  \n                                "),
+                      _vm._v("  \r\n                                "),
                       _c(
                         "button",
                         {
@@ -45602,11 +45602,11 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        " +
+                                    "\r\n                                        " +
                                       _vm._s(carrera.nombre) +
                                       " - " +
                                       _vm._s(carrera.tipo_modalidad) +
-                                      "\n                                    "
+                                      "\r\n                                    "
                                   )
                                 ]
                               )
@@ -45682,9 +45682,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        " +
+                                    "\r\n                                        " +
                                       _vm._s(lista.id) +
-                                      " - Lista (Matrículas) \n                                    "
+                                      " - Lista (Matrículas) \r\n                                    "
                                   )
                                 ]
                               )
@@ -46024,7 +46024,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" PRUEBAS Registro del alumno\n                "),
+          _vm._v(" PRUEBAS Registro del alumno\r\n                "),
           _c(
             "button",
             {
@@ -46038,7 +46038,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Registrarse\n                ")
+              _vm._v(" Registrarse\r\n                ")
             ]
           )
         ]),
@@ -46280,7 +46280,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "Matrícula (*)\n                                "
+                            "Matrícula (*)\r\n                                "
                           ),
                           _vm.id_matricula != 0
                             ? _c(
@@ -46934,7 +46934,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Roles\n            ")
+      _vm._v(" Roles\r\n            ")
     ])
   },
   function() {
@@ -47095,7 +47095,7 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
-                      _vm._v("  \n                                "),
+                      _vm._v("  \r\n                                "),
                       _c(
                         "button",
                         {
@@ -47123,16 +47123,16 @@ var render = function() {
                       aviso.grado == "General"
                         ? _c("div", [
                             _vm._v(
-                              "\n                                    " +
+                              "\r\n                                    " +
                                 _vm._s(aviso.grado) +
-                                "\n                                "
+                                "\r\n                                "
                             )
                           ])
                         : _c("div", [
                             _vm._v(
-                              "\n                                    " +
+                              "\r\n                                    " +
                                 _vm._s(aviso.grado) +
-                                "º\n                                "
+                                "º\r\n                                "
                             )
                           ])
                     ]),
@@ -47155,7 +47155,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                                    Ver\n                                "
+                            "\r\n                                    Ver\r\n                                "
                           )
                         ]
                       )
@@ -47375,11 +47375,11 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        " +
+                                    "\r\n                                        " +
                                       _vm._s(carrera.nombre) +
                                       " - " +
                                       _vm._s(carrera.tipo_modalidad) +
-                                      "\n                                    "
+                                      "\r\n                                    "
                                   )
                                 ]
                               )
@@ -47455,9 +47455,9 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                                        " +
+                                    "\r\n                                        " +
                                       _vm._s(lista.id) +
-                                      " - Lista (Matrículas) \n                                    "
+                                      " - Lista (Matrículas) \r\n                                    "
                                   )
                                 ]
                               )
@@ -47826,7 +47826,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Avisos\n                ")
+      _vm._v(" Avisos\r\n                ")
     ])
   },
   function() {
@@ -47896,7 +47896,7 @@ var render = function() {
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
           _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\n                "),
+          _vm._v(" Usuarios\r\n                "),
           _c(
             "button",
             {
@@ -47910,7 +47910,7 @@ var render = function() {
             },
             [
               _c("i", { staticClass: "icon-plus" }),
-              _vm._v(" Nuevo\n                ")
+              _vm._v(" Nuevo\r\n                ")
             ]
           )
         ]),
@@ -48038,7 +48038,7 @@ var render = function() {
                         },
                         [_c("i", { staticClass: "icon-pencil" })]
                       ),
-                      _vm._v("  \n                                ")
+                      _vm._v("  \r\n                                ")
                     ]),
                     _vm._v(" "),
                     _c("th", {
@@ -48101,7 +48101,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                        Activo\n                                    "
+                                  "\r\n                                        Activo\r\n                                    "
                                 )
                               ]
                             )
@@ -48120,7 +48120,7 @@ var render = function() {
                               },
                               [
                                 _vm._v(
-                                  "\n                                        Desactivado\n                                    "
+                                  "\r\n                                        Desactivado\r\n                                    "
                                 )
                               ]
                             )
@@ -48418,11 +48418,11 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                                            " +
+                                          "\r\n                                            " +
                                             _vm._s(carrera.nombre) +
                                             " - " +
                                             _vm._s(carrera.tipo_modalidad) +
-                                            "\n                                        "
+                                            "\r\n                                        "
                                         )
                                       ]
                                     )
@@ -61764,7 +61764,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /var/www/new_notice_system_8vo/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\pruebas_new_notice_system_8vo\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })
