@@ -1,7 +1,7 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
-        <!-- <registro></registro> -->
+        <!--<registro></registro>-->
     </template>
 
     <template v-if="menu==1">

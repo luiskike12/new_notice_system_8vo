@@ -16,7 +16,7 @@ class Alumno extends Model
     protected $primaryKey = 'id_matricula';
     
     //protected $table = 'alumnos';
-    protected $fillable = [ 'id_matricula', 'password', 'correo', 'grado', 'turno'];
+    protected $fillable = [ 'id_matricula', 'id_dispositivo', 'password', 'correo', 'grado', 'turno'];
 
     protected $hidden = [
         'password',

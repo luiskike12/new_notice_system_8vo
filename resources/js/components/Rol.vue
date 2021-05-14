@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <table class="table table-bordered table-striped table-sm">
+                <table class="table table-responsive table-bordered table-striped table-sm">
                     <thead>
                         <tr>
                             <th>Nombre</th>

@@ -123,6 +123,12 @@
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <!-- inputs del Modal agregar -->
                         <div class="form-group row">
+                            <label class="col-md-3 form-control-label" for="email-input">ID del dispositivo</label>
+                            <div class="col-md-9">
+                                <input type="text" v-model="id_dispositivo" id="id_dispositivo" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Contraseña (*)</label>
                             <div class="col-md-9">
                                 <input type="password" v-model="password" id="password" class="form-control" placeholder="Ingrese una contraseña" disabled>
@@ -183,6 +189,7 @@
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
                 id_matricula : 0,
+                id_dispositivo : 0,
                 password : '',
                 correo : '',
                 grado : 0,
@@ -304,6 +311,7 @@
                 });
             },
             obtener_ID_matricula_Turnos(){
+                $( '#id_dispositivo' ).prop( "disabled", false );
                 $( '#password' ).prop( "disabled", false );
                 $( '#correo' ).prop( "disabled", false );
                 $( '#grado' ).prop( "disabled", false );
@@ -320,7 +328,9 @@
                     return;
                 }
                 
+                
                 console.log("id_matricula: "+this.id_matricula)
+                console.log("id_dispositivo: "+this.id_dispositivo)
                 console.log("password: "+this.password)
                 console.log("correo: "+this.correo)
                 console.log("grado: "+this.grado)
@@ -329,6 +339,7 @@
                 let me = this;
                 axios.post('/alumno/registrar', {
                     'id_matricula' : this.id_matricula,
+                    'id_dispositivo' : this.id_dispositivo,
                     'password' : this.password,
                     'correo' : this.correo,
                     'grado' : this.grado,
@@ -368,6 +379,7 @@
                 this.modal = 0;//no
                 this.tituloModal = '';//no
                 this.id_matricula = 0;
+                this.id_dispositivo = 0;
                 this.password = '';
                 this.correo = '';
                 this.grado = 0;
@@ -390,6 +402,7 @@
                                 this.modal = 1;//no
                                 this.tituloModal = 'Registrar Alumno Test';
                                 this.id_matricula = 0;
+                                this.id_dispositivo = 0;
                                 this.password = '';
                                 this.correo = '';
                                 this.grado = 0;
