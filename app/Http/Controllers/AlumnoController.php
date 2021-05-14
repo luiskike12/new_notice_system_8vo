@@ -107,6 +107,7 @@ class AlumnoController extends Controller
             $alumno->password = bcrypt($request->password);
             $alumno->correo = $request->correo;
             $alumno->grado = $request->grado;
+            $alumno->id_dispositivo = '';
             $alumno->turno = $request->turno;
             $alumno->save();
 

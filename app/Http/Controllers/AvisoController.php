@@ -198,14 +198,54 @@ class AvisoController extends Controller
             $aviso->general = $request->general;
             $aviso->save();
 
-            OneSignal::sendNotificationToAll(
-                "Some Message", 
-                $url = null, 
-                $data = null, 
-                $buttons = null, 
-                $schedule = null
-            );
-            $out->writeln("-------------- WOOOHOOO!! --------------");        
+            // query notification
+            if($aviso->id_carrera == 1){
+                // todas las carreras
+                $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1';
+                $resultados = DB::select($finalQuery);
+                
+                foreach($resultados as $usuario){
+                    OneSignal::sendNotificationToUser(
+                        $request->titulo, 
+                        $userId = $usuario->id_dispositivo,
+                        $url = null, 
+                        $data = ["id_aviso" => $aviso->id], 
+                        $buttons = null, 
+                        $schedule = null
+                    );
+                }
+            } else {
+                // especificos usuarios
+                $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera';
+                $string2 = '';
+                $string3 = '';
+
+                // dinamic query
+                if($aviso->turno != 0){
+                    $string2 = 'AND a.turno = :a_turno';
+                }
+                if($aviso->grado != 0){
+                    $string3 = 'AND a.grado = :a_grado';
+                }
+                $string4 = 'AND a.condicion = 1';
+                $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
+                $resultados = DB::select($finalQuery, [
+                    'a_carrera' => $aviso->id_carrera,
+                    'a_turno' => $aviso->turno,
+                    'a_grado' => $aviso->grado
+                ]);
+
+                foreach($resultados as $usuario){
+                    OneSignal::sendNotificationToUser(
+                        $request->titulo, 
+                        $userId = $usuario->id_dispositivo,
+                        $url = null, 
+                        $data = ["id_aviso" => $aviso->id], 
+                        $buttons = null, 
+                        $schedule = null
+                    );
+                }
+            }
             
             DB::commit();
         }catch (Exception $e){
