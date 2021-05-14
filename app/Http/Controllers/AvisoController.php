@@ -209,7 +209,7 @@ class AvisoController extends Controller
                         $request->titulo, 
                         $userId = $usuario->id_dispositivo,
                         $url = null, 
-                        $data = ["id_aviso" => $aviso->id], 
+                        $data = ["aviso" => $aviso], 
                         $buttons = null, 
                         $schedule = null
                     );
@@ -240,7 +240,7 @@ class AvisoController extends Controller
                         $request->titulo, 
                         $userId = $usuario->id_dispositivo,
                         $url = null, 
-                        $data = ["id_aviso" => $aviso->id], 
+                        $data = ["aviso" => $aviso], 
                         $buttons = null, 
                         $schedule = null
                     );
