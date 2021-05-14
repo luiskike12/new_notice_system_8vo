@@ -201,7 +201,7 @@ class AvisoController extends Controller
             // query notification
             if($aviso->id_carrera == 1){
                 // todas las carreras
-                $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1';
+                $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1 AND a.id_dispositivo <>""';
                 $resultados = DB::select($finalQuery);
                 
                 foreach($resultados as $usuario){
@@ -216,7 +216,7 @@ class AvisoController extends Controller
                 }
             } else {
                 // especificos usuarios
-                $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera';
+                $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo <>""';
                 $string2 = '';
                 $string3 = '';
 

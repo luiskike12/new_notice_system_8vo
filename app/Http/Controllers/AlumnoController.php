@@ -124,21 +124,33 @@ class AlumnoController extends Controller
 
     public function actualizar(Request $request)
     {
-        $esVacio = $request->password;   
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $esVacio = $request->password;
         try{
             DB::beginTransaction();
             
             $alumno = Alumno::findOrFail($request->id_matricula);
-            if($esVacio!=''){
-                $alumno->password = bcrypt($request->password);
+            
+            if(is_null($request->id_dispositivo) == false){
+                if($request->id_dispositivo == 'clear'){
+                    $alumno->id_dispositivo = '';
+                } else {
+                    $alumno->id_dispositivo = $request->id_dispositivo;
+                }
+            } else {
+                if($esVacio!=''){
+                    $alumno->password = bcrypt($request->password);
+                }
+                $alumno->correo = $request->correo;
+                $alumno->grado = $request->grado;
+                $alumno->turno = $request->turno;
             }
-            $alumno->correo = $request->correo;
-            $alumno->grado = $request->grado;
-            $alumno->turno = $request->turno;
             $alumno->save();
 
             DB::commit();
         }catch (Exception $e){
+            $out->writeln("-------------- DOUH!! --------------");
+            $out->writeln($e);
             DB::rollBack();
         }
     }
