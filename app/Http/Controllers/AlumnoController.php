@@ -104,7 +104,6 @@ class AlumnoController extends Controller
 
             $alumno = new Alumno();
             $alumno->id_matricula = $request->id_matricula;
-            $alumno->id_dispositivo = $request->id_dispositivo;
             $alumno->password = bcrypt($request->password);
             $alumno->correo = $request->correo;
             $alumno->grado = $request->grado;

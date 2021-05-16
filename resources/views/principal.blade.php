@@ -24,7 +24,11 @@
     <div id="app">
         
         <header class="app-header navbar">
-            
+            <!-- Boton de espacio - versión móvil -->
+            <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button> 
+
             <a class="navbar-brand" href="#"></a>
 
             <!-- boton para Submenus de categorias -->

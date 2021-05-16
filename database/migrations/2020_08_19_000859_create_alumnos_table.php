@@ -17,7 +17,7 @@ class CreateAlumnosTable extends Migration
             //$table->increments('id');
             $table->integer('id_matricula')->unsigned();
             $table->foreign('id_matricula')->references('id')->on('matriculas')->onDelete('cascade');
-            $table->string('id_dispositivo');
+            $table->string('id_dispositivo')->nullable();
             $table->string('password');
             //$table->string('nombre');
             $table->string('correo', 80);
