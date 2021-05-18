@@ -130,9 +130,9 @@ class AlumnoController extends Controller
             
             $alumno = Alumno::findOrFail($request->id_matricula);
             
-            if(is_null($request->id_dispositivo) == false){
-                if($request->id_dispositivo == 'clear'){
-                    $alumno->id_dispositivo = '';
+            if($request->device == true){
+                if(is_null($request->id_dispositivo)){
+                    $alumno->id_dispositivo = null;
                 } else {
                     $alumno->id_dispositivo = $request->id_dispositivo;
                 }
