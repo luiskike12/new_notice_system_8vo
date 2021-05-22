@@ -31,14 +31,14 @@
                 <table class="table table-responsive table-bordered table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Opciones</th>
-                            <th>Carrera</th>
-                            <th>Modalidad</th>
-                            <th>No. Lista</th>
-                            <th>Switch</th>
-                            <th>Matrícula</th>
-                            <th>Nombre</th>
-                            <th>Estado</th>
+                            <th class="text-center">Opciones</th>
+                            <th class="text-center">Carrera</th>
+                            <th class="text-center">Modalidad</th>
+                            <th class="text-center">No. Lista</th>
+                            <th class="text-center">Switch</th>
+                            <th class="text-center">Matrícula</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +55,7 @@
                             <th v-text="matricula.nombre_carrera"></th>
                             <th v-text="matricula.modalidad_carrera"></th>
                             <th v-text="matricula.num_lista"></th>
-                            <th>
+                            <th class="text-center">
                                 <div v-if="matricula.switch">
                                     <button type="button" class="btn btn-primary btn-circle btn-sm" @click=" switchOFF(matricula.id)">
                                         <i class="fa fa-check" aria-hidden="true"></i>
@@ -128,45 +128,47 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Carrera (*)</label>
                             <div class="col-md-9">
-                                <select class="form-control" v-model="id_carrera">
+                                <select class="form-control" id="carrera" v-model="id_carrera" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione una carrera</option>
                                     <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                         {{carrera.nombre}} - {{carrera.tipo_modalidad}}
                                     </option>
                                 </select>
                             </div>
+                            <msj-validacion v-if="msjValidacion[0].carrera==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Lista de matrículas(*)</label>
                             <div class="col-md-9">
-                                <select class="form-control" v-model="num_lista">
+                                <select class="form-control" id="num_lista" v-model="num_lista" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione la lista para agrupar las matrículas</option>
                                     <option v-for="lista in arrayListas" :key="lista.id" :value="lista.id">
                                         {{lista.id}} - Lista (Matrículas) 
                                     </option>
                                 </select>
                             </div>
+                            <msj-validacion v-if="msjValidacion[1].lista==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Matrícula (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="matricula" class="form-control" placeholder="Matrícula del alumno">
+                                <input type="text" id="matricula" v-model="matricula" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Matrícula del alumno">
                             </div>
+                            <msj-validacion v-if="msjValidacion[2].matricula==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Nombre (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="nombre" class="form-control" placeholder="Nombre del alumno">
+                                <input type="text" id="nombre" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre del alumno">
                             </div>
+                            <msj-validacion v-if="msjValidacion[3].nombre==1">{{msjValidacion[3].mensaje}}</msj-validacion>
                         </div>
                         <!-- mostrar los errores de la validadción -->
-                        <div class="form-group row div-error" v-show="errorUsers">
+                        <!-- <div class="form-group row div-error" v-show="errorUsers">
                             <div class="text-center text-error">
-                                <div v-for="error in errorMostrarMsjUser" :key="error" v-text="error">
-
-                                </div>
+                                <div v-for="error in errorMostrarMsjUser" :key="error" v-text="error"></div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- inputs del Modal agregar -->
                     </form>
                 </div>
@@ -210,7 +212,12 @@
 </template>
 
 <script>
+    import MensajeValidacion from './local-components/MsjValidacion.vue';
+
     export default {
+        components : {
+            'msj-validacion' : MensajeValidacion 
+        },
         data(){
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
@@ -230,8 +237,19 @@
                 modal_eliminar : 0,
                 tituloModal : '',
                 tipoAccion : 0,
+
                 errorUsers : 0,
                 errorMostrarMsjUser : [],
+                //Validación de campos
+                numErrors : 0,
+                msjValidacion : [
+                    {carrera : 0, mensaje : ''},
+                    {lista : 0, mensaje : ''},
+                    {matricula : 0, mensaje : ''},
+                    {nombre : 0, mensaje : ''}
+                ],
+                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
+                colorGood : 'border: 1px solid #BBCDD5;',
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -392,38 +410,67 @@
                 });
             },
             validarMatricula(){// se puede modificar, solo los mensajes de validacion
-                this.errorUsers = 0;
-                this.errorMostrarMsjUser = [];
+                this.numErrors = 0;
 
                 if(this.id_carrera==0){
-                    this.errorMostrarMsjUser.push("Seleccione la carrera, a la que esta inscrito el alumno");
+                    this.numErrors = 1;
+                    document.getElementById('carrera').style.cssText = this.colorError;
+                    this.msjValidacion[0].carrera = 1;
+                    this.msjValidacion[0].mensaje = "Seleccione la carrera, a la que esta inscrito el alumno";
+                }else{
+                    this.msjValidacion[0].mensaje = "";
+                    document.getElementById('carrera').style.cssText = this.colorGood;
                 }
+
                 if(this.num_lista==0){
-                    this.errorMostrarMsjUser.push("Seleccione el número de lista, a la que pertenecerá la matrícula");
+                    this.numErrors = 1;
+                    document.getElementById('num_lista').style.cssText = this.colorError;
+                    this.msjValidacion[1].lista = 1;
+                    this.msjValidacion[1].mensaje = "Seleccione el número de lista, a la que pertenecerá la matrícula";
+                }else{
+                    this.msjValidacion[1].mensaje = "";
+                    document.getElementById('num_lista').style.cssText = this.colorGood;
                 }
+
                 if(!this.matricula){
-                    this.errorMostrarMsjUser.push("El campo matrícula, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('matricula').style.cssText = this.colorError;
+                    this.msjValidacion[2].matricula = 1;
+                    this.msjValidacion[2].mensaje = "El campo matrícula, no puede estar vacío";
+                }else{
+                    this.msjValidacion[2].mensaje = "";
+                    document.getElementById('matricula').style.cssText = this.colorGood;
                 }
+
                 if(!this.nombre){
-                    this.errorMostrarMsjUser.push("El campo nombre, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('nombre').style.cssText = this.colorError;
+                    this.msjValidacion[3].nombre = 1;
+                    this.msjValidacion[3].mensaje = "El campo nombre, no puede estar vacío";
+                }else{
+                    this.msjValidacion[3].mensaje = "";
+                    document.getElementById('nombre').style.cssText = this.colorGood;
                 }
                 
-                if(this.errorMostrarMsjUser.length){
-                    this.errorUsers = 1;
-                }
-
-                return this.errorUsers;
-
+                return this.numErrors;
             },
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
                 this.modal_eliminar = 0;//no
                 this.tituloModal = '';//no
-                this.id_matricula = 0;
-                this.num_lista = 0;
-                this.id_carrera = 0;
-                this.matricula = '';
-                this.nombre = '';
+                this.id_matricula = 0; 
+                this.num_lista = 0; document.getElementById('num_lista').style.cssText = this.colorGood;
+                this.id_carrera = 0; document.getElementById('carrera').style.cssText = this.colorGood;
+                this.matricula = ''; document.getElementById('matricula').style.cssText = this.colorGood;
+                this.nombre = ''; document.getElementById('nombre').style.cssText = this.colorGood;
+
+                this.numErrors = 0;
+                this.msjValidacion = [
+                    {carrera : 0, mensaje : ''},
+                    {lista : 0, mensaje : ''},
+                    {matricula : 0, mensaje : ''},
+                    {nombre : 0, mensaje : ''}
+                ]
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
@@ -467,6 +514,11 @@
                     }
                 }
 
+            },
+            tecleo : function (){
+                if(this.numErrors==1){
+                    this.numErrors = this.validarMatricula();
+                }
             }
         },
         mounted() {//no modificar
