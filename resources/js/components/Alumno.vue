@@ -29,15 +29,15 @@
                 <table class="table table-responsive table-bordered table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Opciones</th>
-                            <th>Carrera</th>
-                            <th>Modalidad</th>
-                            <th>Matrícula</th>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Grado</th>
-                            <th>Turno</th>
-                            <th>Estado</th>
+                            <th class="text-center">Opciones</th>
+                            <th class="text-center">Carrera</th>
+                            <th class="text-center">Modalidad</th>
+                            <th class="text-center">Matrícula</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Grado</th>
+                            <th class="text-center">Turno</th>
+                            <th class="text-center">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,19 +114,21 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Correo (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="correo" class="form-control" placeholder="Email del alumno">
+                                <input type="text" id="correo" v-model="correo" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Email del alumno">
                             </div>
+                            <msj-validacion v-if="msjValidacion[0].correo==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Grado (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="grado" class="form-control" placeholder="Grado al que pertenece">
+                                <input type="text" id="grado" v-model="grado" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Grado al que pertenece">
                             </div>
+                            <msj-validacion v-if="msjValidacion[1].grado==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Turno (*)</label>
                             <div class="col-md-9">
-                                <select class="form-control" v-model="turno">
+                                <select class="form-control" id="turno" v-model="turno" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione un turno</option>
                                     <option value="1" v-if="t_matutino==1">Matutino</option>
                                     <option value="2" v-if="t_vespertino==1">Vespertino</option>
@@ -134,15 +136,7 @@
                                     <option value="4" v-if="t_mixto==1">Mixto</option>
                                 </select>
                             </div>
-                        </div>
-                        
-                        <!-- mostrar los errores de la validadción -->
-                        <div class="form-group row div-error" v-show="errorUsers">
-                            <div class="text-center text-error">
-                                <div v-for="error in errorMostrarMsjUser" :key="error" v-text="error">
-
-                                </div>
-                            </div>
+                            <msj-validacion v-if="msjValidacion[2].turno==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                         </div>
                         <!-- inputs del Modal agregar -->
                     </form>
@@ -169,7 +163,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Estas seguro de eliminar el alumno?</p>
+                    <p>¿Estas seguro de eliminar el alumno?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
@@ -186,7 +180,12 @@
 </template>
 
 <script>
+    import MensajeValidacion from './local-components/MsjValidacion.vue';
+
     export default {
+        components : {
+            'msj-validacion' : MensajeValidacion 
+        },
         data(){
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
@@ -207,8 +206,15 @@
                 modal_eliminar : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorUsers : 0,
-                errorMostrarMsjUser : [],
+                //Validación de campos
+                numErrors : 0,
+                msjValidacion : [
+                    {correo : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''}
+                ],
+                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
+                colorGood : 'border: 1px solid #BBCDD5;',
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -333,25 +339,39 @@
                 });
             },
             validarAlumno(){// se puede modificar, solo los mensajes de validacion
-                this.errorUsers = 0;
-                this.errorMostrarMsjUser = [];
+                this.numErrors = 0;
 
                 if(!this.correo){
-                    this.errorMostrarMsjUser.push("El campo correo, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('correo').style.cssText = this.colorError;
+                    this.msjValidacion[0].correo = 1;
+                    this.msjValidacion[0].mensaje = "El campo correo, no puede estar vacío";
+                }else{
+                    this.msjValidacion[0].mensaje = "";
+                    document.getElementById('correo').style.cssText = this.colorGood;
                 }
+
                 if(this.grado==0){
-                    this.errorMostrarMsjUser.push("No dejar vacío el campo No. Grado");
+                    this.numErrors = 1;
+                    document.getElementById('grado').style.cssText = this.colorError;
+                    this.msjValidacion[1].grado = 1;
+                    this.msjValidacion[1].mensaje = "No dejar vacío el campo No. Grado";
+                }else{
+                    this.msjValidacion[1].mensaje = "";
+                    document.getElementById('grado').style.cssText = this.colorGood;
                 }
+
                 if(this.turno==0){
-                    this.errorMostrarMsjUser.push("No dejar sin seleccionar el turno");
-                }
-                
-                if(this.errorMostrarMsjUser.length){
-                    this.errorUsers = 1;
+                    this.numErrors = 1;
+                    document.getElementById('turno').style.cssText = this.colorError;
+                    this.msjValidacion[2].turno = 1;
+                    this.msjValidacion[2].mensaje = "No dejar sin seleccionar el turno";
+                }else{
+                    this.msjValidacion[2].mensaje = "";
+                    document.getElementById('turno').style.cssText = this.colorGood;
                 }
 
-                return this.errorUsers;
-
+                return this.numErrors;
             },
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
@@ -359,9 +379,16 @@
                 this.tituloModal = '';//no
                 this.id_matricula = 0;
                 this.password = '';
-                this.correo = '';
-                this.grado = 0;
-                this.turno = 0;
+                this.correo = ''; document.getElementById('correo').style.cssText = this.colorGood;
+                this.grado = 0; document.getElementById('grado').style.cssText = this.colorGood;
+                this.turno = 0; document.getElementById('turno').style.cssText = this.colorGood;
+
+                this.numErrors = 0;
+                this.msjValidacion = [
+                    {correo : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''}
+                ];
                 //variables de seleccion de turno
                 this.t_matutino = 0;
                 this.t_vespertino = 0;
@@ -398,6 +425,11 @@
                     }
                 }
 
+            },
+            tecleo : function (){
+                if(this.numErrors==1){
+                    this.numErrors = this.validarAlumno();
+                }
             }
         },
         mounted() {//no modificar

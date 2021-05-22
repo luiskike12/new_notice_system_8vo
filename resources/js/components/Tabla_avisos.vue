@@ -30,14 +30,14 @@
                 <table class="table table-responsive table-bordered table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Opciones</th>
-                            <th>Carrera</th>
-                            <th>Turno</th>
-                            <th>Grado</th>
-                            <th>Titulo</th>
-                            <th>Contenido</th>
+                            <th class="text-center">Opciones</th>
+                            <th class="text-center">Carrera</th>
+                            <th class="text-center">Turno</th>
+                            <th class="text-center">Grado</th>
+                            <th class="text-center">Titulo</th>
+                            <th class="text-center">Contenido</th>
                             <!-- <th>Documento</th> -->
-                            <th>Reenvio</th>
+                            <th class="text-center">Reenvio</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -209,7 +209,7 @@
                         <div v-html="contenido_aviso"></div>
                     </div>
                     <div class="form-group">
-                        <img :src="'storage/' + documento" style="width: 250px; height: 250px; display:block; margin:auto;">
+                        <img v-if="documento" :src="'storage/' + documento" class="imagen">
                     </div>
                 </div>
                 <!-- Fin contenido del aviso -->
@@ -562,5 +562,11 @@
         font-size: 12px; 
         text-align: center; 
     }
-
+    /* --------- IMG ----------- */
+    .imagen{
+        width: 250px; 
+        height: 250px; 
+        display:block; 
+        margin:auto;
+    }
 </style>

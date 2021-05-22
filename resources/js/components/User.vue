@@ -32,20 +32,20 @@
                 <table class="table table-responsive table-bordered table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>Opciones</th>
-                            <th>Rol</th>
-                            <th>Carrera</th>
-                            <th>Modalidad</th>
-                            <th>Usuario</th>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Estado</th>
+                            <th class="text-center">Opciones</th>
+                            <th class="text-center">Rol</th>
+                            <th class="text-center">Carrera</th>
+                            <th class="text-center">Modalidad</th>
+                            <th class="text-center">Usuario</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- vista de los elementos de la tabla users -->
                         <tr v-for="user in arrayUsers" :key="user.id">
-                            <td>
+                            <td class="text-center">
                                 <button type="button" @click="abrirModal('usuario', 'actualizar', user)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
                                 </button> &nbsp;
@@ -119,12 +119,13 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Rol (*)</label>
                             <div class="col-md-9">
-                                <select class="form-control" @change="obtenerIdRol($event)" v-model="id_rol">
+                                <select class="form-control" id="id_rol" @change="obtenerIdRol($event)" v-model="id_rol" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione un rol</option>
                                     <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.nombre">
                                     </option>
                                 </select>
                             </div>
+                            <msj-validacion v-if="msjValidacion[0].rol==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Carrera (*)</label>
@@ -135,7 +136,7 @@
                                     </select>
                                 </div>
                                 <div v-else>
-                                    <select class="form-control" v-model="id_carrera">
+                                    <select class="form-control" id="id_carrera" v-model="id_carrera" @click="tecleo">
                                         <option value="0" disabled selected>Seleccione una carrera</option>
                                         <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                             {{carrera.nombre}} - {{carrera.tipo_modalidad}}
@@ -143,38 +144,35 @@
                                     </select>
                                  </div>
                             </div>
+                            <msj-validacion v-if="msjValidacion[1].carrera==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Usuario (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="usuario" class="form-control" placeholder="Nombre del usuario">
+                                <input type="text" v-model="usuario" id="usuario" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre del usuario">
                             </div>
+                            <msj-validacion v-if="msjValidacion[2].usuario==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Contraseña (*)</label>
                             <div class="col-md-9">
-                                <input type="password" v-model="password" class="form-control" placeholder="Contraseña de acceso">
+                                <input type="password" id="password" v-model="password" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Contraseña de acceso">
                             </div>
+                            <msj-validacion v-if="msjValidacion[3].password==1">{{msjValidacion[3].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Nombre (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="nombre" class="form-control" placeholder="Nombre de la persona">
+                                <input type="text" id="nombre" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre de la persona">
                             </div>
+                            <msj-validacion v-if="msjValidacion[4].nombre==1">{{msjValidacion[4].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Correo (*)</label>
                             <div class="col-md-9">
-                                <input type="email" v-model="correo" class="form-control"  placeholder="Email de la persona acargo">
+                                <input type="email" id="correo" v-model="correo" @keypress="tecleo" @keyup.delete="tecleo" class="form-control"  placeholder="Email de la persona acargo">
                             </div>
-                        </div>
-
-                        <div class="form-group row div-error" v-show="errorUsers">
-                            <div class="text-center text-error">
-                                <div v-for="error in errorMostrarMsjUser" :key="error" v-text="error">
-
-                                </div>
-                            </div>
+                            <msj-validacion v-if="msjValidacion[5].correo==1">{{msjValidacion[5].mensaje}}</msj-validacion>
                         </div>
                         <!-- inputs del Modal agregar -->
                     </form>
@@ -218,7 +216,12 @@
 </template>
 
 <script>
+    import MensajeValidacion from './local-components/MsjValidacion.vue';
+
     export default {
+        components : {
+            'msj-validacion' : MensajeValidacion 
+        },
         data(){
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
@@ -237,8 +240,18 @@
                 modal : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorUsers : 0,
-                errorMostrarMsjUser : [],
+                //Validación de campos
+                numErrors : 0,
+                msjValidacion : [
+                    {rol : 0, mensaje : ''},
+                    {carrera : 0, mensaje : ''},
+                    {usuario : 0, mensaje : ''},
+                    {password : 0, mensaje : ''},
+                    {nombre : 0, mensaje : ''},
+                    {correo : 0, mensaje : ''}
+                ],
+                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
+                colorGood : 'border: 1px solid #BBCDD5;',
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -465,39 +478,76 @@
                 })
             },
             validarUser(){// se puede modificar, solo los mensajes de validacion
-                this.errorUsers = 0;
-                this.errorMostrarMsjUser = [];
+                this.numErrors = 0;
+
+                if(this.id_rol==0){
+                    this.numErrors = 1;
+                    document.getElementById('id_rol').style.cssText = this.colorError;
+                    this.msjValidacion[0].rol = 1;
+                    this.msjValidacion[0].mensaje = "Seleccione el rol del usuario";
+                }else{
+                    this.msjValidacion[0].mensaje = "";
+                    document.getElementById('id_rol').style.cssText = this.colorGood;
+                }
 
                 if(this.id_carrera==0){
-                    this.errorMostrarMsjUser.push("Seleccione la carrera, acargo del usuario");
+                    this.numErrors = 1;
+                    document.getElementById('id_carrera').style.cssText = this.colorError;
+                    this.msjValidacion[1].carrera = 1;
+                    this.msjValidacion[1].mensaje = "Seleccione la carrera, acargo del usuario";
+                }else{
+                    this.msjValidacion[1].mensaje = "";
+                    document.getElementById('id_carrera').style.cssText = this.colorGood;
                 }
-                if(this.id_rol==0){
-                    this.errorMostrarMsjUser.push("Seleccione el rol del usuario");
-                }
+                
                 if(!this.usuario){
-                    this.errorMostrarMsjUser.push("El campo usuario, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('usuario').style.cssText = this.colorError;
+                    this.msjValidacion[2].usuario = 1;
+                    this.msjValidacion[2].mensaje = "El campo usuario, no puede estar vacío";
+                }else{
+                    this.msjValidacion[2].mensaje = "";
+                    document.getElementById('usuario').style.cssText = this.colorGood;
                 }
+
                 if(!this.password){
-                    this.errorMostrarMsjUser.push("El campo contraña, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('password').style.cssText = this.colorError;
+                    this.msjValidacion[3].password = 1;
+                    this.msjValidacion[3].mensaje = "El campo contraña, no puede estar vacío";
+                }else{
+                    this.msjValidacion[3].mensaje = "";
+                    document.getElementById('password').style.cssText = this.colorGood;
                 }
+
                 if(!this.nombre){
-                    this.errorMostrarMsjUser.push("El campo nombre, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('nombre').style.cssText = this.colorError;
+                    this.msjValidacion[4].nombre = 1;
+                    this.msjValidacion[4].mensaje = "El campo nombre, no puede estar vacío";
+                }else{
+                    this.msjValidacion[4].mensaje = "";
+                    document.getElementById('nombre').style.cssText = this.colorGood;
                 }
                 
                 var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                 if(!this.correo){
-                    this.errorMostrarMsjUser.push("El campo correo, no puede estar vacío");
+                    this.numErrors = 1;
+                    document.getElementById('correo').style.cssText = this.colorError;
+                    this.msjValidacion[5].correo = 1;
+                    this.msjValidacion[5].mensaje = "El campo correo, no puede estar vacío";
                 }
                 else if(validarEmail.test(this.correo)==false){
-                    this.errorMostrarMsjUser.push("El correo no esta bien escrito");
-                }
-                
-                if(this.errorMostrarMsjUser.length){
-                    this.errorUsers = 1;
+                    this.numErrors = 1;
+                    document.getElementById('correo').style.cssText = this.colorError;
+                    this.msjValidacion[5].correo = 1;
+                    this.msjValidacion[5].mensaje = "El correo no esta bien escrito";
+                }else{
+                    this.msjValidacion[5].mensaje = "";
+                    document.getElementById('correo').style.cssText = this.colorGood;
                 }
 
-                return this.errorUsers;
-
+                return this.numErrors;
             },
             obtenerIdRol($event){
                 //obtener el valor del <select> plan de estudio
@@ -511,13 +561,23 @@
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
                 this.tituloModal = '';//no
-                this.id_usuario = 0;
-                this.id_carrera = 0;
-                this.id_rol = 0;
-                this.usuario = '';
-                this.password = '';
-                this.nombre = '';
-                this.correo = '';
+                this.id_usuario = 0; 
+                this.id_carrera = 0; document.getElementById('id_carrera').style.cssText = this.colorGood;
+                this.id_rol = 0; document.getElementById('id_rol').style.cssText = this.colorGood;
+                this.usuario = ''; document.getElementById('usuario').style.cssText = this.colorGood;
+                this.password = ''; document.getElementById('password').style.cssText = this.colorGood;
+                this.nombre = ''; document.getElementById('nombre').style.cssText = this.colorGood;
+                this.correo = ''; document.getElementById('correo').style.cssText = this.colorGood;
+
+                this.numErrors = 0;
+                this.msjValidacion = [
+                    {rol : 0, mensaje : ''},
+                    {carrera : 0, mensaje : ''},
+                    {usuario : 0, mensaje : ''},
+                    {password : 0, mensaje : ''},
+                    {nombre : 0, mensaje : ''},
+                    {correo : 0, mensaje : ''}
+                ]
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
@@ -559,6 +619,11 @@
                     }
                 }
 
+            },
+            tecleo : function (){
+                if(this.numErrors==1){
+                    this.numErrors = this.validarUser();
+                }
             }
         },
         mounted() {//no modificar

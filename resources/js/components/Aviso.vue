@@ -24,8 +24,9 @@
                         <div class="form-group">
                             <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Título del aviso</label>
                             <div class="col-md">
-                                <input type="text" v-model="titulo_aviso" class="form-control" placeholder="Ingrese el título del aviso">
+                                <input type="text" id="titulo_aviso" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Ingrese el título del aviso">
                             </div>
+                            <msj-validacion v-if="msjValidacion[0].titulo_aviso==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group">
                             <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Documento</label>
@@ -37,8 +38,9 @@
                             <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Contenido del aviso</label>
                             <div class="col-md">
                                 <input type="hidden" id="contenido_aviso">
-                                <trix-editor input="contenido_aviso"  class="trix-editor"></trix-editor>
+                                <trix-editor input="contenido_aviso" id="contenido_del_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
                             </div>
+                            <msj-validacion v-if="msjValidacion[1].contenido_aviso==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
                     </div>
                     <!--FIN terjeta IZQUIERDA -->
@@ -68,20 +70,20 @@
                             <div class="col-md">
                                 <!-- Seleccionar carrera -->
                                 <div v-if="tipo_envio == 1">
-                                    <select class="form-control" v-model="id_carrera">
+                                    <select class="form-control"  v-model="id_carrera">
                                         <option value="1" disabled selected>Todas las carreras</option>
                                     </select>
                                 </div>
                                 <div v-else-if="tipo_envio == 0">
-                                    <select class="form-control" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
+                                    <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
                                         <option value="1" disabled selected>Seleccione una carrera</option>
                                         <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                             {{carrera.nombre}} - {{carrera.tipo_modalidad}}
                                         </option>
                                     </select>
                                 </div>
-                                
                             </div>
+                            <msj-validacion v-if="msjValidacion[2].id_carrera==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                         </div>
                         <!-- sección de parametros especificos de la carrera seleccionada -->
                         <div class="container-1">
@@ -97,7 +99,7 @@
                                             </div>
                                             <div v-else-if="tipo_envio == 0">
                                                 <div v-if="id_carrera != 0">
-                                                    <select class="form-control" v-model="turno" id="turno">
+                                                    <select class="form-control" @click="tecleo" id="turno" v-model="turno">
                                                         <option value="0" disabled selected>Seleccione el turno</option>
                                                         <option value="1" v-if="t_matutino==1">Matutino</option>
                                                         <option value="2" v-if="t_vespertino==1">Vespertino</option>
@@ -111,8 +113,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
+                                        <msj-validacion v-if="msjValidacion[3].turno==1">{{msjValidacion[3].mensaje}}</msj-validacion>
                                     </div>
                                 </div>
                                 <div class="col" style="padding: 0 !important;">
@@ -126,7 +128,7 @@
                                             </div>
                                             <div v-else-if="tipo_envio == 0">
                                                 <div v-if="id_carrera != 0">
-                                                    <select class="form-control" v-model="grado">
+                                                    <select class="form-control" @click="tecleo" id="grado" v-model="grado">
                                                         <option value="0" disabled selected>Seleccione el grado</option>
                                                         <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
                                                             {{grupo.num}}º
@@ -134,13 +136,13 @@
                                                     </select>
                                                 </div>
                                                 <div v-else>
-                                                    <select class="form-control" v-model="grado">
+                                                    <select class="form-control" id="grado" v-model="grado">
                                                         <option value="0" disabled selected>Seleccione una carrera</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            
                                         </div>
+                                        <msj-validacion v-if="msjValidacion[4].grado==1">{{msjValidacion[4].mensaje}}</msj-validacion>
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +228,12 @@
 </template>
 
 <script>
+    import MensajeValidacion from './local-components/ValidacionAviso.vue';
+    
     export default {
+        components : {
+            'msj-validacion' : MensajeValidacion 
+        },
         data(){
             return{
                 //Variables para guardar y actualizar el aviso
@@ -248,7 +255,18 @@
                 //identificadores de validacion
                 errorCarrera: 0,
                 //seleccion de guardar o enviar el aviso
-                guardar_enviar: 1
+                guardar_enviar: 1,
+                //Validación de campos
+                numErrors : 0,
+                msjValidacion : [
+                    {titulo_aviso : 0, mensaje : ''},
+                    {contenido_aviso : 0, mensaje : ''},
+                    {id_carrera : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''}
+                ],
+                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
+                colorGood : 'border: 1px solid #BBCDD5;',
             }
         },
         methods : {
@@ -310,6 +328,13 @@
                     //Arrays para mostrar datos en select
                     this.arrayCarrera = [];
                     this.array_num_grados = [];
+                    //Limpiar validacion
+                    this.msjValidacion[2].mensaje = "";
+                    document.getElementById('id_carrera').style.cssText = this.colorGood;
+                    this.msjValidacion[3].mensaje = "";
+                    document.getElementById('turno').style.cssText = this.colorGood;
+                    this.msjValidacion[4].mensaje = "";
+                    document.getElementById('grado').style.cssText = this.colorGood;
                 }
                 else if(this.tipo_envio == 0){
                     this.obtener_carreras();
@@ -320,9 +345,10 @@
                 this.documento = file;
             },
             guardar_aviso(){
-                // if(this.validarCarrera()){
-                //     return;
-                // }
+                if(this.validarAviso()){
+                    return;
+                }
+
                 let me = this;
                 this.contenido_aviso = document.getElementById('contenido_aviso').value;
 
@@ -354,15 +380,15 @@
 
             },
             limpiar_campos(){
-                document.getElementById('contenido_aviso').value = "";
+                //document.getElementById('contenido_aviso').value = "";
                 var element = document.querySelector("trix-editor");
                 //atajo para restablecer trix-editor
                 element.value = "";
                 //Variables para guardar y actualizar el aviso
                 //this.tipo_envio = 0;
-                this.id_carrera = 1;
-                this.turno = 0;
-                this.grado = 0;
+                this.id_carrera = 1; 
+                this.turno = 0; 
+                this.grado = 0; 
                 this.titulo_aviso = '';
                 this.documento = '';
                 this.contenido_aviso = '';
@@ -376,25 +402,83 @@
                 this.array_num_grados = [];
                 //guardar o enviar aviso
                 this.guardar_enviar = 1;
+                //Validacion
+                this.numErrors = 0;
+                this.msjValidacion = [
+                    {titulo_aviso : 0, mensaje : ''},
+                    {contenido_aviso : 0, mensaje : ''},
+                    {id_carrera : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''}
+                ];
             },
-            validarCarrera(){// se puede modificar, solo los mensajes de validacion
-                this.errorCarrera = 0;
-                this.errorMostrarMsjCarrera = [];
+            validarAviso(){// se puede modificar, solo los mensajes de validacion
+                this.numErrors = 0;
 
-                if(!this.nombre){
-                    this.errorMostrarMsjCarrera.push("El campo nombre de la carrera, no puede estar vacío");
+                if(!this.titulo_aviso){
+                    this.numErrors = 1;
+                    document.getElementById('titulo_aviso').style.cssText = this.colorError;
+                    this.msjValidacion[0].titulo_aviso = 1;
+                    this.msjValidacion[0].mensaje = "No puede estar vacío el título del aviso";
+                }else{
+                    this.msjValidacion[0].mensaje = "";
+                    document.getElementById('titulo_aviso').style.cssText = this.colorGood;
                 }
 
-                if(this.errorMostrarMsjCarrera.length){
-                    this.errorCarrera = 1;
+                this.contenido_aviso = document.getElementById('contenido_aviso').value;
+                if(!this.contenido_aviso){
+                    this.numErrors = 1;
+                    document.getElementById('contenido_del_aviso').style.cssText = this.colorError;
+                    this.msjValidacion[1].contenido_aviso = 1;
+                    this.msjValidacion[1].mensaje = "No puede estar vacío el contenido del aviso";
+                }else{
+                    this.msjValidacion[1].mensaje = "";
+                    document.getElementById('contenido_del_aviso').style.cssText = this.colorGood;
                 }
 
-                return this.errorCarrera;
+                if(this.tipo_envio==0){
+                    if(this.id_carrera==1){
+                        this.numErrors = 1;
+                        document.getElementById('id_carrera').style.cssText = this.colorError;
+                        this.msjValidacion[2].id_carrera = 1;
+                        this.msjValidacion[2].mensaje = "Seleccione una carrera";
+                    }else{
+                        this.msjValidacion[2].mensaje = "";
+                        document.getElementById('id_carrera').style.cssText = this.colorGood;
+                    }
+
+                    if(this.turno == 0){
+                        this.numErrors = 1;
+                        document.getElementById('turno').style.cssText = this.colorError;
+                        this.msjValidacion[3].turno = 1;
+                        this.msjValidacion[3].mensaje = "Seleccione un turno";
+                    }else{
+                        this.msjValidacion[3].mensaje = "";
+                        document.getElementById('turno').style.cssText = this.colorGood;
+                    }
+
+                    if(this.grado == 0){
+                        this.numErrors = 1;
+                        document.getElementById('grado').style.cssText = this.colorError;
+                        this.msjValidacion[4].grado = 1;
+                        this.msjValidacion[4].mensaje = "Seleccione el grado";
+                    }else{
+                        this.msjValidacion[4].mensaje = "";
+                        document.getElementById('grado').style.cssText = this.colorGood;
+                    }
+                }
+
+                return this.numErrors;
+            },
+            tecleo : function (){
+                if(this.numErrors==1){
+                    this.numErrors = this.validarAviso();
+                }
             }
         },
         mounted() {//no modificar
             this.seleccion_de_envio();
-
+            
             $('.asignar-fecha').datepicker({
                 format: "dd/mm/yyyy",
                 language: "es",
