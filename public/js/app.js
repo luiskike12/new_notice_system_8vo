@@ -5329,11 +5329,12 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    eliminarMatricula: function eliminarMatricula() {
+    aliminarAviso: function aliminarAviso() {
       var me = this;
-      axios["delete"]('/matricula/eliminar', {
+      console.log("is_aviso: " + this.id_aviso);
+      axios["delete"]('/aviso/eliminar_aviso', {
         params: {
-          id: this.id_matricula
+          id: this.id_aviso
         }
       }).then(function (response) {
         me.cerrarModal();
@@ -5443,8 +5444,8 @@ __webpack_require__.r(__webpack_exports__);
                 {
                   this.modal_eliminar = 1; //no
 
-                  this.tituloModal = 'Eliminar Aviso'; // this.id_matricula = data['id'];
-
+                  this.tituloModal = 'Eliminar Aviso';
+                  this.id_aviso = data['id'];
                   break;
                 }
 
@@ -43665,7 +43666,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-body" }, [
-      _c("p", [_vm._v("¿Estas seguro de eliminar el alumno?")])
+      _c("p", { staticClass: "mensaje-eliminar" }, [
+        _vm._v("¿Estas seguro de eliminar el alumno?")
+      ])
     ])
   }
 ]
@@ -46810,7 +46813,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-body" }, [
-      _c("p", [_vm._v("Estas seguro de eliminar esta matrícula?")])
+      _c("p", { staticClass: "mensaje-eliminar" }, [
+        _vm._v("¿Estas seguro de eliminar esta matrícula?")
+      ])
     ])
   }
 ]
@@ -48562,7 +48567,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: {
                       click: function($event) {
-                        return _vm.eliminarMatricula()
+                        return _vm.aliminarAviso()
                       }
                     }
                   },
@@ -48724,7 +48729,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-body" }, [
-      _c("p", [_vm._v("Estas seguro de eliminar este aviso?")])
+      _c("p", { staticClass: "mensaje-eliminar" }, [
+        _vm._v("¿Estas seguro de eliminar este aviso?")
+      ])
     ])
   }
 ]

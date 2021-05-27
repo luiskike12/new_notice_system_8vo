@@ -16,7 +16,8 @@ mix.styles([
     'resources/plantilla/css/simple-line-icons.min.css',
     'resources/plantilla/css/style.css',
     'resources/plantilla/css/estilos_login.css',
-    'resources/plantilla/css/estilos_cabecera.css'
+    'resources/plantilla/css/estilos_cabecera.css',
+    'resources/plantilla/css/estilo_personalizable.css'
 ], 'public/css/plantilla.css')
 .scripts([
     'resources/plantilla/js/jquery.min.js',

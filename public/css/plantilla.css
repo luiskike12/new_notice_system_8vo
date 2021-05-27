@@ -9438,3 +9438,10 @@ body
 	display: none;
 }
 /* a los 991px cambiar la posision del nav desplegable */
+.mensaje-eliminar{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+

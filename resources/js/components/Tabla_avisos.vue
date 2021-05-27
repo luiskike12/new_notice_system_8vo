@@ -175,12 +175,12 @@
                 </div>
                 
                 <div class="modal-body">
-                    <p>Estas seguro de eliminar este aviso?</p>
+                    <p class="mensaje-eliminar">¿Estas seguro de eliminar este aviso?</p>
                 </div>
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                    <button type="button" class="btn btn-danger" @click="eliminarMatricula()">Eliminar</button>
+                    <button type="button" class="btn btn-danger" @click="aliminarAviso()">Eliminar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -377,13 +377,13 @@
                     console.log(error)
                 });
             },
-            eliminarMatricula(){
+            aliminarAviso(){
 
                 let me = this;
-
-                axios.delete('/matricula/eliminar', {
+                console.log("is_aviso: "+this.id_aviso);
+                axios.delete('/aviso/eliminar_aviso', {
                     params : {
-                        id : this.id_matricula
+                        id : this.id_aviso
                     }
                 }).then(function (response){
                     me.cerrarModal();
@@ -477,7 +477,7 @@
                             {
                                 this.modal_eliminar = 1;//no
                                 this.tituloModal = 'Eliminar Aviso';
-                                // this.id_matricula = data['id'];
+                                this.id_aviso = data['id'];
                                 break;
                             }
                             case 'contenido':

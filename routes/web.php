@@ -64,6 +64,8 @@ Route::get('/aviso', 'AvisoController@index');
 Route::post('/aviso/guardar_aviso', 'AvisoController@guardar_aviso');
 Route::post('/aviso/TraerAvisosAlumnos', 'AvisoController@traerAvisosAlumnos');
 Route::post('/aviso/TraerAvisosAlumnosFiltros', 'AvisoController@traerAvisosAlumnosFiltros');
+Route::delete('/aviso/eliminar_aviso', 'AvisoController@eliminar_aviso');
+
 
 // Auth::routes();
 //Acceso al sistema

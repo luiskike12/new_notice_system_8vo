@@ -245,4 +245,21 @@ class AvisoController extends Controller
         }
 
     }
+
+    public function eliminar_aviso(Request $request){
+        try{
+            DB::beginTransaction();
+
+            $aviso = $request->id;
+            $eliminar_datos = Aviso::find($aviso);
+            $eliminar_datos->delete();
+
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+
+
 }

@@ -195,7 +195,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Estas seguro de eliminar esta matrícula?</p>
+                    <p class="mensaje-eliminar">¿Estas seguro de eliminar esta matrícula?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
