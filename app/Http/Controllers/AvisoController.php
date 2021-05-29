@@ -269,15 +269,77 @@ class AvisoController extends Controller
     public function eliminar_aviso(Request $request){
         try{
             DB::beginTransaction();
-
-            $aviso = $request->id;
-            $eliminar_datos = Aviso::find($aviso);
-            $eliminar_datos->delete();
+            
+            $aviso = Aviso::findOrFail($request->id);
+            if($aviso->documento){
+                $url_img = 'public/'.$aviso->documento;
+                Storage::delete($url_img);   
+            }
+            $aviso->delete();
 
             DB::commit();
         }catch(Exception $e){
             DB::rollBack();
         }
+    }
+
+    public function reenviar_aviso(Request $request){
+
+        $aviso = new Aviso();
+        $aviso->id_carrera = $request->id_carrera;
+        $aviso->id = $request->id_aviso;
+        
+
+        // query notification
+        if($aviso->id_carrera == 1){
+            // todas las carreras
+            $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1 AND a.id_dispositivo IS NOT NULL ';
+            $resultados = DB::select($finalQuery);
+            
+            foreach($resultados as $usuario){
+                OneSignal::sendNotificationToUser(
+                    $request->titulo, 
+                    $userId = $usuario->id_dispositivo,
+                    $url = null, 
+                    $data = ["aviso" => $aviso], 
+                    $buttons = null, 
+                    $schedule = null
+                );
+            }
+        } else {
+            // especificos usuarios
+            $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo IS NOT NULL ';
+            $string2 = '';
+            $string3 = '';
+
+            // dinamic query
+            if($aviso->turno != 0){
+                $string2 = 'AND a.turno = :a_turno';
+            }
+            if($aviso->grado != 0){
+                $string3 = 'AND a.grado = :a_grado';
+            }
+            $string4 = 'AND a.condicion = 1';
+            $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
+            $resultados = DB::select($finalQuery, [
+                'a_carrera' => $aviso->id_carrera,
+                'a_turno' => $aviso->turno,
+                'a_grado' => $aviso->grado
+            ]);
+
+            foreach($resultados as $usuario){
+                OneSignal::sendNotificationToUser(
+                    $request->titulo, 
+                    $userId = $usuario->id_dispositivo,
+                    $url = null, 
+                    $data = ["aviso" => $aviso], 
+                    $buttons = null, 
+                    $schedule = null
+                );
+            }
+        }
+
+
     }
 
 
