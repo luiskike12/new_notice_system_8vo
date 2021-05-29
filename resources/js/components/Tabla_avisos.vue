@@ -91,11 +91,12 @@
                 </nav>
             </div>
         </div>
-        <!-- Fin ejemplo de tabla Listado -->
+        <!-- Fin de tabla Listado -->
     </div>
-    <!--Inicio del modal agregar/actualizar-->
+
+    <!--Inicio del modal ACTUALIZAR AVISO-->
     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-primary modal-lg" role="document">
+        <div class="modal-dialog modal-primary modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" v-text="tituloModal"></h4>
@@ -106,62 +107,215 @@
                 <div class="modal-body">
                     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
                         <!-- inputs del Modal agregar -->
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Carrera (*)</label>
-                            <div class="col-md-9">
-                                <select class="form-control" v-model="id_carrera">
-                                    <option value="0" disabled selected>Seleccione una carrera</option>
-                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
-                                    </option>
-                                </select>
+                        <div class="form-group">
+                            <div class="col-md-auto text-center">
+                                <label class="form-control-label font-weight-bold" for="email-input">Título del aviso</label>
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="text" id="titulo_aviso" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Ingrese el título del aviso">
+                            </div>
+                            <msj-validacion v-if="msjValidacion[0].titulo_aviso==1">{{msjValidacion[0].mensaje}}</msj-validacion>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-auto text-center">
+                                <label class="form-control-label font-weight-bold" for="email-input">Documento</label>
+                            </div>
+                            <div class="col-md-auto">
+                                <input type="file" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Lista de matrículas(*)</label>
-                            <div class="col-md-9">
-                                <select class="form-control" v-model="num_lista">
-                                    <option value="0" disabled selected>Seleccione la lista para agrupar las matrículas</option>
-                                    <option v-for="lista in arrayListas" :key="lista.id" :value="lista.id">
-                                        {{lista.id}} - Lista (Matrículas) 
-                                    </option>
-                                </select>
+                        <div class="form-group">
+                            <div class="col-md-auto text-center">
+                                <label class="form-control-label font-weight-bold" for="email-input">Contenido del aviso</label>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Matrícula (*)</label>
-                            <div class="col-md-9">
-                                <input type="text" v-model="matricula" class="form-control" placeholder="Matrícula del alumno">
+                            <div class="col-md-auto">
+                                <input type="hidden" id="contenido_aviso">
+                                <trix-editor input="contenido_aviso" id="contenido_del_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
                             </div>
+                            <msj-validacion v-if="msjValidacion[1].contenido_aviso==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="email-input">Nombre (*)</label>
-                            <div class="col-md-9">
-                                <input type="text" v-model="nombre" class="form-control" placeholder="Nombre del alumno">
-                            </div>
-                        </div>
-                        <!-- mostrar los errores de la validadción -->
-                        <div class="form-group row div-error" v-show="errorUsers">
-                            <div class="text-center text-error">
-                                <div v-for="error in errorMostrarMsjUser" :key="error" v-text="error">
 
+                        <!-- <hr style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 0px;"> -->
+                        <!-- Segunda seccion -->
+
+                        <div class="form-group" style="margin: 0; border-top: 1px solid #C6D7D1; border-bottom: 1px solid #C6D7D1;">
+                            <table class="table" style="margin: 0;">
+                                <tbody>
+                                    <tr>
+                                        <td style="border-top: none;">Envío a...</td>
+                                        <td style="border-top: none;">
+                                            <input class="form-check-input" type="radio" id="radio_todas" @change="tipo_de_envio($event)" v-model="tipo_envio" value="1">
+                                            todas las carreras.
+                                        </td>
+                                        <td style="border-top: none;">
+                                            <input class="form-check-input" type="radio" id="radio_una" @change="tipo_de_envio($event)" v-model="tipo_envio" value="0">
+                                            solo una carrera.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Carreras</label>
+                            <div class="col-md">
+                                <!-- Seleccionar carrera -->
+                                <div v-if="tipo_envio == 1">
+                                    <select class="form-control"  v-model="id_carrera">
+                                        <option value="1" disabled selected>Todas las carreras</option>
+                                    </select>
+                                </div>
+                                <div v-else-if="tipo_envio == 0">
+                                    <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
+                                        <option value="1" disabled selected>Seleccione una carrera</option>
+                                        <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                            {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <msj-validacion v-if="msjValidacion[2].id_carrera==1">{{msjValidacion[2].mensaje}}</msj-validacion>
+                        </div>
+
+                        <!-- sección de parametros especificos de la carrera seleccionada -->
+                        <div class="container-1">
+                            <div class="row">
+                                <div class="col" style="padding: 0 !important;">
+                                    <div class="form-group">
+                                        <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Turno</label>
+                                        <div class="col-md">
+                                            <div v-if="tipo_envio == 1">
+                                                <select class="form-control" id="turno">
+                                                    <option value="0" disabled selected>Todos los turnos</option>
+                                                </select>
+                                            </div>
+                                            <div v-else-if="tipo_envio == 0">
+                                                <div v-if="id_carrera != 0">
+                                                    <select class="form-control" @click="tecleo" id="turno" v-model="turno">
+                                                        <option value="0" disabled selected>Seleccione el turno</option>
+                                                        <option value="1" v-if="t_matutino==1">Matutino</option>
+                                                        <option value="2" v-if="t_vespertino==1">Vespertino</option>
+                                                        <option value="3" v-if="t_nocturno==1">Nocturno</option>
+                                                        <option value="4" v-if="t_mixto==1">Mixto</option>
+                                                    </select>
+                                                </div>
+                                                <div v-else>
+                                                    <select class="form-control" id="turno">
+                                                        <option value="0" disabled selected>Seleccione una carrera</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <msj-validacion v-if="msjValidacion[3].turno==1">{{msjValidacion[3].mensaje}}</msj-validacion>
+                                    </div>
+                                </div>
+                                <div class="col" style="padding: 0 !important;">
+                                    <div class="form-group">
+                                        <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Grado</label>
+                                        <div class="col-md">
+                                            <div v-if="tipo_envio == 1">
+                                                <select class="form-control">
+                                                    <option value="0" disabled selected>Todos los grados</option>
+                                                </select>
+                                            </div>
+                                            <div v-else-if="tipo_envio == 0">
+                                                <div v-if="id_carrera != 0">
+                                                    <select class="form-control" @click="tecleo" id="grado" v-model="grado">
+                                                        <option value="0" disabled selected>Seleccione el grado</option>
+                                                        <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
+                                                            {{grupo.num}}º
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div v-else>
+                                                    <select class="form-control" id="grado" v-model="grado">
+                                                        <option value="0" disabled selected>Seleccione una carrera</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <msj-validacion v-if="msjValidacion[4].grado==1">{{msjValidacion[4].mensaje}}</msj-validacion>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- fecha programada -->
+                        <div class="form-group" style="margin: 0;">
+                            <table class="table" style="margin: 0;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="4" class="text-center" style="border-bottom: none;">
+                                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                                            Envío programado
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" style="border-top: none; padding-right: 0;">
+                                            <span class="input-group-addon" style="border-right: none;">Fecha:</span>
+                                        </td>
+                                        <td class="text-center" style="border-top: none; padding-left: 0;">
+                                            <!-- datepicker -->
+                                            <div class="input-group date asignar-fecha">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" style="border-top: none; padding-right: 0;">
+                                            <span class="input-group-addon" style="border-right: none;">Hora:</span>
+                                        </td>
+                                        <td class="text-center" style="border-top: none; padding-left: 0;">
+                                            <!-- datepicker -->
+
+                                            <div class="input-group date asignar-fecha">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+
+                         <!-- Sección de enviar el avios -->
+                        <div class="form-group" style="margin: 0;">
+                            <table class="table" style="margin: 0;">
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center" style="border-top: none;">
+                                            <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
+                                            Solo guardar.
+                                        </td>
+                                        <td class="text-center" style="border-top: none;">
+                                            <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
+                                            Guardar y enviar.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>  
+
                         <!-- inputs del Modal agregar -->
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarMatricula()">Guardar</button>
-                    <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarMatricula()">Actualizar</button>
+                    <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarAviso()">Actualizar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!--Fin del modal-->
+    <!--FIN de ACTUALIZAR AVISO-->
+
 
     <!-- Inicio del modal Eliminar -->
     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal_eliminar}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
@@ -208,8 +362,8 @@
                     <div class="form-group">
                         <div v-html="contenido_aviso"></div>
                     </div>
-                    <div class="form-group">
-                        <img v-if="documento" :src="'storage/' + documento" class="imagen">
+                    <div class="form-group text-center">
+                        <img v-if="documento" :src="'storage/' + documento" class="img-fluid img-thumbnail">
                     </div>
                 </div>
                 <!-- Fin contenido del aviso -->
@@ -228,7 +382,12 @@
 </template>
 
 <script>
+    import MensajeValidacion from './local-components/ValidacionAviso.vue';
+
     export default {
+        components : {
+            'msj-validacion' : MensajeValidacion
+        },
         data(){
             return{
                 //Variables para guardar y actualizar en la DB, se pueden modificar
@@ -236,27 +395,41 @@
                 titulo_aviso: '',
                 contenido_aviso: '',
                 documento: '',
+                grado : 0,
+                turno : 0,
+                tipo_envio : 0,
 
-
-                id_matricula : 0,
-                id_carrera : 0,
-                num_lista : 0,
-                matricula : '',
-                nombre : '',
-                arrayAvisos : [],
+                //Identificadores de apoyo en el select Turno
+                t_matutino: 0,
+                t_vespertino: 0,
+                t_nocturno: 0,
+                t_mixto: 0,
+                //Arrays para mostrar datos en select
                 arrayCarrera : [],
-                arrayListas : [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},
-                {id:9},{id:10},{id:11},{id:12}],
-                
-
+                array_num_grados: [],
+                //identificadores de validacion
+                id_carrera : 0,
+                arrayAvisos : [],
+                //seleccion de guardar o enviar el aviso
+                guardar_enviar: 1,
                 //variables para las funciones especificas del componente
                 modal : 0,
                 modal_eliminar : 0,
                 modal_contenido : 0,
                 tituloModal : '',
                 tipoAccion : 0,
-                errorUsers : 0,
-                errorMostrarMsjUser : [],
+                //Validación de campos
+                numErrors : 0,
+                msjValidacion : [
+                    {titulo_aviso : 0, mensaje : ''},
+                    {contenido_aviso : 0, mensaje : ''},
+                    {id_carrera : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''}
+                ],
+                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
+                colorGood : 'border: 1px solid #BBCDD5;',
+
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -284,12 +457,12 @@
                 if(from < 1){
                     from = 1;
                 }
-
+                
                 var to = from + (this.offset * 2);
                 if(to >= this.pagination.last_page){
                     to = this.pagination.last_page;
                 }
-
+                
                 var pagesArray = [];
                 while(from <= to){
                     pagesArray.push(from);
@@ -322,7 +495,7 @@
                 //Envia la peticion para visualizar la data de esa pagina, es para buscar
                 me.listarAvisos(page, buscar, criterio);
             },
-            seleccionarCarrera(){//se puede modificar
+            obtener_carreras(){//se puede modificar
                 //obtener el valor de un <select>
                 let me = this;
                 var url = '/carrera/selectCarrera';
@@ -337,39 +510,80 @@
                     // always executed
                 });
             },
-            registrarMatricula(){//se puede modificar, funcion guardar
-                if(this.validarMatricula()){
-                    return;
-                }
-                
-                let me = this;
-                //          url del controlador donde se guarda
-                axios.post('/matricula/registrar', {
-                    //Clave  :    Valor    (poner las variables tal y como estan en la DB)
-                    'id_carrera' : this.id_carrera,
-                    'num_lista' : this.num_lista,
-                    'matricula' : this.matricula,
-                    'nombre' : this.nombre
-                }).then(function (response){//no modificar
-                    me.cerrarModal();
-                    me.listarAvisos(1, '', 'titulo');
-                }).catch(function (error){
-                    console.log(error)
-                });
+            mostrar_turnos_y_grados_carrera(event){
+                this.turno = 0;
+                this.grado = 0;
+                this.array_num_grados = [];
+                this.t_matutino = 0;
+                this.t_vespertino = 0;
+                this.t_nocturno = 0;
+                this.t_mixto = 0;
+
+                if(event.target.value != 0){
+                    var grados = 0;
+                    
+                    for(var i = 0; i < this.arrayCarrera.length; i++){
+                        if(this.arrayCarrera[i]["id"] == this.id_carrera){
+                            this.t_matutino = this.arrayCarrera[i]["turno_matutino"];
+                            this.t_vespertino = this.arrayCarrera[i]["turno_vespertino"];
+                            this.t_nocturno = this.arrayCarrera[i]["turno_nocturno"];
+                            this.t_mixto = this.arrayCarrera[i]["turno_mixto"];
+                            grados = this.arrayCarrera[i]["num_grados"];
+                        }
+                    }
+
+                    for(var i = 1; i <= grados; i++){
+                        this.array_num_grados.push({num: i})
+                    }
+                }     
             },
-            actualizarMatricula(){//se puede modificar, aqui se actualiza
-                if(this.validarMatricula()){
+            tipo_de_envio(event){
+                this.seleccion_de_envio();
+            },
+            seleccion_de_envio(){
+                if(this.tipo_envio == 1){
+                    this.id_carrera = 1;
+                    this.turno = 0;
+                    this.grado = 0;
+                    //Identificadores de apoyo en el select Turno
+                    this.t_matutino = 0;
+                    this.t_vespertino = 0;
+                    this.t_nocturno = 0;
+                    this.t_mixto = 0;
+                    //Arrays para mostrar datos en select
+                    this.arrayCarrera = [];
+                    this.array_num_grados = [];
+                    //Limpiar validacion
+                    this.msjValidacion[2].mensaje = "";
+                    document.getElementById('id_carrera').style.cssText = this.colorGood;
+                    this.msjValidacion[3].mensaje = "";
+                    document.getElementById('turno').style.cssText = this.colorGood;
+                    this.msjValidacion[4].mensaje = "";
+                    document.getElementById('grado').style.cssText = this.colorGood;
+                }
+                else if(this.tipo_envio == 0){
+                    this.obtener_carreras();
+                }
+            },
+            getDocumento(event){
+                let file = event.target.files[0];
+                this.documento = file;
+            },
+            actualizarAviso(){//se puede modificar, aqui se actualiza
+                if(this.validarAviso()){
                     return;
                 }
                 
                 let me = this;
                 //          url del controlador
-                axios.put('/matricula/actualizar', {
+                axios.put('/aviso/actualizar_aviso', {
                     'id_carrera' : this.id_carrera,
-                    'num_lista' : this.num_lista,
-                    'matricula' : this.matricula,
-                    'nombre' : this.nombre,
-                    'id' : this.id_matricula
+                    'turno' : this.turno,
+                    'grado' : this.grado,
+                    'titulo' : this.titulo_aviso,
+                    'contenido' : this.contenido_aviso,
+                    'documento' : this.documento,
+                    'general' : this.tipo_envio
                 }).then(function (response){//no modificar
                     me.cerrarModal();
                     me.listarAvisos(1, '', 'titulo');
@@ -378,9 +592,8 @@
                 });
             },
             aliminarAviso(){
-
                 let me = this;
-                console.log("is_aviso: "+this.id_aviso);
+          
                 axios.delete('/aviso/eliminar_aviso', {
                     params : {
                         id : this.id_aviso
@@ -392,85 +605,76 @@
                     console.log(error)
                 });
             },
-            switchON(id){// se puede modificar, solo lo que esta en español
+            validarAviso(){// se puede modificar, solo los mensajes de validacion
+                this.numErrors = 0;
 
-                let me = this;
-                //          url del controlador
-                axios.put('/matricula/activar', {
-                    'id' : id
-                }).then(function (response){//no modificar
-                    me.listarAvisos(1, '', 'titulo');
-                }).catch(function (error){
-                    console.log(error)
-                });
-            },
-            switchOFF(id){//se puede modificar, solo lo que esta en español
+                // if(this.id_carrera==0){
+                    
+                // }
 
-                let me = this;
-                //          url del controlador
-                axios.put('/matricula/desactivar', {
-                    'id' : id
-                }).then(function (response){//no modificar
-                    me.listarAvisos(1, '', 'titulo');
-                }).catch(function (error){
-                    console.log(error)
-                });
-            },
-            validarMatricula(){// se puede modificar, solo los mensajes de validacion
-                this.errorUsers = 0;
-                this.errorMostrarMsjUser = [];
-
-                if(this.id_carrera==0){
-                    this.errorMostrarMsjUser.push("Seleccione la carrera, a la que esta inscrito el alumno");
-                }
-                if(this.num_lista==0){
-                    this.errorMostrarMsjUser.push("Seleccione el número de lista, a la que pertenecerá la matrícula");
-                }
-                if(!this.matricula){
-                    this.errorMostrarMsjUser.push("El campo matrícula, no puede estar vacío");
-                }
-                if(!this.nombre){
-                    this.errorMostrarMsjUser.push("El campo nombre, no puede estar vacío");
-                }
-                
-                if(this.errorMostrarMsjUser.length){
-                    this.errorUsers = 1;
-                }
+                // if(!this.contenido_aviso){
+                    
+                // }
 
                 return this.errorUsers;
 
             },
             cerrarModal(){//modificar solo variables
+                //Variables manejo de funciones de los modales
                 this.modal = 0;//no
                 this.modal_eliminar = 0;//no
                 this.modal_contenido = 0;//no
                 this.tituloModal = '';//no
-                this.id_matricula = 0;
-                this.num_lista = 0;
-                this.id_carrera = 0;
-                this.matricula = '';
-                this.nombre = '';
-                //variables del aviso
+          
+                //document.getElementById('contenido_aviso').value = "";
+                var element = document.querySelector("trix-editor");
+                //atajo para restablecer trix-editor
+                element.value = "";
+                //Variables para guardar y actualizar el aviso
+                //this.tipo_envio = 0;
+                this.id_carrera = 1; 
+                this.turno = 0; 
+                this.grado = 0; 
                 this.titulo_aviso = '';
-                this.contenido_aviso = '';
                 this.documento = '';
+                this.contenido_aviso = '';
+                //Identificadores de apoyo en el select Turno
+                this.t_matutino = 0;
+                this.t_vespertino = 0;
+                this.t_nocturno = 0;
+                this.t_mixto = 0;
+                //Arrays para mostrar datos en select
+                this.arrayCarrera = [];
+                this.array_num_grados = [];
+                //guardar o enviar aviso
+                this.guardar_enviar = 1;
+                //Validacion
+                this.numErrors = 0;
+                this.msjValidacion = [
+                    {titulo_aviso : 0, mensaje : ''},
+                    {contenido_aviso : 0, mensaje : ''},
+                    {id_carrera : 0, mensaje : ''},
+                    {turno : 0, mensaje : ''},
+                    {grado : 0, mensaje : ''}
+                ];
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
-                this.seleccionarCarrera();
                 switch(modelo){
                     case "aviso":
                     {
                         switch(accion){
                             case 'actualizar':
                             {
+                                var element = document.querySelector("trix-editor");
                                 this.modal=1;//no
                                 this.tituloModal = 'Actualizar Aviso';
-                                // this.id_matricula = data['id'];
-                                // this.id_carrera = data['id_carrera'];
-                                // this.num_lista = data['num_lista'];
-                                // this.matricula = data['matricula'];
-                                // this.nombre = data['nombre'];
+                                this.id_aviso = data['id'];
+                                this.titulo_aviso = data['titulo'];
+                                this.contenido_aviso = data['contenido'];
+                                element.value = this.contenido_aviso;
+                                this.documento = data['url_documento'];
                                 this.tipoAccion = 2;//no
+                                this.obtener_carreras();
                                 break;
                             }
                             case 'eliminar':
@@ -494,6 +698,13 @@
                     }
                 }
 
+            },
+            tecleo : function (){
+                if(this.numErrors==1){
+                    this.numErrors = this.validarAviso();
+                }else{
+                    console.log("Tecleo");
+                }
             }
         },
         mounted() {//no modificar
@@ -508,6 +719,7 @@
         width: 100% !important;
         position: absolute !important;
     }
+
     .mostrar{
         display: list-item !important;
         opacity: 1 !important;

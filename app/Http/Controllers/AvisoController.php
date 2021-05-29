@@ -246,6 +246,26 @@ class AvisoController extends Controller
 
     }
 
+    public function actualizar_aviso(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        try{
+            DB::beginTransaction();
+            //para filtrar el id del usuario
+            $aviso = Aviso::findOrFail($request->id);
+            // $matricula->id_carrera = $request->id_carrera;
+            // $matricula->num_lista = $request->num_lista;
+            // $matricula->matricula = $request->matricula;
+            // $matricula->nombre = $request->nombre;
+            // $matricula->save();
+            
+            $out->writeln("Turno: ".$aviso->turno);
+
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
     public function eliminar_aviso(Request $request){
         try{
             DB::beginTransaction();
