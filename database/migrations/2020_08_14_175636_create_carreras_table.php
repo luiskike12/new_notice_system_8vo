@@ -26,7 +26,7 @@ class CreateCarrerasTable extends Migration
             $table->integer('num_grados');
             $table->timestamps();
         });
-        DB::table('carreras')->insert(array('id'=>'1','nombre'=>'Funciones Generales','tipo_plan'=>'0',
+        DB::table('carreras')->insert(array('id'=>'1','nombre'=>'Institucional General','tipo_plan'=>'0',
         'tipo_modalidad'=>'0', 'turno_matutino'=>'0', 'turno_vespertino'=>'0', 'turno_nocturno'=>'0',
         'turno_mixto'=>'0', 'num_grados'=>'0'));
     }

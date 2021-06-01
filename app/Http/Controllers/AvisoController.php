@@ -19,19 +19,10 @@ class AvisoController extends Controller
         if($buscar==''){
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            DB::raw('CASE avisos.turno 
-            WHEN 0 THEN "General"
-            WHEN 1 THEN "Matutino"
-            WHEN 2 THEN "Vespertino"
-            WHEN 3 THEN "Nocturno" 
-            WHEN 4 THEN "Mixto" END AS turno'),
-            DB::raw('CASE avisos.grado 
-            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
-            'avisos.titulo','avisos.contenido',
-            'avisos.documento as url_documento','avisos.general')
+            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+            'avisos.general','avisos.turno','avisos.grado')
             ->orderBy('avisos.id', 'desc')->paginate(3);
-        }
-        else{
+            /*  Código Anterior
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
             DB::raw('CASE avisos.turno 
@@ -42,8 +33,15 @@ class AvisoController extends Controller
             WHEN 4 THEN "Mixto" END AS turno'),
             DB::raw('CASE avisos.grado 
             WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
-            'avisos.titulo','avisos.contenido',
-            'avisos.documento as url_documento','avisos.general')
+            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+            'avisos.general','avisos.turno',)
+            */
+        }
+        else{
+            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+            'avisos.general','avisos.turno','avisos.grado')
             ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
             ->orderBy('avisos.id', 'desc')->paginate(3);
         }
@@ -248,28 +246,64 @@ class AvisoController extends Controller
 
     public function actualizar_aviso(Request $request){
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("id: ".$request->id);
+        $out->writeln("id_carrera: ".$request->id_carrera);
+        $out->writeln("turno: ".$request->turno);
+        $out->writeln("grado: ".$request->grado);
+        $out->writeln("titulo: ".$request->titulo);
+        $out->writeln("contenido: ".$request->contenido);
+        $out->writeln("documento: ".$request->documento);
+        $out->writeln("general: ".$request->general);
+
+        $ruta_documento = null;
+        $url_img = '';
+        
         try{
             DB::beginTransaction();
+
             //para filtrar el id del usuario
             $aviso = Aviso::findOrFail($request->id);
-            // $matricula->id_carrera = $request->id_carrera;
-            // $matricula->num_lista = $request->num_lista;
-            // $matricula->matricula = $request->matricula;
-            // $matricula->nombre = $request->nombre;
-            // $matricula->save();
-            
-            $out->writeln("Turno: ".$aviso->turno);
+
+            if($request->hasFile('documento')){
+                if($aviso->documento == null){
+                    $ruta_documento = Storage::disk('public')->put('upload-documents', $request->file('documento'));
+                }else{
+                    if(strcmp($aviso->documento, $request->documento)===0){
+                        $ruta_documento = $aviso->documento;
+                    }else{
+                        $url_img = 'public/'.$aviso->documento;
+                        Storage::delete($url_img);
+                        $ruta_documento = Storage::disk('public')->put('upload-documents', $request->file('documento')); 
+                    }
+                }
+            }else{
+                if(strcmp($aviso->documento, $request->documento)===0){
+                    $ruta_documento = $aviso->documento;
+                }
+            }
+
+            $aviso->id_carrera = $request->id_carrera;
+            $aviso->turno = $request->turno;
+            $aviso->grado = $request->grado;
+            $aviso->titulo = $request->titulo;
+            $aviso->contenido = $request->contenido;
+            $aviso->documento = $ruta_documento;
+            $aviso->general = $request->general;
+            $aviso->save();
 
             DB::commit();
         }catch (Exception $e){
             DB::rollBack();
         }
+        
     }
 
     public function eliminar_aviso(Request $request){
         try{
             DB::beginTransaction();
             
+            $url_img = '';
+
             $aviso = Aviso::findOrFail($request->id);
             if($aviso->documento){
                 $url_img = 'public/'.$aviso->documento;

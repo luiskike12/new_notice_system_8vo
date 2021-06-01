@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Documento</label>
                             <div class="col-md">
-                                <input type="file" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
+                                <input type="file" id="campoDocumento" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
                             </div>
                         </div>
                         <div class="form-group">
@@ -190,7 +190,8 @@
                                 </tbody>
                             </table>
                         </div> 
-
+                        
+                        <!-- Sección de enviar el avios -->
                         <div class="form-group" style="margin: 0;">
                             <table class="table" style="margin: 0;">
                                 <tbody>
@@ -380,7 +381,9 @@
 
             },
             limpiar_campos(){
-                //document.getElementById('contenido_aviso').value = "";
+                var campoDocumento = document.getElementById('campoDocumento');
+                campoDocumento.value = '';
+
                 var element = document.querySelector("trix-editor");
                 //atajo para restablecer trix-editor
                 element.value = "";

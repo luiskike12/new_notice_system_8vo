@@ -2608,6 +2608,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2765,7 +2766,8 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     limpiar_campos: function limpiar_campos() {
-      //document.getElementById('contenido_aviso').value = "";
+      var campoDocumento = document.getElementById('campoDocumento');
+      campoDocumento.value = '';
       var element = document.querySelector("trix-editor"); //atajo para restablecer trix-editor
 
       element.value = ""; //Variables para guardar y actualizar el aviso
@@ -5312,6 +5314,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5327,6 +5348,9 @@ __webpack_require__.r(__webpack_exports__);
       grado: 0,
       turno: 0,
       tipo_envio: 0,
+      //variable para mostrar imagen seleccionada
+      imagenSeleccionada: '',
+      imagenEs: '',
       //Identificadores de apoyo en el select Turno
       t_matutino: 0,
       t_vespertino: 0,
@@ -5345,7 +5369,6 @@ __webpack_require__.r(__webpack_exports__);
       modal_eliminar: 0,
       modal_contenido: 0,
       tituloModal: '',
-      tipoAccion: 0,
       //Validación de campos
       numErrors: 0,
       msjValidacion: [{
@@ -5409,6 +5432,10 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return pagesArray;
+    },
+    imagen: function imagen() {
+      //muestra la imagen seleccionada
+      return this.imagenSeleccionada;
     }
   },
   methods: {
@@ -5475,6 +5502,32 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     },
+    turnos_y_grados_aviso: function turnos_y_grados_aviso() {
+      this.turno = 0;
+      this.grado = 0;
+      this.array_num_grados = [];
+      this.t_matutino = 0;
+      this.t_vespertino = 0;
+      this.t_nocturno = 0;
+      this.t_mixto = 0;
+      var grados = 0;
+
+      for (var i = 0; i < this.arrayCarrera.length; i++) {
+        if (this.arrayCarrera[i]["id"] == this.id_carrera) {
+          this.t_matutino = this.arrayCarrera[i]["turno_matutino"];
+          this.t_vespertino = this.arrayCarrera[i]["turno_vespertino"];
+          this.t_nocturno = this.arrayCarrera[i]["turno_nocturno"];
+          this.t_mixto = this.arrayCarrera[i]["turno_mixto"];
+          grados = this.arrayCarrera[i]["num_grados"];
+        }
+      }
+
+      for (var i = 1; i <= grados; i++) {
+        this.array_num_grados.push({
+          num: i
+        });
+      }
+    },
     tipo_de_envio: function tipo_de_envio(event) {
       this.seleccion_de_envio();
     },
@@ -5505,24 +5558,44 @@ __webpack_require__.r(__webpack_exports__);
     getDocumento: function getDocumento(event) {
       var file = event.target.files[0];
       this.documento = file;
+      this.cargarImagen(file);
+    },
+    cargarImagen: function cargarImagen(file) {
+      var _this = this;
+
+      //Mostrarle al usuario la imagen que eligio
+      this.imagenEs = 'objeto';
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this.imagenSeleccionada = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     },
     actualizarAviso: function actualizarAviso() {
       //se puede modificar, aqui se actualiza
-      if (this.validarAviso()) {
-        return;
-      }
+      // if(this.validarAviso()){
+      //     return;
+      // }
+      var me = this;
+      this.contenido_aviso = document.getElementById('contenido_aviso').value;
+      var data = new FormData();
+      data.append('id', this.id_aviso);
+      data.append('id_carrera', this.id_carrera);
+      data.append('turno', this.turno);
+      data.append('grado', this.grado);
+      data.append('titulo', this.titulo_aviso);
+      data.append('contenido', this.contenido_aviso);
+      data.append('documento', this.documento);
+      data.append('general', this.tipo_envio); //data.append('_method', 'put');
 
-      var me = this; //          url del controlador
-
-      axios.put('/aviso/actualizar_aviso', {
-        'id_carrera': this.id_carrera,
-        'turno': this.turno,
-        'grado': this.grado,
-        'titulo': this.titulo_aviso,
-        'contenido': this.contenido_aviso,
-        'documento': this.documento,
-        'general': this.tipo_envio
-      }).then(function (response) {
+      var conf = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      axios.post('/aviso/actualizar_aviso', data, conf).then(function (response) {
         //no modificar
         me.cerrarModal();
         me.listarAvisos(1, '', 'titulo');
@@ -5562,13 +5635,15 @@ __webpack_require__.r(__webpack_exports__);
       this.modal_contenido = 0; //no
 
       this.tituloModal = ''; //no
-      //document.getElementById('contenido_aviso').value = "";
 
+      var campoDocumento = document.getElementById('campoDocumento');
+      campoDocumento.value = '';
       var element = document.querySelector("trix-editor"); //atajo para restablecer trix-editor
 
-      element.value = ""; //Variables para guardar y actualizar el aviso
-      //this.tipo_envio = 0;
+      element.value = ""; //Variables de actualizar el aviso
 
+      this.imagenSeleccionada = '';
+      this.imagenEs = '';
       this.id_carrera = 1;
       this.turno = 0;
       this.grado = 0;
@@ -5603,11 +5678,12 @@ __webpack_require__.r(__webpack_exports__);
         grado: 0,
         mensaje: ''
       }];
+      this.obtener_carreras();
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
 
-      //modificar solo variables
+      //modificar solo variables  
       switch (modelo) {
         case "aviso":
           {
@@ -5623,9 +5699,16 @@ __webpack_require__.r(__webpack_exports__);
                   this.contenido_aviso = data['contenido'];
                   element.value = this.contenido_aviso;
                   this.documento = data['url_documento'];
-                  this.tipoAccion = 2; //no
 
-                  this.obtener_carreras();
+                  if (typeof this.documento === 'string') {
+                    this.imagenEs = 'string';
+                  }
+
+                  this.tipo_envio = data['general'];
+                  this.id_carrera = data['id_carrera'];
+                  this.turnos_y_grados_aviso();
+                  this.turno = data['turno'];
+                  this.grado = data['grado'];
                   break;
                 }
 
@@ -5646,6 +5729,11 @@ __webpack_require__.r(__webpack_exports__);
                   this.titulo_aviso = data['titulo'];
                   this.contenido_aviso = data['contenido'];
                   this.documento = data['url_documento'];
+
+                  if (typeof this.documento === 'string') {
+                    this.imagenEs = 'string';
+                  }
+
                   break;
                 }
             }
@@ -5663,6 +5751,9 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     //no modificar
     this.listarAvisos(1, this.buscar, this.criterio);
+    this.obtener_carreras(); // $('#boton-actualizar').click(function() {
+    //     $('#submit').click();
+    // });
   }
 });
 
@@ -10845,7 +10936,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
 
 // exports
 
@@ -10940,7 +11031,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n/* --------- IMG ----------- */\n.imagen{\n    width: 250px; \n    height: 250px; \n    display:block; \n    margin:auto;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n/* --------- IMG ----------- */\n.imagen{\n    width: 250px; \n    height: 250px; \n    display:block; \n    margin:auto;\n}\n", ""]);
 
 // exports
 
@@ -43997,6 +44088,7 @@ var render = function() {
                         staticClass: "form-control",
                         attrs: {
                           type: "file",
+                          id: "campoDocumento",
                           placeholder: "Seleccione un documento"
                         },
                         on: { change: _vm.getDocumento }
@@ -48179,17 +48271,23 @@ var render = function() {
                       domProps: { textContent: _vm._s(aviso.nombre_carrera) }
                     }),
                     _vm._v(" "),
-                    _c("th", {
-                      domProps: { textContent: _vm._s(aviso.turno) }
-                    }),
+                    _c("th", [
+                      aviso.turno == 1
+                        ? _c("div", [_vm._v("Matutino")])
+                        : aviso.turno == 2
+                        ? _c("div", [_vm._v("Vespertino")])
+                        : aviso.turno == 3
+                        ? _c("div", [_vm._v("Nocturno")])
+                        : aviso.turno == 4
+                        ? _c("div", [_vm._v("Mixto")])
+                        : _c("div", [_vm._v("General")])
+                    ]),
                     _vm._v(" "),
                     _c("th", [
-                      aviso.grado == "General"
+                      aviso.grado == 0
                         ? _c("div", [
                             _vm._v(
-                              "\r\n                                    " +
-                                _vm._s(aviso.grado) +
-                                "\r\n                                "
+                              "\r\n                                    General\r\n                                "
                             )
                           ])
                         : _c("div", [
@@ -48341,43 +48439,45 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c("h4", {
-                  staticClass: "modal-title",
-                  domProps: { textContent: _vm._s(_vm.tituloModal) }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "close",
-                    attrs: { type: "button", "aria-label": "Close" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
+              _c(
+                "form",
+                {
+                  staticClass: "form-horizontal",
+                  attrs: { enctype: "multipart/form-data" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.actualizarAviso($event)
                     }
-                  },
-                  [
-                    _c("span", { attrs: { "aria-hidden": "true" } }, [
-                      _vm._v("×")
-                    ])
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c(
-                  "form",
-                  {
-                    staticClass: "form-horizontal",
-                    attrs: {
-                      action: "",
-                      method: "post",
-                      enctype: "multipart/form-data"
-                    }
-                  },
-                  [
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-header" }, [
+                    _c("h4", {
+                      staticClass: "modal-title",
+                      domProps: { textContent: _vm._s(_vm.tituloModal) }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button", "aria-label": "Close" },
+                        on: {
+                          click: function($event) {
+                            return _vm.cerrarModal()
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-body" }, [
                     _c(
                       "div",
                       { staticClass: "form-group" },
@@ -48445,11 +48545,30 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "file",
+                            id: "campoDocumento",
                             placeholder: "Seleccione un documento"
                           },
                           on: { change: _vm.getDocumento }
                         })
                       ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group text-center" }, [
+                      _vm.imagenEs === "string"
+                        ? _c("div", [
+                            _c("img", {
+                              staticClass: "img-fluid img-thumbnail",
+                              attrs: { src: "storage/" + _vm.documento }
+                            })
+                          ])
+                        : _vm.imagenEs === "objeto"
+                        ? _c("div", [
+                            _c("img", {
+                              staticClass: "img-fluid img-thumbnail",
+                              attrs: { src: _vm.imagen }
+                            })
+                          ])
+                        : _vm._e()
                     ]),
                     _vm._v(" "),
                     _c(
@@ -48564,7 +48683,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(
-                                      "\r\n                                            todas las carreras.\r\n                                        "
+                                      "\r\n                                                todas las carreras.\r\n                                            "
                                     )
                                   ]
                                 ),
@@ -48603,7 +48722,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(
-                                      "\r\n                                            solo una carrera.\r\n                                        "
+                                      "\r\n                                                solo una carrera.\r\n                                            "
                                     )
                                   ]
                                 )
@@ -48745,11 +48864,11 @@ var render = function() {
                                         },
                                         [
                                           _vm._v(
-                                            "\r\n                                            " +
+                                            "\r\n                                                " +
                                               _vm._s(carrera.nombre) +
                                               " - " +
                                               _vm._s(carrera.tipo_modalidad) +
-                                              "\r\n                                        "
+                                              "\r\n                                            "
                                           )
                                         ]
                                       )
@@ -48798,7 +48917,7 @@ var render = function() {
                                     ? _c("div", [_vm._m(7)])
                                     : _vm.tipo_envio == 0
                                     ? _c("div", [
-                                        _vm.id_carrera != 0
+                                        _vm.id_carrera > 0
                                           ? _c("div", [
                                               _c(
                                                 "select",
@@ -49009,11 +49128,11 @@ var render = function() {
                                                         },
                                                         [
                                                           _vm._v(
-                                                            "\r\n                                                            " +
+                                                            "\r\n                                                                " +
                                                               _vm._s(
                                                                 grupo.num
                                                               ) +
-                                                              "º\r\n                                                        "
+                                                              "º\r\n                                                            "
                                                           )
                                                         ]
                                                       )
@@ -49148,7 +49267,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(
-                                      "\r\n                                            Solo guardar.\r\n                                        "
+                                      "\r\n                                                Solo guardar.\r\n                                            "
                                     )
                                   ]
                                 ),
@@ -49185,7 +49304,7 @@ var render = function() {
                                       }
                                     }),
                                     _vm._v(
-                                      "\r\n                                            Guardar y enviar.\r\n                                        "
+                                      "\r\n                                                Guardar y enviar.\r\n                                            "
                                     )
                                   ]
                                 )
@@ -49195,41 +49314,36 @@ var render = function() {
                         )
                       ]
                     )
-                  ]
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        return _vm.cerrarModal()
-                      }
-                    }
-                  },
-                  [_vm._v("Cerrar")]
-                ),
-                _vm._v(" "),
-                _vm.tipoAccion == 2
-                  ? _c(
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
                       "button",
                       {
-                        staticClass: "btn btn-primary",
+                        staticClass: "btn btn-secondary",
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.actualizarAviso()
+                            return _vm.cerrarModal()
                           }
                         }
                       },
-                      [_vm._v("Actualizar")]
-                    )
-                  : _vm._e()
-              ])
+                      [_vm._v("Cerrar")]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "btn btn-primary",
+                      staticStyle: { cursor: "pointer" },
+                      attrs: {
+                        type: "submit",
+                        name: "submit",
+                        id: "submit",
+                        value: "Actualizar"
+                      }
+                    })
+                  ])
+                ]
+              )
             ])
           ]
         )
@@ -49379,11 +49493,13 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group text-center" }, [
-                  _vm.documento
-                    ? _c("img", {
-                        staticClass: "img-fluid img-thumbnail",
-                        attrs: { src: "storage/" + _vm.documento }
-                      })
+                  _vm.imagenEs === "string"
+                    ? _c("div", [
+                        _c("img", {
+                          staticClass: "img-fluid img-thumbnail",
+                          attrs: { src: "storage/" + _vm.documento }
+                        })
+                      ])
                     : _vm._e()
                 ])
               ]),
@@ -49571,7 +49687,7 @@ var staticRenderFns = [
                     attrs: { type: "checkbox", id: "gridCheck" }
                   }),
                   _vm._v(
-                    "\r\n                                            Envío programado\r\n                                        "
+                    "\r\n                                                Envío programado\r\n                                            "
                   )
                 ]
               )
