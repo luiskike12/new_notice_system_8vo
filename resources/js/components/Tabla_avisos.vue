@@ -34,10 +34,10 @@
                             <th class="text-center">Carrera</th>
                             <th class="text-center">Turno</th>
                             <th class="text-center">Grado</th>
-                            <th class="text-center">Titulo</th>
+                            <th class="text-center">Título</th>
                             <th class="text-center">Contenido</th>
                             <th class="text-center">Estado</th>
-                            <th class="text-center">Reenvio</th>
+                            <th class="text-center">Reenvío</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -184,6 +184,7 @@ class AvisoController extends Controller
             $aviso->contenido = $request->contenido;
             $aviso->documento = $ruta_documento;
             $aviso->general = $request->general;
+            $aviso->estado = $request->estado;
             $aviso->save();
             
             DB::commit();
@@ -194,9 +195,10 @@ class AvisoController extends Controller
     }
 
     public function guardar_y_enviar_aviso(Request $request){
-        //$out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("guardar_y_enviar_aviso");
         $ruta_documento = null;
-        
+
         try{
             DB::beginTransaction();
             
@@ -214,6 +216,7 @@ class AvisoController extends Controller
             $aviso->contenido = $request->contenido;
             $aviso->documento = $ruta_documento;
             $aviso->general = $request->general;
+            $aviso->estado = $request->estado;
             $aviso->save();
 
             // query notification

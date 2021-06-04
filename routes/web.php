@@ -62,6 +62,7 @@ Route::get('/alumno/confirmar_matricula', 'AlumnoController@confirmarMatricula')
 //Rutas del controlador Avisos
 Route::get('/aviso', 'AvisoController@index');
 Route::post('/aviso/guardar_aviso', 'AvisoController@guardar_aviso');
+Route::post('/aviso/guardar_y_enviar_aviso', 'AvisoController@guardar_y_enviar_aviso');
 Route::post('/aviso/TraerAvisosAlumnos', 'AvisoController@traerAvisosAlumnos');
 Route::post('/aviso/TraerAvisosAlumnosFiltros', 'AvisoController@traerAvisosAlumnosFiltros');
 Route::post('/aviso/actualizar_aviso', 'AvisoController@actualizar_aviso');

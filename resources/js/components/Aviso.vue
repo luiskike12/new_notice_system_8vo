@@ -209,12 +209,12 @@
                             
                             <!-- Sección de enviar el avios -->
                             <div class="form-group" style="border-bottom: 1px solid #C6D7D1;">
-                                <div class="row" style="margin-bottom: 16px;">
-                                    <div class="col-md-6 text-center">
+                                <div class="row">
+                                    <div class="col-md-6 text-center" style="margin-bottom: 16px;">
                                         <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
                                         Solo guardar.
                                     </div>
-                                    <div class="col-md-6 text-center">
+                                    <div class="col-md-6 text-center" style="margin-bottom: 16px;">
                                         <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
                                         Guardar y enviar.
                                     </div>
@@ -422,6 +422,7 @@
                 data.append('contenido', this.contenido_aviso);
                 data.append('documento', this.documento);
                 data.append('general', this.tipo_envio);
+                data.append('estado', this.guardar_enviar);
                 let conf = {headers: {'Content-Type': 'multipart/form-data' }};
 
                 if(this.guardar_enviar == 0){
