@@ -45,7 +45,7 @@
                     <tbody>
                         <!-- vista de los elementos de la tabla users -->
                         <tr v-for="user in arrayUsers" :key="user.id">
-                            <td class="text-center">
+                            <td>
                                 <button type="button" @click="abrirModal('usuario', 'actualizar', user)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
                                 </button> &nbsp;

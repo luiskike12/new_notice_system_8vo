@@ -586,11 +586,18 @@
         cursor: pointer;
         outline: inherit;
     }
+    /* TRIX-EDITOR  */ 
     .trix-editor{
         min-height: 217px;
         max-height: 217px !important;   /*#set whatever height you want*/
         overflow-y: auto;
     }
+    /*  No mostrar el boton de seleccionar archivo  en trix-editor*/
+    trix-toolbar .trix-button-group--file-tools{
+        display: none;
+    }
+
+    /*  Posisionamiento de los cards */
     .card-izquierda{
         margin: 0 !important;
         border-top: none;

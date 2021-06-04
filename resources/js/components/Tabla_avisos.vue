@@ -921,6 +921,11 @@
         outline: inherit;
     }
 
+    /*  No mostrar el boton de seleccionar archivo  en trix-editor*/
+    trix-toolbar .trix-button-group--file-tools{
+        display: none;
+    }
+
     /* botones circulares */
     .xyz { 
         background-size: auto; 
