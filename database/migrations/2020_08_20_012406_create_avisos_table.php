@@ -23,6 +23,7 @@ class CreateAvisosTable extends Migration
             $table->text('contenido');//65,535 caracteres
             $table->string('documento')->nullable();
             $table->boolean('general')->default(0);
+            $table->boolean('estado')->default(0);
             $table->timestamps();
         });
     }

@@ -2624,7 +2624,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2797,7 +2796,7 @@ __webpack_require__.r(__webpack_exports__);
       var campoDocumento = document.getElementById('campoDocumento');
       campoDocumento.value = '';
     },
-    guardar_aviso: function guardar_aviso() {
+    guardar_o_enviar_aviso: function guardar_o_enviar_aviso() {
       if (this.validarAviso()) {
         return;
       }
@@ -2812,23 +2811,49 @@ __webpack_require__.r(__webpack_exports__);
       data.append('contenido', this.contenido_aviso);
       data.append('documento', this.documento);
       data.append('general', this.tipo_envio);
-      axios.post('/aviso/guardar_aviso', data).then(function (response) {
-        //no modificar
-        // always executed
-        me.limpiar_campos();
-        Swal.fire({
-          icon: 'success',
-          title: '¡Genial...!',
-          text: 'Se ha enviado correctamente'
+      var conf = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+
+      if (this.guardar_enviar == 0) {
+        axios.post('/aviso/guardar_aviso', data, conf).then(function (response) {
+          //no modificar
+          // always executed
+          me.limpiar_campos();
+          Swal.fire({
+            icon: 'success',
+            title: '¡Genial...!',
+            text: 'Se ha guardado correctamente'
+          });
+        })["catch"](function (error) {
+          Swal.fire({
+            icon: 'error',
+            title: '¡Ups...!',
+            text: 'Algo salio mal'
+          });
+          console.log(error);
         });
-      })["catch"](function (error) {
-        Swal.fire({
-          icon: 'error',
-          title: '¡Ups...!',
-          text: 'Algo salio mal'
+      } else if (this.guardar_enviar == 1) {
+        axios.post('/aviso/guardar_y_enviar_aviso', data, conf).then(function (response) {
+          //no modificar
+          // always executed
+          me.limpiar_campos();
+          Swal.fire({
+            icon: 'success',
+            title: '¡Genial...!',
+            text: 'Se ha enviado correctamente'
+          });
+        })["catch"](function (error) {
+          Swal.fire({
+            icon: 'error',
+            title: '¡Ups...!',
+            text: 'Algo salio mal'
+          });
+          console.log(error);
         });
-        console.log(error);
-      });
+      }
     },
     limpiar_campos: function limpiar_campos() {
       var campoDocumento = document.getElementById('campoDocumento');
@@ -4936,6 +4961,18 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _local_components_ValidacionAviso_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./local-components/ValidacionAviso.vue */ "./resources/js/components/local-components/ValidacionAviso.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -11046,7 +11083,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n/* TRIX-EDITOR  */\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/*  Posisionamiento de los cards */\n.card-izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.scroll-card-izquierda{\n    max-height: 510px;\n    overflow-y: auto;\n}\n.card-derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n.select-carrera{\n    padding: 0;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n/* TRIX-EDITOR  */\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/*  Posisionamiento de los cards */\n.card-izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.scroll-card-izquierda{\n    max-height: 510px;\n    overflow-y: auto;\n}\n.card-derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n.card-derecha .card-body{\n    padding: 18px !important;\n}\n.select-carrera{\n    padding: 0;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
 
 // exports
 
@@ -11141,7 +11178,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 18px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -44108,7 +44145,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.guardar_aviso($event)
+                  return _vm.guardar_o_enviar_aviso($event)
                 }
               }
             },
@@ -44313,10 +44350,7 @@ var render = function() {
                       "div",
                       {
                         staticClass: "form-group",
-                        staticStyle: {
-                          margin: "0",
-                          "border-bottom": "1px solid #C6D7D1"
-                        }
+                        staticStyle: { "border-bottom": "1px solid #C6D7D1" }
                       },
                       [
                         _c(
@@ -44574,431 +44608,447 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "col-6",
-                            staticStyle: { padding: "0 !important" }
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "form-group" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass:
-                                      "col-md form-control-label font-weight-bold text-center",
-                                    attrs: { for: "text-input" }
-                                  },
-                                  [_vm._v("Turno")]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md" }, [
-                                  _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(2)])
-                                    : _vm.tipo_envio == 0
-                                    ? _c("div", [
-                                        _vm.id_carrera != 0
-                                          ? _c("div", [
-                                              _c(
-                                                "select",
-                                                {
-                                                  directives: [
-                                                    {
-                                                      name: "model",
-                                                      rawName: "v-model",
-                                                      value: _vm.turno,
-                                                      expression: "turno"
-                                                    }
-                                                  ],
-                                                  staticClass: "form-control",
-                                                  attrs: { id: "turno" },
-                                                  on: {
-                                                    click: _vm.tecleo,
-                                                    change: function($event) {
-                                                      var $$selectedVal = Array.prototype.filter
-                                                        .call(
-                                                          $event.target.options,
-                                                          function(o) {
-                                                            return o.selected
-                                                          }
-                                                        )
-                                                        .map(function(o) {
-                                                          var val =
-                                                            "_value" in o
-                                                              ? o._value
-                                                              : o.value
-                                                          return val
-                                                        })
-                                                      _vm.turno = $event.target
-                                                        .multiple
-                                                        ? $$selectedVal
-                                                        : $$selectedVal[0]
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c(
-                                                    "option",
-                                                    {
-                                                      attrs: {
-                                                        value: "0",
-                                                        disabled: "",
-                                                        selected: ""
+                    _c(
+                      "div",
+                      {
+                        staticClass: "form-group",
+                        staticStyle: { "border-bottom": "1px solid #C6D7D1" }
+                      },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-6",
+                              staticStyle: { padding: "0 !important" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "col-md form-control-label font-weight-bold text-center",
+                                      attrs: { for: "text-input" }
+                                    },
+                                    [_vm._v("Turno")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md" }, [
+                                    _vm.tipo_envio == 1
+                                      ? _c("div", [_vm._m(2)])
+                                      : _vm.tipo_envio == 0
+                                      ? _c("div", [
+                                          _vm.id_carrera != 0
+                                            ? _c("div", [
+                                                _c(
+                                                  "select",
+                                                  {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.turno,
+                                                        expression: "turno"
                                                       }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "Seleccione el turno"
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _vm.t_matutino == 1
-                                                    ? _c(
-                                                        "option",
-                                                        {
-                                                          attrs: { value: "1" }
-                                                        },
-                                                        [_vm._v("Matutino")]
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.t_vespertino == 1
-                                                    ? _c(
-                                                        "option",
-                                                        {
-                                                          attrs: { value: "2" }
-                                                        },
-                                                        [_vm._v("Vespertino")]
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.t_nocturno == 1
-                                                    ? _c(
-                                                        "option",
-                                                        {
-                                                          attrs: { value: "3" }
-                                                        },
-                                                        [_vm._v("Nocturno")]
-                                                      )
-                                                    : _vm._e(),
-                                                  _vm._v(" "),
-                                                  _vm.t_mixto == 1
-                                                    ? _c(
-                                                        "option",
-                                                        {
-                                                          attrs: { value: "4" }
-                                                        },
-                                                        [_vm._v("Mixto")]
-                                                      )
-                                                    : _vm._e()
-                                                ]
-                                              )
-                                            ])
-                                          : _c("div", [_vm._m(3)])
-                                      ])
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                _vm.msjValidacion[3].turno == 1
-                                  ? _c("msj-validacion", [
-                                      _vm._v(
-                                        _vm._s(_vm.msjValidacion[3].mensaje)
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ],
-                              1
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "col-6",
-                            staticStyle: { padding: "0 !important" }
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "form-group" },
-                              [
-                                _c(
-                                  "label",
-                                  {
-                                    staticClass:
-                                      "col-md form-control-label font-weight-bold text-center",
-                                    attrs: { for: "text-input" }
-                                  },
-                                  [_vm._v("Grado")]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-md" }, [
-                                  _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(4)])
-                                    : _vm.tipo_envio == 0
-                                    ? _c("div", [
-                                        _vm.id_carrera != 0
-                                          ? _c("div", [
-                                              _c(
-                                                "select",
-                                                {
-                                                  directives: [
-                                                    {
-                                                      name: "model",
-                                                      rawName: "v-model",
-                                                      value: _vm.grado,
-                                                      expression: "grado"
-                                                    }
-                                                  ],
-                                                  staticClass: "form-control",
-                                                  attrs: { id: "grado" },
-                                                  on: {
-                                                    click: _vm.tecleo,
-                                                    change: function($event) {
-                                                      var $$selectedVal = Array.prototype.filter
-                                                        .call(
-                                                          $event.target.options,
-                                                          function(o) {
-                                                            return o.selected
-                                                          }
-                                                        )
-                                                        .map(function(o) {
-                                                          var val =
-                                                            "_value" in o
-                                                              ? o._value
-                                                              : o.value
-                                                          return val
-                                                        })
-                                                      _vm.grado = $event.target
-                                                        .multiple
-                                                        ? $$selectedVal
-                                                        : $$selectedVal[0]
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c(
-                                                    "option",
-                                                    {
-                                                      attrs: {
-                                                        value: "0",
-                                                        disabled: "",
-                                                        selected: ""
-                                                      }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "Seleccione el grado"
-                                                      )
-                                                    ]
-                                                  ),
-                                                  _vm._v(" "),
-                                                  _vm._l(
-                                                    _vm.array_num_grados,
-                                                    function(grupo) {
-                                                      return _c(
-                                                        "option",
-                                                        {
-                                                          key: grupo.num,
-                                                          domProps: {
-                                                            value: grupo.num
-                                                          }
-                                                        },
-                                                        [
-                                                          _vm._v(
-                                                            "\r\n                                                                " +
-                                                              _vm._s(
-                                                                grupo.num
-                                                              ) +
-                                                              "º\r\n                                                            "
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: { id: "turno" },
+                                                    on: {
+                                                      click: _vm.tecleo,
+                                                      change: function($event) {
+                                                        var $$selectedVal = Array.prototype.filter
+                                                          .call(
+                                                            $event.target
+                                                              .options,
+                                                            function(o) {
+                                                              return o.selected
+                                                            }
                                                           )
-                                                        ]
-                                                      )
-                                                    }
-                                                  )
-                                                ],
-                                                2
-                                              )
-                                            ])
-                                          : _c("div", [
-                                              _c(
-                                                "select",
-                                                {
-                                                  directives: [
-                                                    {
-                                                      name: "model",
-                                                      rawName: "v-model",
-                                                      value: _vm.grado,
-                                                      expression: "grado"
-                                                    }
-                                                  ],
-                                                  staticClass: "form-control",
-                                                  attrs: { id: "grado" },
-                                                  on: {
-                                                    change: function($event) {
-                                                      var $$selectedVal = Array.prototype.filter
-                                                        .call(
-                                                          $event.target.options,
-                                                          function(o) {
-                                                            return o.selected
-                                                          }
-                                                        )
-                                                        .map(function(o) {
-                                                          var val =
-                                                            "_value" in o
-                                                              ? o._value
-                                                              : o.value
-                                                          return val
-                                                        })
-                                                      _vm.grado = $event.target
-                                                        .multiple
-                                                        ? $$selectedVal
-                                                        : $$selectedVal[0]
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c(
-                                                    "option",
-                                                    {
-                                                      attrs: {
-                                                        value: "0",
-                                                        disabled: "",
-                                                        selected: ""
+                                                          .map(function(o) {
+                                                            var val =
+                                                              "_value" in o
+                                                                ? o._value
+                                                                : o.value
+                                                            return val
+                                                          })
+                                                        _vm.turno = $event
+                                                          .target.multiple
+                                                          ? $$selectedVal
+                                                          : $$selectedVal[0]
                                                       }
-                                                    },
-                                                    [
-                                                      _vm._v(
-                                                        "Seleccione una carrera"
-                                                      )
-                                                    ]
-                                                  )
-                                                ]
-                                              )
-                                            ])
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "option",
+                                                      {
+                                                        attrs: {
+                                                          value: "0",
+                                                          disabled: "",
+                                                          selected: ""
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Seleccione el turno"
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _vm.t_matutino == 1
+                                                      ? _c(
+                                                          "option",
+                                                          {
+                                                            attrs: {
+                                                              value: "1"
+                                                            }
+                                                          },
+                                                          [_vm._v("Matutino")]
+                                                        )
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.t_vespertino == 1
+                                                      ? _c(
+                                                          "option",
+                                                          {
+                                                            attrs: {
+                                                              value: "2"
+                                                            }
+                                                          },
+                                                          [_vm._v("Vespertino")]
+                                                        )
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.t_nocturno == 1
+                                                      ? _c(
+                                                          "option",
+                                                          {
+                                                            attrs: {
+                                                              value: "3"
+                                                            }
+                                                          },
+                                                          [_vm._v("Nocturno")]
+                                                        )
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.t_mixto == 1
+                                                      ? _c(
+                                                          "option",
+                                                          {
+                                                            attrs: {
+                                                              value: "4"
+                                                            }
+                                                          },
+                                                          [_vm._v("Mixto")]
+                                                        )
+                                                      : _vm._e()
+                                                  ]
+                                                )
+                                              ])
+                                            : _c("div", [_vm._m(3)])
+                                        ])
+                                      : _vm._e()
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.msjValidacion[3].turno == 1
+                                    ? _c("msj-validacion", [
+                                        _vm._v(
+                                          _vm._s(_vm.msjValidacion[3].mensaje)
+                                        )
                                       ])
                                     : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                _vm.msjValidacion[4].grado == 1
-                                  ? _c("msj-validacion", [
-                                      _vm._v(
-                                        _vm._s(_vm.msjValidacion[4].mensaje)
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ],
-                              1
-                            )
-                          ]
-                        )
-                      ])
-                    ]),
+                                ],
+                                1
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-6",
+                              staticStyle: { padding: "0 !important" }
+                            },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "form-group" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "col-md form-control-label font-weight-bold text-center",
+                                      attrs: { for: "text-input" }
+                                    },
+                                    [_vm._v("Grado")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "col-md" }, [
+                                    _vm.tipo_envio == 1
+                                      ? _c("div", [_vm._m(4)])
+                                      : _vm.tipo_envio == 0
+                                      ? _c("div", [
+                                          _vm.id_carrera != 0
+                                            ? _c("div", [
+                                                _c(
+                                                  "select",
+                                                  {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.grado,
+                                                        expression: "grado"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: { id: "grado" },
+                                                    on: {
+                                                      click: _vm.tecleo,
+                                                      change: function($event) {
+                                                        var $$selectedVal = Array.prototype.filter
+                                                          .call(
+                                                            $event.target
+                                                              .options,
+                                                            function(o) {
+                                                              return o.selected
+                                                            }
+                                                          )
+                                                          .map(function(o) {
+                                                            var val =
+                                                              "_value" in o
+                                                                ? o._value
+                                                                : o.value
+                                                            return val
+                                                          })
+                                                        _vm.grado = $event
+                                                          .target.multiple
+                                                          ? $$selectedVal
+                                                          : $$selectedVal[0]
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "option",
+                                                      {
+                                                        attrs: {
+                                                          value: "0",
+                                                          disabled: "",
+                                                          selected: ""
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Seleccione el grado"
+                                                        )
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _vm._l(
+                                                      _vm.array_num_grados,
+                                                      function(grupo) {
+                                                        return _c(
+                                                          "option",
+                                                          {
+                                                            key: grupo.num,
+                                                            domProps: {
+                                                              value: grupo.num
+                                                            }
+                                                          },
+                                                          [
+                                                            _vm._v(
+                                                              "\r\n                                                                " +
+                                                                _vm._s(
+                                                                  grupo.num
+                                                                ) +
+                                                                "º\r\n                                                            "
+                                                            )
+                                                          ]
+                                                        )
+                                                      }
+                                                    )
+                                                  ],
+                                                  2
+                                                )
+                                              ])
+                                            : _c("div", [
+                                                _c(
+                                                  "select",
+                                                  {
+                                                    directives: [
+                                                      {
+                                                        name: "model",
+                                                        rawName: "v-model",
+                                                        value: _vm.grado,
+                                                        expression: "grado"
+                                                      }
+                                                    ],
+                                                    staticClass: "form-control",
+                                                    attrs: { id: "grado" },
+                                                    on: {
+                                                      change: function($event) {
+                                                        var $$selectedVal = Array.prototype.filter
+                                                          .call(
+                                                            $event.target
+                                                              .options,
+                                                            function(o) {
+                                                              return o.selected
+                                                            }
+                                                          )
+                                                          .map(function(o) {
+                                                            var val =
+                                                              "_value" in o
+                                                                ? o._value
+                                                                : o.value
+                                                            return val
+                                                          })
+                                                        _vm.grado = $event
+                                                          .target.multiple
+                                                          ? $$selectedVal
+                                                          : $$selectedVal[0]
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _c(
+                                                      "option",
+                                                      {
+                                                        attrs: {
+                                                          value: "0",
+                                                          disabled: "",
+                                                          selected: ""
+                                                        }
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          "Seleccione una carrera"
+                                                        )
+                                                      ]
+                                                    )
+                                                  ]
+                                                )
+                                              ])
+                                        ])
+                                      : _vm._e()
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm.msjValidacion[4].grado == 1
+                                    ? _c("msj-validacion", [
+                                        _vm._v(
+                                          _vm._s(_vm.msjValidacion[4].mensaje)
+                                        )
+                                      ])
+                                    : _vm._e()
+                                ],
+                                1
+                              )
+                            ]
+                          )
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c(
                       "div",
                       {
                         staticClass: "form-group",
-                        staticStyle: { margin: "0" }
+                        staticStyle: { "border-bottom": "1px solid #C6D7D1" }
                       },
                       [
                         _c(
-                          "table",
+                          "div",
                           {
-                            staticClass: "table",
-                            staticStyle: { margin: "0" }
+                            staticClass: "row",
+                            staticStyle: { "margin-bottom": "16px" }
                           },
                           [
-                            _c("tbody", [
-                              _c("tr", [
-                                _c(
-                                  "td",
+                            _c("div", { staticClass: "col-md-6 text-center" }, [
+                              _c("input", {
+                                directives: [
                                   {
-                                    staticClass: "text-center",
-                                    staticStyle: { "border-top": "none" }
-                                  },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.guardar_enviar,
-                                          expression: "guardar_enviar"
-                                        }
-                                      ],
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "radio_guardar",
-                                        value: "0"
-                                      },
-                                      domProps: {
-                                        checked: _vm._q(_vm.guardar_enviar, "0")
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.guardar_enviar = "0"
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      "\r\n                                                Solo guardar.\r\n                                            "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.guardar_enviar,
+                                    expression: "guardar_enviar"
+                                  }
+                                ],
+                                staticClass: "form-check-input",
+                                attrs: {
+                                  type: "radio",
+                                  id: "radio_guardar",
+                                  value: "0"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.guardar_enviar, "0")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.guardar_enviar = "0"
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                "\r\n                                        Solo guardar.\r\n                                    "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-6 text-center" }, [
+                              _c("input", {
+                                directives: [
                                   {
-                                    staticClass: "text-center",
-                                    staticStyle: { "border-top": "none" }
-                                  },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.guardar_enviar,
-                                          expression: "guardar_enviar"
-                                        }
-                                      ],
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "radio_enviar",
-                                        value: "1"
-                                      },
-                                      domProps: {
-                                        checked: _vm._q(_vm.guardar_enviar, "1")
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.guardar_enviar = "1"
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      "\r\n                                                Guardar y enviar.\r\n                                            "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _vm._m(5)
-                              ])
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.guardar_enviar,
+                                    expression: "guardar_enviar"
+                                  }
+                                ],
+                                staticClass: "form-check-input",
+                                attrs: {
+                                  type: "radio",
+                                  id: "radio_enviar",
+                                  value: "1"
+                                },
+                                domProps: {
+                                  checked: _vm._q(_vm.guardar_enviar, "1")
+                                },
+                                on: {
+                                  change: function($event) {
+                                    _vm.guardar_enviar = "1"
+                                  }
+                                }
+                              }),
+                              _vm._v(
+                                "\r\n                                        Guardar y enviar.\r\n                                    "
+                              )
                             ])
                           ]
                         )
                       ]
-                    )
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "col-md text-center" }, [
+                        _vm.guardar_enviar == 0
+                          ? _c("input", {
+                              staticClass: "btn btn-secondary",
+                              staticStyle: { cursor: "pointer" },
+                              attrs: { type: "submit", value: "Guardar aviso" }
+                            })
+                          : _vm.guardar_enviar == 1
+                          ? _c("input", {
+                              staticClass: "btn btn-primary",
+                              staticStyle: { cursor: "pointer" },
+                              attrs: { type: "submit", value: "Enviar aviso" }
+                            })
+                          : _vm._e()
+                      ])
+                    ])
                   ])
                 ])
               ])
@@ -45070,22 +45120,6 @@ var staticRenderFns = [
         _vm._v("Todos los grados")
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "td",
-      { staticClass: "text-center", staticStyle: { "border-top": "none" } },
-      [
-        _c("input", {
-          staticClass: "btn btn-primary",
-          staticStyle: { cursor: "pointer" },
-          attrs: { type: "submit", value: "Enviar aviso" }
-        })
-      ]
-    )
   }
 ]
 render._withStripped = true
@@ -48275,14 +48309,23 @@ var render = function() {
                           }
                         },
                         [
-                          _vm._v(
-                            "\r\n                                    Ver\r\n                                "
-                          )
+                          _c("i", {
+                            staticClass: "fa fa-eye",
+                            attrs: { "aria-hidden": "true" }
+                          })
                         ]
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(3, true)
+                    _c("th", [
+                      aviso.estado == 0
+                        ? _c("div", [_vm._m(3, true)])
+                        : aviso.estado == 1
+                        ? _c("div", [_vm._m(4, true)])
+                        : _vm._e()
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(5, true)
                   ])
                 }),
                 0
@@ -48441,7 +48484,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(4),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-auto" }, [
                           _c("input", {
@@ -48501,7 +48544,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(5),
+                        _vm._m(7),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-auto" }, [
                           _c("input", {
@@ -48560,7 +48603,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(6),
+                        _vm._m(8),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -48901,7 +48944,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md" }, [
                                   _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(7)])
+                                    ? _c("div", [_vm._m(9)])
                                     : _vm.tipo_envio == 0
                                     ? _c("div", [
                                         _vm.id_carrera > 0
@@ -49003,7 +49046,7 @@ var render = function() {
                                                 ]
                                               )
                                             ])
-                                          : _c("div", [_vm._m(8)])
+                                          : _c("div", [_vm._m(10)])
                                       ])
                                     : _vm._e()
                                 ]),
@@ -49044,7 +49087,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md" }, [
                                   _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(9)])
+                                    ? _c("div", [_vm._m(11)])
                                     : _vm.tipo_envio == 0
                                     ? _c("div", [
                                         _vm.id_carrera != 0
@@ -49206,7 +49249,7 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(10),
+                    _vm._m(12),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -49386,7 +49429,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(11),
+              _vm._m(13),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
                 _c(
@@ -49557,8 +49600,29 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Contenido")]),
         _vm._v(" "),
+        _c("th", { staticClass: "text-center" }, [_vm._v("Estado")]),
+        _vm._v(" "),
         _c("th", { staticClass: "text-center" }, [_vm._v("Reenvio")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "btn btn-secondary btn-circle btn-sm" }, [
+      _c("i", { staticClass: "fa fa-meh-o", attrs: { "aria-hidden": "true" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "btn btn-primary btn-circle btn-sm" }, [
+      _c("i", {
+        staticClass: "fa fa-smile-o",
+        attrs: { "aria-hidden": "true" }
+      })
     ])
   },
   function() {

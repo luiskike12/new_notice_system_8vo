@@ -20,7 +20,7 @@ class AvisoController extends Controller
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
             'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
-            'avisos.general','avisos.turno','avisos.grado')
+            'avisos.general','avisos.turno','avisos.grado','avisos.estado')
             ->orderBy('avisos.id', 'desc')->paginate(3);
             /*  Código Anterior
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
@@ -41,7 +41,7 @@ class AvisoController extends Controller
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
             'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
-            'avisos.general','avisos.turno','avisos.grado')
+            'avisos.general','avisos.turno','avisos.grado','avisos.estado')
             ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
             ->orderBy('avisos.id', 'desc')->paginate(3);
         }
@@ -164,6 +164,36 @@ class AvisoController extends Controller
     }
 
     public function guardar_aviso(Request $request){
+        
+        $ruta_documento = null;
+        
+        try{
+            DB::beginTransaction();
+            
+            if ($request->hasFile('documento')){
+                //$nombre = $file->getClientOriginalName();//nombre del archivo
+                //$ruta_documento = $request->documento->store('upload-documents','public');
+                $ruta_documento = Storage::disk('public')->put('upload-documents', $request->file('documento'));
+            }
+            
+            $aviso = new Aviso();
+            $aviso->id_carrera = $request->id_carrera;
+            $aviso->turno = $request->turno;
+            $aviso->grado = $request->grado;
+            $aviso->titulo = $request->titulo;
+            $aviso->contenido = $request->contenido;
+            $aviso->documento = $ruta_documento;
+            $aviso->general = $request->general;
+            $aviso->save();
+            
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+
+    }
+
+    public function guardar_y_enviar_aviso(Request $request){
         //$out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $ruta_documento = null;
         

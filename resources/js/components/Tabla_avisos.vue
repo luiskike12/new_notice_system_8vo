@@ -36,7 +36,7 @@
                             <th class="text-center">Grado</th>
                             <th class="text-center">Titulo</th>
                             <th class="text-center">Contenido</th>
-                            <!-- <th>Documento</th> -->
+                            <th class="text-center">Estado</th>
                             <th class="text-center">Reenvio</th>
                         </tr>
                     </thead>
@@ -70,8 +70,20 @@
                             <th v-text="aviso.titulo"></th>
                             <th>
                                 <button type="button" @click="abrirModal('aviso', 'contenido', aviso)"  class="btn btn-success btn-sm">
-                                    Ver
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
                                 </button>
+                            </th>
+                            <th>
+                                <div v-if="aviso.estado == 0">
+                                    <span class="btn btn-secondary btn-circle btn-sm">
+                                        <i class="fa fa-meh-o" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <div v-else-if="aviso.estado == 1">
+                                    <span class="btn btn-primary btn-circle btn-sm">
+                                        <i class="fa fa-smile-o" aria-hidden="true"></i>
+                                    </span>
+                                </div>
                             </th>
                             <th>
                                 <span class="badge badge-primary">Reenviar</span>
@@ -937,7 +949,7 @@
         height: 30px; 
         padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */
         border-radius: 15px; 
-        font-size: 16px; /* tamaño de letra del boton */
+        font-size: 18px; /* tamaño de letra del boton */
         text-align: center; 
     } 
     .btn-circle.btn-md { 

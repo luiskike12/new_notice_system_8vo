@@ -15,7 +15,7 @@
             </div>
 
             <!--******************************************************************************* -->
-            <form @submit.prevent="guardar_aviso" enctype="multipart/form-data" class="form-horizontal">
+            <form @submit.prevent="guardar_o_enviar_aviso" enctype="multipart/form-data" class="form-horizontal">
 
                 <!-- División de tarjetas IZQUIERDA Y DERECHA -->
                 <div class="card-group">
@@ -63,7 +63,8 @@
                     <!--terjeta DERECHA -->
                     <div class="card card-derecha">
                         <div class="card-body">
-                            <div class="form-group" style="margin: 0; border-bottom: 1px solid #C6D7D1;">
+
+                            <div class="form-group" style="border-bottom: 1px solid #C6D7D1;">
                                 <table class="table" style="margin: 0;">
                                     <tbody>
                                         <tr>
@@ -102,7 +103,7 @@
                                 <msj-validacion v-if="msjValidacion[2].id_carrera==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                             </div>
                             <!-- sección de parametros especificos de la carrera seleccionada -->
-                            <div class="form-group">
+                            <div class="form-group" style="border-bottom: 1px solid #C6D7D1;">
                                 <div class="row">
                                     <div class="col-6" style="padding: 0 !important;">
                                         <div class="form-group">
@@ -207,25 +208,23 @@
                             </div> -->
                             
                             <!-- Sección de enviar el avios -->
-                            <div class="form-group" style="margin: 0;">
-                                <table class="table" style="margin: 0;">
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center" style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
-                                                Solo guardar.
-                                            </td>
-                                            <td class="text-center" style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
-                                                Guardar y enviar.
-                                            </td>
-                                            <td class="text-center" style="border-top: none;">
-                                                <input type="submit" class="btn btn-primary" value="Enviar aviso" style="cursor:pointer;">
-                                                <!-- <button type="button" class="btn btn-primary" @click="guardar_aviso()">Enviar</button> -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="form-group" style="border-bottom: 1px solid #C6D7D1;">
+                                <div class="row" style="margin-bottom: 16px;">
+                                    <div class="col-md-6 text-center">
+                                        <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
+                                        Solo guardar.
+                                    </div>
+                                    <div class="col-md-6 text-center">
+                                        <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
+                                        Guardar y enviar.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md text-center">
+                                    <input v-if="guardar_enviar==0" type="submit" class="btn btn-secondary" value="Guardar aviso" style="cursor:pointer;">
+                                    <input v-else-if="guardar_enviar==1" type="submit" class="btn btn-primary" value="Enviar aviso" style="cursor:pointer;">
+                                </div>
                             </div>
                         <!-- Fin del card-body DERECHA-->
                         </div>  
@@ -407,7 +406,7 @@
                 var campoDocumento = document.getElementById('campoDocumento');
                 campoDocumento.value = '';
             },
-            guardar_aviso(){
+            guardar_o_enviar_aviso(){
                 if(this.validarAviso()){
                     return;
                 }
@@ -423,23 +422,43 @@
                 data.append('contenido', this.contenido_aviso);
                 data.append('documento', this.documento);
                 data.append('general', this.tipo_envio);
+                let conf = {headers: {'Content-Type': 'multipart/form-data' }};
 
-                axios.post('/aviso/guardar_aviso', data).then(function (response){//no modificar
-                    // always executed
-                    me.limpiar_campos();
-                    Swal.fire({
-                        icon: 'success',
-                        title: '¡Genial...!',
-                        text: 'Se ha enviado correctamente'
-                    })
-                }).catch(function (error){
-                    Swal.fire({
-                        icon: 'error',
-                        title: '¡Ups...!',
-                        text: 'Algo salio mal'
-                    })
-                    console.log(error)
-                });
+                if(this.guardar_enviar == 0){
+                    axios.post('/aviso/guardar_aviso', data, conf).then(function (response){//no modificar
+                        // always executed
+                        me.limpiar_campos();
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Genial...!',
+                            text: 'Se ha guardado correctamente'
+                        })
+                    }).catch(function (error){
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Ups...!',
+                            text: 'Algo salio mal'
+                        })
+                        console.log(error)
+                    });
+                }else if(this.guardar_enviar == 1){
+                    axios.post('/aviso/guardar_y_enviar_aviso', data, conf).then(function (response){//no modificar
+                        // always executed
+                        me.limpiar_campos();
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Genial...!',
+                            text: 'Se ha enviado correctamente'
+                        })
+                    }).catch(function (error){
+                        Swal.fire({
+                            icon: 'error',
+                            title: '¡Ups...!',
+                            text: 'Algo salio mal'
+                        })
+                        console.log(error)
+                    });
+                }
 
             },
             limpiar_campos(){
@@ -611,6 +630,9 @@
         max-width: 422px !important;
         border-top: none;
         
+    }
+    .card-derecha .card-body{
+        padding: 18px !important;
     }
     .select-carrera{
         padding: 0;
