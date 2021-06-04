@@ -34,7 +34,6 @@
                             <th class="text-center">Opciones</th>
                             <th class="text-center">Carrera</th>
                             <th class="text-center">Modalidad</th>
-                            <th class="text-center">No. Lista</th>
                             <th class="text-center">Switch</th>
                             <th class="text-center">Matrícula</th>
                             <th class="text-center">Nombre</th>
@@ -54,7 +53,6 @@
                             </td>
                             <th v-text="matricula.nombre_carrera"></th>
                             <th v-text="matricula.modalidad_carrera"></th>
-                            <th v-text="matricula.num_lista"></th>
                             <th class="text-center">
                                 <div v-if="matricula.switch">
                                     <button type="button" class="btn btn-primary btn-circle btn-sm" @click=" switchOFF(matricula.id)">
@@ -138,30 +136,18 @@
                             <msj-validacion v-if="msjValidacion[0].carrera==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 form-control-label" for="text-input">Lista de matrículas(*)</label>
-                            <div class="col-md-9">
-                                <select class="form-control" id="num_lista" v-model="num_lista" @click="tecleo">
-                                    <option value="0" disabled selected>Seleccione la lista para agrupar las matrículas</option>
-                                    <option v-for="lista in arrayListas" :key="lista.id" :value="lista.id">
-                                        {{lista.id}} - Lista (Matrículas) 
-                                    </option>
-                                </select>
-                            </div>
-                            <msj-validacion v-if="msjValidacion[1].lista==1">{{msjValidacion[1].mensaje}}</msj-validacion>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Matrícula (*)</label>
                             <div class="col-md-9">
                                 <input type="text" id="matricula" v-model="matricula" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Matrícula del alumno">
                             </div>
-                            <msj-validacion v-if="msjValidacion[2].matricula==1">{{msjValidacion[2].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion[1].matricula==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Nombre (*)</label>
                             <div class="col-md-9">
                                 <input type="text" id="nombre" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre del alumno">
                             </div>
-                            <msj-validacion v-if="msjValidacion[3].nombre==1">{{msjValidacion[3].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion[2].nombre==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                         </div>
                         <!-- mostrar los errores de la validadción -->
                         <!-- <div class="form-group row div-error" v-show="errorUsers">
@@ -223,15 +209,10 @@
                 //Variables para guardar y actualizar en la DB, se pueden modificar
                 id_matricula : 0,
                 id_carrera : 0,
-                num_lista : 0,
                 matricula : '',
                 nombre : '',
                 arrayMatriculas : [],
                 arrayCarrera : [],
-                arrayListas : [{id:1},{id:2},{id:3},{id:4},{id:5},{id:6},{id:7},{id:8},
-                {id:9},{id:10},{id:11},{id:12}],
-                
-
                 //variables para las funciones especificas del componente
                 modal : 0,
                 modal_eliminar : 0,
@@ -244,7 +225,6 @@
                 numErrors : 0,
                 msjValidacion : [
                     {carrera : 0, mensaje : ''},
-                    {lista : 0, mensaje : ''},
                     {matricula : 0, mensaje : ''},
                     {nombre : 0, mensaje : ''}
                 ],
@@ -340,7 +320,6 @@
                 axios.post('/matricula/registrar', {
                     //Clave  :    Valor    (poner las variables tal y como estan en la DB)
                     'id_carrera' : this.id_carrera,
-                    'num_lista' : this.num_lista,
                     'matricula' : this.matricula,
                     'nombre' : this.nombre
                 }).then(function (response){//no modificar
@@ -359,7 +338,6 @@
                 //          url del controlador
                 axios.put('/matricula/actualizar', {
                     'id_carrera' : this.id_carrera,
-                    'num_lista' : this.num_lista,
                     'matricula' : this.matricula,
                     'nombre' : this.nombre,
                     'id' : this.id_matricula
@@ -422,33 +400,23 @@
                     document.getElementById('carrera').style.cssText = this.colorGood;
                 }
 
-                if(this.num_lista==0){
-                    this.numErrors = 1;
-                    document.getElementById('num_lista').style.cssText = this.colorError;
-                    this.msjValidacion[1].lista = 1;
-                    this.msjValidacion[1].mensaje = "Seleccione el número de lista, a la que pertenecerá la matrícula";
-                }else{
-                    this.msjValidacion[1].mensaje = "";
-                    document.getElementById('num_lista').style.cssText = this.colorGood;
-                }
-
                 if(!this.matricula){
                     this.numErrors = 1;
                     document.getElementById('matricula').style.cssText = this.colorError;
-                    this.msjValidacion[2].matricula = 1;
-                    this.msjValidacion[2].mensaje = "El campo matrícula, no puede estar vacío";
+                    this.msjValidacion[1].matricula = 1;
+                    this.msjValidacion[1].mensaje = "El campo matrícula, no puede estar vacío";
                 }else{
-                    this.msjValidacion[2].mensaje = "";
+                    this.msjValidacion[1].mensaje = "";
                     document.getElementById('matricula').style.cssText = this.colorGood;
                 }
 
                 if(!this.nombre){
                     this.numErrors = 1;
                     document.getElementById('nombre').style.cssText = this.colorError;
-                    this.msjValidacion[3].nombre = 1;
-                    this.msjValidacion[3].mensaje = "El campo nombre, no puede estar vacío";
+                    this.msjValidacion[2].nombre = 1;
+                    this.msjValidacion[2].mensaje = "El campo nombre, no puede estar vacío";
                 }else{
-                    this.msjValidacion[3].mensaje = "";
+                    this.msjValidacion[2].mensaje = "";
                     document.getElementById('nombre').style.cssText = this.colorGood;
                 }
                 
@@ -459,7 +427,6 @@
                 this.modal_eliminar = 0;//no
                 this.tituloModal = '';//no
                 this.id_matricula = 0; 
-                this.num_lista = 0; document.getElementById('num_lista').style.cssText = this.colorGood;
                 this.id_carrera = 0; document.getElementById('carrera').style.cssText = this.colorGood;
                 this.matricula = ''; document.getElementById('matricula').style.cssText = this.colorGood;
                 this.nombre = ''; document.getElementById('nombre').style.cssText = this.colorGood;
@@ -467,7 +434,6 @@
                 this.numErrors = 0;
                 this.msjValidacion = [
                     {carrera : 0, mensaje : ''},
-                    {lista : 0, mensaje : ''},
                     {matricula : 0, mensaje : ''},
                     {nombre : 0, mensaje : ''}
                 ]
@@ -484,7 +450,6 @@
                                 this.tituloModal = 'Registrar Matrícula';
                                 this.id_matricula = 0;
                                 this.id_carrera = 0;
-                                this.num_lista = 0;
                                 this.matricula = '';
                                 this.nombre = '';
                                 this.tipoAccion = 1;//no
@@ -496,7 +461,6 @@
                                 this.tituloModal = 'Actualizar Matrícula';
                                 this.id_matricula = data['id'];
                                 this.id_carrera = data['id_carrera'];
-                                this.num_lista = data['num_lista'];
                                 this.matricula = data['matricula'];
                                 this.nombre = data['nombre'];
                                 this.tipoAccion = 2;//no

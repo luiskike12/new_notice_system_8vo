@@ -23,8 +23,7 @@ class MatriculaController extends Controller
             DB::raw('CASE carreras.tipo_modalidad 
             WHEN 1 THEN "Escolarizado" 
             WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
-            'matriculas.num_lista','matriculas.switch',
-            'matriculas.matricula','matriculas.nombre','matriculas.condicion')
+            'matriculas.switch','matriculas.matricula','matriculas.nombre','matriculas.condicion')
             ->orderBy('matriculas.id', 'desc')->paginate(3);
         }
         else{
@@ -58,7 +57,7 @@ class MatriculaController extends Controller
 
             $matricula = new Matricula();
             $matricula->id_carrera = $request->id_carrera;
-            $matricula->num_lista = $request->num_lista;
+            // $matricula->num_lista = $request->num_lista;
             $matricula->matricula = $request->matricula;
             $matricula->nombre = $request->nombre;
             $matricula->condicion = '0';
@@ -78,7 +77,7 @@ class MatriculaController extends Controller
             //para filtrar el id del usuario
             $matricula = Matricula::findOrFail($request->id);
             $matricula->id_carrera = $request->id_carrera;
-            $matricula->num_lista = $request->num_lista;
+            // $matricula->num_lista = $request->num_lista;
             $matricula->matricula = $request->matricula;
             $matricula->nombre = $request->nombre;
             $matricula->save();

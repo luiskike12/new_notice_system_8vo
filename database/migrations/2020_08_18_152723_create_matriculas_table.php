@@ -17,7 +17,7 @@ class CreateMatriculasTable extends Migration
             $table->increments('id');
             $table->integer('id_carrera')->unsigned();
             $table->foreign('id_carrera')->references('id')->on('carreras');
-            $table->integer('num_lista');
+            //$table->integer('num_lista');
             $table->boolean('switch')->default(0);
             $table->string('matricula', 30)->unique();
             $table->string('nombre',80);
