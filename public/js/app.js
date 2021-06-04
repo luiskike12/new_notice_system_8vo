@@ -2609,6 +2609,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2632,6 +2639,9 @@ __webpack_require__.r(__webpack_exports__);
       //Arrays para mostrar datos en select
       arrayCarrera: [],
       array_num_grados: [],
+      //variable para mostrar imagen seleccionada
+      imagenSeleccionada: '',
+      imagenEs: '',
       //identificadores de validacion
       errorCarrera: 0,
       //seleccion de guardar o enviar el aviso
@@ -2654,9 +2664,16 @@ __webpack_require__.r(__webpack_exports__);
         grado: 0,
         mensaje: ''
       }],
+      msjValidacionDocumento: '',
       colorError: 'border: 2px solid rgba(231, 76, 60, 0.5);',
       colorGood: 'border: 1px solid #BBCDD5;'
     };
+  },
+  computed: {
+    imagen: function imagen() {
+      //muestra la imagen seleccionada
+      return this.imagenSeleccionada;
+    }
   },
   methods: {
     obtener_carreras: function obtener_carreras() {
@@ -2730,7 +2747,42 @@ __webpack_require__.r(__webpack_exports__);
     },
     getDocumento: function getDocumento(event) {
       var file = event.target.files[0];
-      this.documento = file;
+      var campoDocumento = document.getElementById('campoDocumento');
+
+      if (!window.FileReader) {
+        campoDocumento.style.cssText = this.colorError;
+        this.msjValidacionDocumento = "El navegador no soporta la lectura de archivos";
+        campoDocumento.value = "";
+        return;
+      } else {
+        if (!/\.(jpg|png|gif)$/i.test(file.name)) {
+          campoDocumento.style.cssText = this.colorError;
+          this.msjValidacionDocumento = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
+          campoDocumento.value = "";
+        } else if (file.size > 200000) {
+          campoDocumento.style.cssText = this.colorError;
+          this.msjValidacionDocumento = "El peso mínimo requerido de la imagen es de 200kb";
+          campoDocumento.value = "";
+        } else {
+          campoDocumento.style.cssText = this.colorGood;
+          this.msjValidacionDocumento = "";
+          this.documento = file;
+          this.cargarImagen(file);
+        }
+      }
+    },
+    cargarImagen: function cargarImagen(file) {
+      var _this = this;
+
+      //Mostrarle al usuario la imagen que eligio
+      this.imagenEs = 'objeto';
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        _this.imagenSeleccionada = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
     },
     guardar_aviso: function guardar_aviso() {
       if (this.validarAviso()) {
@@ -2806,7 +2858,10 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         grado: 0,
         mensaje: ''
-      }];
+      }]; //variable para mostrar imagen seleccionada
+
+      this.imagenSeleccionada = '';
+      this.imagenEs = '';
     },
     validarAviso: function validarAviso() {
       // se puede modificar, solo los mensajes de validacion
@@ -5333,6 +5388,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5387,6 +5444,7 @@ __webpack_require__.r(__webpack_exports__);
         grado: 0,
         mensaje: ''
       }],
+      msjValidacionDocumento: '',
       colorError: 'border: 2px solid rgba(231, 76, 60, 0.5);',
       colorGood: 'border: 1px solid #BBCDD5;',
       pagination: {
@@ -5436,6 +5494,13 @@ __webpack_require__.r(__webpack_exports__);
     imagen: function imagen() {
       //muestra la imagen seleccionada
       return this.imagenSeleccionada;
+    },
+    removeRedColor: function removeRedColor() {
+      if (this.modal == 0) {
+        return {
+          'border': '1px solid #BBCDD5'
+        };
+      }
     }
   },
   methods: {
@@ -5557,14 +5622,38 @@ __webpack_require__.r(__webpack_exports__);
     },
     getDocumento: function getDocumento(event) {
       var file = event.target.files[0];
-      this.documento = file;
-      this.cargarImagen(file);
+      var campoDocumento = document.getElementById('campoDocumento');
+
+      if (!window.FileReader) {
+        campoDocumento.style.cssText = this.colorError;
+        this.msjValidacionDocumento = "El navegador no soporta la lectura de archivos";
+        campoDocumento.value = "";
+        return;
+      } else {
+        if (!/\.(jpg|png|gif)$/i.test(file.name)) {
+          campoDocumento.style.cssText = this.colorError;
+          this.msjValidacionDocumento = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
+          campoDocumento.value = "";
+        } else if (file.size > 200000) {
+          campoDocumento.style.cssText = this.colorError;
+          this.msjValidacionDocumento = "El peso mínimo requerido de la imagen es de 200kb";
+          campoDocumento.value = "";
+        } else {
+          campoDocumento.style.cssText = this.colorGood;
+          this.msjValidacionDocumento = "";
+          this.documento = file;
+
+          if (typeof this.file === 'objeto') {
+            this.imagenEs = 'objeto';
+            this.cargarImagen(file);
+          }
+        }
+      }
     },
     cargarImagen: function cargarImagen(file) {
       var _this = this;
 
       //Mostrarle al usuario la imagen que eligio
-      this.imagenEs = 'objeto';
       var reader = new FileReader();
 
       reader.onload = function (e) {
@@ -5575,9 +5664,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     actualizarAviso: function actualizarAviso() {
       //se puede modificar, aqui se actualiza
-      // if(this.validarAviso()){
-      //     return;
-      // }
+      if (this.validarAviso()) {
+        return;
+      }
+
       var me = this;
       this.contenido_aviso = document.getElementById('contenido_aviso').value;
       var data = new FormData();
@@ -5618,16 +5708,73 @@ __webpack_require__.r(__webpack_exports__);
     },
     validarAviso: function validarAviso() {
       // se puede modificar, solo los mensajes de validacion
-      this.numErrors = 0; // if(this.id_carrera==0){
-      // }
-      // if(!this.contenido_aviso){
-      // }
+      this.numErrors = 0;
 
-      return this.errorUsers;
+      if (!this.titulo_aviso) {
+        this.numErrors = 1;
+        document.getElementById('titulo_aviso').style.cssText = this.colorError;
+        this.msjValidacion[0].titulo_aviso = 1;
+        this.msjValidacion[0].mensaje = "No puede estar vacío el título del aviso";
+      } else {
+        this.msjValidacion[0].mensaje = "";
+        document.getElementById('titulo_aviso').style.cssText = this.colorGood;
+      }
+
+      this.contenido_aviso = document.getElementById('contenido_aviso').value;
+
+      if (!this.contenido_aviso) {
+        this.numErrors = 1;
+        document.getElementById('contenido_del_aviso').style.cssText = this.colorError;
+        this.msjValidacion[1].contenido_aviso = 1;
+        this.msjValidacion[1].mensaje = "No puede estar vacío el contenido del aviso";
+      } else {
+        this.msjValidacion[1].mensaje = "";
+        document.getElementById('contenido_del_aviso').style.cssText = this.colorGood;
+      }
+
+      if (this.tipo_envio == 0) {
+        if (this.id_carrera == 1) {
+          this.numErrors = 1;
+          document.getElementById('id_carrera').style.cssText = this.colorError;
+          this.msjValidacion[2].id_carrera = 1;
+          this.msjValidacion[2].mensaje = "Seleccione una carrera";
+        } else {
+          this.msjValidacion[2].mensaje = "";
+          document.getElementById('id_carrera').style.cssText = this.colorGood;
+        }
+
+        if (this.turno == 0) {
+          this.numErrors = 1;
+          document.getElementById('turno').style.cssText = this.colorError;
+          this.msjValidacion[3].turno = 1;
+          this.msjValidacion[3].mensaje = "Seleccione un turno";
+        } else {
+          this.msjValidacion[3].mensaje = "";
+          document.getElementById('turno').style.cssText = this.colorGood;
+        }
+
+        if (this.grado == 0) {
+          this.numErrors = 1;
+          document.getElementById('grado').style.cssText = this.colorError;
+          this.msjValidacion[4].grado = 1;
+          this.msjValidacion[4].mensaje = "Seleccione el grado";
+        } else {
+          this.msjValidacion[4].mensaje = "";
+          document.getElementById('grado').style.cssText = this.colorGood;
+        }
+      }
+
+      return this.numErrors;
     },
     cerrarModal: function cerrarModal() {
       //modificar solo variables
-      //Variables manejo de funciones de los modales
+      var campoDocumento = document.getElementById('campoDocumento');
+      campoDocumento.value = '';
+      campoDocumento.style.cssText = this.colorGood;
+      var element = document.querySelector("trix-editor"); //atajo para restablecer trix-editor
+
+      element.value = ""; //Variables manejo de funciones de los modales
+
       this.modal = 0; //no
 
       this.modal_eliminar = 0; //no
@@ -5635,12 +5782,7 @@ __webpack_require__.r(__webpack_exports__);
       this.modal_contenido = 0; //no
 
       this.tituloModal = ''; //no
-
-      var campoDocumento = document.getElementById('campoDocumento');
-      campoDocumento.value = '';
-      var element = document.querySelector("trix-editor"); //atajo para restablecer trix-editor
-
-      element.value = ""; //Variables de actualizar el aviso
+      //Variables de actualizar el aviso
 
       this.imagenSeleccionada = '';
       this.imagenEs = '';
@@ -5649,7 +5791,8 @@ __webpack_require__.r(__webpack_exports__);
       this.grado = 0;
       this.titulo_aviso = '';
       this.documento = '';
-      this.contenido_aviso = ''; //Identificadores de apoyo en el select Turno
+      this.contenido_aviso = '';
+      this.msjValidacionDocumento = ''; //Identificadores de apoyo en el select Turno
 
       this.t_matutino = 0;
       this.t_vespertino = 0;
@@ -5743,8 +5886,6 @@ __webpack_require__.r(__webpack_exports__);
     tecleo: function tecleo() {
       if (this.numErrors == 1) {
         this.numErrors = this.validarAviso();
-      } else {
-        console.log("Tecleo");
       }
     }
   },
@@ -10936,7 +11077,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n.card-izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.scroll-card-izquierda{\n    max-height: 510px;\n    overflow-y: auto;\n}\n.card-derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
 
 // exports
 
@@ -11031,7 +11172,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n/* --------- IMG ----------- */\n.imagen{\n    width: 250px; \n    height: 250px; \n    display:block; \n    margin:auto;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 16px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -44004,126 +44145,41 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "card-group" }, [
-                _c("div", { staticClass: "card izquierda" }, [
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c(
-                        "label",
-                        {
-                          staticClass:
-                            "col-md form-control-label font-weight-bold text-center",
-                          attrs: { for: "email-input" }
-                        },
-                        [_vm._v("Título del aviso")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.titulo_aviso,
-                              expression: "titulo_aviso"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            id: "titulo_aviso",
-                            placeholder: "Ingrese el título del aviso"
-                          },
-                          domProps: { value: _vm.titulo_aviso },
-                          on: {
-                            keypress: _vm.tecleo,
-                            keyup: function($event) {
-                              if (
-                                !$event.type.indexOf("key") &&
-                                _vm._k(
-                                  $event.keyCode,
-                                  "delete",
-                                  [8, 46],
-                                  $event.key,
-                                  ["Backspace", "Delete", "Del"]
-                                )
-                              ) {
-                                return null
-                              }
-                              return _vm.tecleo($event)
-                            },
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.titulo_aviso = $event.target.value
-                            }
-                          }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _vm.msjValidacion[0].titulo_aviso == 1
-                        ? _c("msj-validacion", [
-                            _vm._v(_vm._s(_vm.msjValidacion[0].mensaje))
-                          ])
-                        : _vm._e()
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-group" }, [
+                _c(
+                  "div",
+                  { staticClass: "card card-izquierda scroll-card-izquierda" },
+                  [
                     _c(
-                      "label",
-                      {
-                        staticClass:
-                          "col-md form-control-label font-weight-bold text-center",
-                        attrs: { for: "email-input" }
-                      },
-                      [_vm._v("Documento")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: {
-                          type: "file",
-                          id: "campoDocumento",
-                          placeholder: "Seleccione un documento"
-                        },
-                        on: { change: _vm.getDocumento }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "form-group" },
-                    [
-                      _c(
-                        "label",
-                        {
-                          staticClass:
-                            "col-md form-control-label font-weight-bold text-center",
-                          attrs: { for: "email-input" }
-                        },
-                        [_vm._v("Contenido del aviso")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-md" },
-                        [
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md form-control-label font-weight-bold text-center",
+                            attrs: { for: "email-input" }
+                          },
+                          [_vm._v("Título del aviso")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md" }, [
                           _c("input", {
-                            attrs: { type: "hidden", id: "contenido_aviso" }
-                          }),
-                          _vm._v(" "),
-                          _c("trix-editor", {
-                            staticClass: "trix-editor",
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.titulo_aviso,
+                                expression: "titulo_aviso"
+                              }
+                            ],
+                            staticClass: "form-control",
                             attrs: {
-                              input: "contenido_aviso",
-                              id: "contenido_del_aviso"
+                              type: "text",
+                              id: "titulo_aviso",
+                              placeholder: "Ingrese el título del aviso"
                             },
+                            domProps: { value: _vm.titulo_aviso },
                             on: {
                               keypress: _vm.tecleo,
                               keyup: function($event) {
@@ -44140,24 +44196,135 @@ var render = function() {
                                   return null
                                 }
                                 return _vm.tecleo($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.titulo_aviso = $event.target.value
                               }
                             }
                           })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _vm.msjValidacion[1].contenido_aviso == 1
-                        ? _c("msj-validacion", [
-                            _vm._v(_vm._s(_vm.msjValidacion[1].mensaje))
+                        ]),
+                        _vm._v(" "),
+                        _vm.msjValidacion[0].titulo_aviso == 1
+                          ? _c("msj-validacion", [
+                              _vm._v(_vm._s(_vm.msjValidacion[0].mensaje))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md form-control-label font-weight-bold text-center",
+                            attrs: { for: "email-input" }
+                          },
+                          [_vm._v("Archivo")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md" }, [
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "file",
+                              id: "campoDocumento",
+                              placeholder: "Seleccione un documento"
+                            },
+                            on: { change: _vm.getDocumento }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.msjValidacionDocumento
+                          ? _c("msj-validacion", [
+                              _vm._v(_vm._s(_vm.msjValidacionDocumento))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group text-center" }, [
+                      _vm.imagenEs === "objeto"
+                        ? _c("div", [
+                            _c("img", {
+                              staticClass: "img-fluid img-thumbnail",
+                              attrs: { src: _vm.imagen }
+                            })
                           ])
                         : _vm._e()
-                    ],
-                    1
-                  )
-                ]),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "col-md form-control-label font-weight-bold text-center",
+                            attrs: { for: "email-input" }
+                          },
+                          [_vm._v("Contenido del aviso")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md" },
+                          [
+                            _c("input", {
+                              attrs: { type: "hidden", id: "contenido_aviso" }
+                            }),
+                            _vm._v(" "),
+                            _c("trix-editor", {
+                              staticClass: "trix-editor",
+                              attrs: {
+                                input: "contenido_aviso",
+                                id: "contenido_del_aviso"
+                              },
+                              on: {
+                                keypress: _vm.tecleo,
+                                keyup: function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "delete",
+                                      [8, 46],
+                                      $event.key,
+                                      ["Backspace", "Delete", "Del"]
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  return _vm.tecleo($event)
+                                }
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _vm.msjValidacion[1].contenido_aviso == 1
+                          ? _c("msj-validacion", [
+                              _vm._v(_vm._s(_vm.msjValidacion[1].mensaje))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    )
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "card derecha" }, [
+                _c("div", { staticClass: "card card-derecha" }, [
                   _c(
                     "div",
                     {
@@ -48495,6 +48662,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            style: _vm.removeRedColor,
                             attrs: {
                               type: "text",
                               id: "titulo_aviso",
@@ -48537,21 +48705,32 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "form-group" }, [
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-auto" }, [
-                        _c("input", {
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "file",
-                            id: "campoDocumento",
-                            placeholder: "Seleccione un documento"
-                          },
-                          on: { change: _vm.getDocumento }
-                        })
-                      ])
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _vm._m(5),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-auto" }, [
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "file",
+                              id: "campoDocumento",
+                              placeholder: "Seleccione un documento"
+                            },
+                            on: { change: _vm.getDocumento }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _vm.msjValidacionDocumento
+                          ? _c("msj-validacion", [
+                              _vm._v(_vm._s(_vm.msjValidacionDocumento))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
                     _c("div", { staticClass: "form-group text-center" }, [
                       _vm.imagenEs === "string"
@@ -48587,6 +48766,7 @@ var render = function() {
                             _vm._v(" "),
                             _c("trix-editor", {
                               staticClass: "trix-editor",
+                              style: _vm.removeRedColor,
                               attrs: {
                                 input: "contenido_aviso",
                                 id: "contenido_del_aviso"
@@ -48810,6 +48990,7 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
+                                    style: _vm.removeRedColor,
                                     attrs: { id: "id_carrera" },
                                     on: {
                                       click: _vm.tecleo,
@@ -48931,6 +49112,7 @@ var render = function() {
                                                     }
                                                   ],
                                                   staticClass: "form-control",
+                                                  style: _vm.removeRedColor,
                                                   attrs: { id: "turno" },
                                                   on: {
                                                     click: _vm.tecleo,
@@ -49073,6 +49255,7 @@ var render = function() {
                                                     }
                                                   ],
                                                   staticClass: "form-control",
+                                                  style: _vm.removeRedColor,
                                                   attrs: { id: "grado" },
                                                   on: {
                                                     click: _vm.tecleo,
@@ -49606,7 +49789,7 @@ var staticRenderFns = [
           staticClass: "form-control-label font-weight-bold",
           attrs: { for: "email-input" }
         },
-        [_vm._v("Documento")]
+        [_vm._v("Archivo")]
       )
     ])
   },

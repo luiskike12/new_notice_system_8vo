@@ -118,19 +118,20 @@
                                     <label class="form-control-label font-weight-bold" for="email-input">Título del aviso</label>
                                 </div>
                                 <div class="col-md-auto">
-                                    <input type="text" id="titulo_aviso" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Ingrese el título del aviso">
+                                    <input type="text" id="titulo_aviso" :style="removeRedColor" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Ingrese el título del aviso">
                                 </div>
                                 <msj-validacion v-if="msjValidacion[0].titulo_aviso==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-auto text-center">
-                                    <label class="form-control-label font-weight-bold" for="email-input">Documento</label>
+                                    <label class="form-control-label font-weight-bold" for="email-input">Archivo</label>
                                 </div>
                                 <div class="col-md-auto">
                                     <input type="file" id="campoDocumento" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
                                 </div>
+                                <msj-validacion v-if="msjValidacionDocumento">{{msjValidacionDocumento}}</msj-validacion>
                             </div>
-                            <!-- mostrar la imagen del aviso a actualizar -->
+                            <!-- mostrar la imagen seleccionada -->
                             <div class="form-group text-center">
                                 <div v-if="imagenEs === 'string'">
                                     <img :src="'storage/' + documento" class="img-fluid img-thumbnail">
@@ -139,13 +140,14 @@
                                     <img :src="imagen" class="img-fluid img-thumbnail">
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <div class="col-md-auto text-center">
                                     <label class="form-control-label font-weight-bold" for="email-input">Contenido del aviso</label>
                                 </div>
                                 <div class="col-md-auto">
                                     <input type="hidden" id="contenido_aviso">
-                                    <trix-editor input="contenido_aviso" id="contenido_del_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
+                                    <trix-editor input="contenido_aviso" id="contenido_del_aviso" :style="removeRedColor" @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
                                 </div>
                                 <msj-validacion v-if="msjValidacion[1].contenido_aviso==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                             </div>
@@ -181,7 +183,7 @@
                                         </select>
                                     </div>
                                     <div v-else-if="tipo_envio == 0">
-                                        <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
+                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
                                             <option value="1" disabled selected>Seleccione una carrera</option>
                                             <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                                 {{carrera.nombre}} - {{carrera.tipo_modalidad}}
@@ -206,7 +208,7 @@
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
                                                     <div v-if="id_carrera > 0">
-                                                        <select class="form-control" @click="tecleo" id="turno" v-model="turno">
+                                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="turno" v-model="turno">
                                                             <option value="0" disabled selected>Seleccione el turno</option>
                                                             <option value="1" v-if="t_matutino==1">Matutino</option>
                                                             <option value="2" v-if="t_vespertino==1">Vespertino</option>
@@ -235,7 +237,7 @@
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
                                                     <div v-if="id_carrera != 0">
-                                                        <select class="form-control" @click="tecleo" id="grado" v-model="grado">
+                                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="grado" v-model="grado">
                                                             <option value="0" disabled selected>Seleccione el grado</option>
                                                             <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
                                                                 {{grupo.num}}º
@@ -447,9 +449,10 @@
                     {turno : 0, mensaje : ''},
                     {grado : 0, mensaje : ''}
                 ],
+                msjValidacionDocumento : '',
                 colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
                 colorGood : 'border: 1px solid #BBCDD5;',
-
+                
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -492,6 +495,13 @@
             },
             imagen(){//muestra la imagen seleccionada
                 return this.imagenSeleccionada;
+            },
+            removeRedColor : function(){
+                if(this.modal == 0){
+                    return {
+                        'border' : '1px solid #BBCDD5'
+                    }
+                }
             }
         },
         methods : {
@@ -614,11 +624,38 @@
             },
             getDocumento(event){
                 let file = event.target.files[0];
-                this.documento = file;
-                this.cargarImagen(file);
+
+                var campoDocumento = document.getElementById('campoDocumento');
+                
+                if (!window.FileReader){
+                    campoDocumento.style.cssText = this.colorError;
+                    this.msjValidacionDocumento = "El navegador no soporta la lectura de archivos";
+                    campoDocumento.value = "";
+                    return;
+                }else{
+                    if (!(/\.(jpg|png|gif)$/i).test(file.name)){
+                        campoDocumento.style.cssText = this.colorError;
+                        this.msjValidacionDocumento = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
+                        campoDocumento.value = "";
+                    }
+                    else if (file.size > 200000){
+                        campoDocumento.style.cssText = this.colorError;
+                        this.msjValidacionDocumento = "El peso mínimo requerido de la imagen es de 200kb";
+                        campoDocumento.value = "";
+                    }
+                    else{    
+                        campoDocumento.style.cssText = this.colorGood;
+                        this.msjValidacionDocumento = "";
+                        this.documento = file;
+                        if( typeof(this.file) === 'objeto'){
+                            this.imagenEs = 'objeto';
+                            this.cargarImagen(file);
+                        }
+                        
+                    }
+                }
             },
             cargarImagen(file){//Mostrarle al usuario la imagen que eligio
-                this.imagenEs = 'objeto';
                 let reader = new FileReader();
                 reader.onload = (e) => {
                     this.imagenSeleccionada = e.target.result;
@@ -626,9 +663,9 @@
                 reader.readAsDataURL(file);
             },
             actualizarAviso(){//se puede modificar, aqui se actualiza
-                // if(this.validarAviso()){
-                //     return;
-                // }
+                if(this.validarAviso()){
+                    return;
+                }
                 
                 let me = this;
                 this.contenido_aviso = document.getElementById('contenido_aviso').value;
@@ -668,38 +705,86 @@
             validarAviso(){// se puede modificar, solo los mensajes de validacion
                 this.numErrors = 0;
 
-                // if(this.id_carrera==0){
-                    
-                // }
+                if(!this.titulo_aviso){
+                    this.numErrors = 1;
+                    document.getElementById('titulo_aviso').style.cssText = this.colorError;
+                    this.msjValidacion[0].titulo_aviso = 1;
+                    this.msjValidacion[0].mensaje = "No puede estar vacío el título del aviso";
+                }else{
+                    this.msjValidacion[0].mensaje = "";
+                    document.getElementById('titulo_aviso').style.cssText = this.colorGood;
+                }
 
-                // if(!this.contenido_aviso){
-                    
-                // }
+                this.contenido_aviso = document.getElementById('contenido_aviso').value;
+                if(!this.contenido_aviso){
+                    this.numErrors = 1;
+                    document.getElementById('contenido_del_aviso').style.cssText = this.colorError;
+                    this.msjValidacion[1].contenido_aviso = 1;
+                    this.msjValidacion[1].mensaje = "No puede estar vacío el contenido del aviso";
+                }else{
+                    this.msjValidacion[1].mensaje = "";
+                    document.getElementById('contenido_del_aviso').style.cssText = this.colorGood;
+                }
 
-                return this.errorUsers;
+                if(this.tipo_envio==0){
+                    if(this.id_carrera==1){
+                        this.numErrors = 1;
+                        document.getElementById('id_carrera').style.cssText = this.colorError;
+                        this.msjValidacion[2].id_carrera = 1;
+                        this.msjValidacion[2].mensaje = "Seleccione una carrera";
+                    }else{
+                        this.msjValidacion[2].mensaje = "";
+                        document.getElementById('id_carrera').style.cssText = this.colorGood;
+                    }
 
+                    if(this.turno == 0){
+                        this.numErrors = 1;
+                        document.getElementById('turno').style.cssText = this.colorError;
+                        this.msjValidacion[3].turno = 1;
+                        this.msjValidacion[3].mensaje = "Seleccione un turno";
+                    }else{
+                        this.msjValidacion[3].mensaje = "";
+                        document.getElementById('turno').style.cssText = this.colorGood;
+                    }
+
+                    if(this.grado == 0){
+                        this.numErrors = 1;
+                        document.getElementById('grado').style.cssText = this.colorError;
+                        this.msjValidacion[4].grado = 1;
+                        this.msjValidacion[4].mensaje = "Seleccione el grado";
+                    }else{
+                        this.msjValidacion[4].mensaje = "";
+                        document.getElementById('grado').style.cssText = this.colorGood;
+                    }
+                }
+
+                return this.numErrors;
             },
             cerrarModal(){//modificar solo variables
+                var campoDocumento = document.getElementById('campoDocumento');
+                campoDocumento.value = '';
+                campoDocumento.style.cssText = this.colorGood;
+
+                var element = document.querySelector("trix-editor");
+                //atajo para restablecer trix-editor
+                element.value = "";
+
                 //Variables manejo de funciones de los modales
                 this.modal = 0;//no
                 this.modal_eliminar = 0;//no
                 this.modal_contenido = 0;//no
                 this.tituloModal = '';//no
-          
-                var campoDocumento = document.getElementById('campoDocumento');
-                campoDocumento.value = '';
-                var element = document.querySelector("trix-editor");
-                //atajo para restablecer trix-editor
-                element.value = "";
+
                 //Variables de actualizar el aviso
                 this.imagenSeleccionada = '';
                 this.imagenEs = '';
                 this.id_carrera = 1; 
                 this.turno = 0; 
                 this.grado = 0; 
-                this.titulo_aviso = '';
+                this.titulo_aviso = ''; 
                 this.documento = '';
-                this.contenido_aviso = '';
+                this.contenido_aviso = ''; 
+                this.msjValidacionDocumento = '';
                 //Identificadores de apoyo en el select Turno
                 this.t_matutino = 0;
                 this.t_vespertino = 0;
@@ -774,8 +859,6 @@
             tecleo : function (){
                 if(this.numErrors==1){
                     this.numErrors = this.validarAviso();
-                }else{
-                    console.log("Tecleo");
                 }
             }
         },
@@ -850,11 +933,5 @@
         font-size: 12px; 
         text-align: center; 
     }
-    /* --------- IMG ----------- */
-    .imagen{
-        width: 250px; 
-        height: 250px; 
-        display:block; 
-        margin:auto;
-    }
+    
 </style>

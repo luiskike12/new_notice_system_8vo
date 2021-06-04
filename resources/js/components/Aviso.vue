@@ -20,7 +20,7 @@
                 <!-- División de tarjetas IZQUIERDA Y DERECHA -->
                 <div class="card-group">
                     <!-- terjeta IZQUIERDA -->
-                    <div class="card izquierda">
+                    <div class="card card-izquierda scroll-card-izquierda">
                         <div class="form-group">
                             <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Título del aviso</label>
                             <div class="col-md">
@@ -29,9 +29,16 @@
                             <msj-validacion v-if="msjValidacion[0].titulo_aviso==1">{{msjValidacion[0].mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group">
-                            <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Documento</label>
+                            <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Archivo</label>
                             <div class="col-md">
                                 <input type="file" id="campoDocumento" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
+                            </div>
+                            <msj-validacion v-if="msjValidacionDocumento">{{msjValidacionDocumento}}</msj-validacion>
+                        </div>
+                        <!-- mostrar la imagen seleccionada -->
+                        <div class="form-group text-center">
+                            <div v-if="imagenEs === 'objeto'">
+                                <img :src="imagen" class="img-fluid img-thumbnail">
                             </div>
                         </div>
                         <div class="form-group">
@@ -46,7 +53,7 @@
                     <!--FIN terjeta IZQUIERDA -->
 
                     <!--terjeta DERECHA -->
-                    <div class="card derecha">
+                    <div class="card card-derecha">
                         <div class="form-group" style="margin: 0; border-bottom: 1px solid #C6D7D1;">
                             <table class="table" style="margin: 0;">
                                 <tbody>
@@ -189,7 +196,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div> 
+                        </div>
                         
                         <!-- Sección de enviar el avios -->
                         <div class="form-group" style="margin: 0;">
@@ -253,6 +260,9 @@
                 //Arrays para mostrar datos en select
                 arrayCarrera : [],
                 array_num_grados: [],
+                //variable para mostrar imagen seleccionada
+                imagenSeleccionada : '',
+                imagenEs : '',
                 //identificadores de validacion
                 errorCarrera: 0,
                 //seleccion de guardar o enviar el aviso
@@ -266,8 +276,14 @@
                     {turno : 0, mensaje : ''},
                     {grado : 0, mensaje : ''}
                 ],
+                msjValidacionDocumento : '',
                 colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
                 colorGood : 'border: 1px solid #BBCDD5;',
+            }
+        },
+        computed : {
+            imagen(){//muestra la imagen seleccionada
+                return this.imagenSeleccionada;
             }
         },
         methods : {
@@ -343,7 +359,40 @@
             },
             getDocumento(event){
                 let file = event.target.files[0];
-                this.documento = file;
+
+                var campoDocumento = document.getElementById('campoDocumento');
+                
+                if (!window.FileReader){
+                    campoDocumento.style.cssText = this.colorError;
+                    this.msjValidacionDocumento = "El navegador no soporta la lectura de archivos";
+                    campoDocumento.value = "";
+                    return;
+                }else{
+                    if (!(/\.(jpg|png|gif)$/i).test(file.name)){
+                        campoDocumento.style.cssText = this.colorError;
+                        this.msjValidacionDocumento = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
+                        campoDocumento.value = "";
+                    }
+                    else if (file.size > 200000){
+                        campoDocumento.style.cssText = this.colorError;
+                        this.msjValidacionDocumento = "El peso mínimo requerido de la imagen es de 200kb";
+                        campoDocumento.value = "";
+                    }
+                    else{    
+                        campoDocumento.style.cssText = this.colorGood;
+                        this.msjValidacionDocumento = "";
+                        this.documento = file;
+                        this.cargarImagen(file);
+                    }
+                }
+            },
+            cargarImagen(file){//Mostrarle al usuario la imagen que eligio
+                this.imagenEs = 'objeto';
+                let reader = new FileReader();
+                reader.onload = (e) => {
+                    this.imagenSeleccionada = e.target.result;
+                }
+                reader.readAsDataURL(file);
             },
             guardar_aviso(){
                 if(this.validarAviso()){
@@ -414,6 +463,9 @@
                     {turno : 0, mensaje : ''},
                     {grado : 0, mensaje : ''}
                 ];
+                //variable para mostrar imagen seleccionada
+                this.imagenSeleccionada = '';
+                this.imagenEs = '';
             },
             validarAviso(){// se puede modificar, solo los mensajes de validacion
                 this.numErrors = 0;
@@ -527,11 +579,15 @@
         max-height: 217px !important;   /*#set whatever height you want*/
         overflow-y: auto;
     }
-    .izquierda{
+    .card-izquierda{
         margin: 0 !important;
         border-top: none;
     }
-    .derecha{
+    .scroll-card-izquierda{
+        max-height: 510px;
+        overflow-y: auto;
+    }
+    .card-derecha{
         margin: 0 !important;
         max-width: 422px !important;
         border-top: none;
