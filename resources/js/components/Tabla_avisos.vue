@@ -137,7 +137,12 @@
                                     <img :src="'storage/' + documento" class="img-fluid img-thumbnail">
                                 </div>
                                 <div v-else-if="imagenEs === 'objeto'">
-                                    <img :src="imagen" class="img-fluid img-thumbnail">
+                                    <div class="col-md">
+                                        <img :src="imagen" class="img-fluid img-thumbnail">
+                                    </div>
+                                    <div class="col-md">
+                                        <button class="btn btn-secondary" @click="eliminarImagen" style="margin-top:10px;">Eliminar imagen</button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -422,6 +427,7 @@
                 //variable para mostrar imagen seleccionada
                 imagenSeleccionada : '',
                 imagenEs : '',
+                documentoAnterior : '',
                 //Identificadores de apoyo en el select Turno
                 t_matutino: 0,
                 t_vespertino: 0,
@@ -647,11 +653,8 @@
                         campoDocumento.style.cssText = this.colorGood;
                         this.msjValidacionDocumento = "";
                         this.documento = file;
-                        if( typeof(this.file) === 'objeto'){
-                            this.imagenEs = 'objeto';
-                            this.cargarImagen(file);
-                        }
-                        
+                        this.imagenEs = 'objeto';
+                        this.cargarImagen(file);
                     }
                 }
             },
@@ -661,6 +664,18 @@
                     this.imagenSeleccionada = e.target.result;
                 }
                 reader.readAsDataURL(file);
+            },
+            eliminarImagen(){
+                this.imagenSeleccionada = '';
+                var campoDocumento = document.getElementById('campoDocumento');
+                campoDocumento.value = '';
+
+                if( typeof(this.documentoAnterior) === 'string'){
+                    this.imagenEs = 'string';
+                }else{
+                    this.imagenEs = '';
+                }
+                this.documento = this.documentoAnterior;
             },
             actualizarAviso(){//se puede modificar, aqui se actualiza
                 if(this.validarAviso()){
@@ -776,14 +791,16 @@
                 this.tituloModal = '';//no
 
                 //Variables de actualizar el aviso
-                this.imagenSeleccionada = '';
-                this.imagenEs = '';
                 this.id_carrera = 1; 
                 this.turno = 0; 
                 this.grado = 0; 
                 this.titulo_aviso = ''; 
                 this.documento = '';
                 this.contenido_aviso = ''; 
+                //variables del archivo imagen
+                this.imagenSeleccionada = '';
+                this.imagenEs = '';
+                this.documentoAnterior = '';
                 this.msjValidacionDocumento = '';
                 //Identificadores de apoyo en el select Turno
                 this.t_matutino = 0;
@@ -821,6 +838,7 @@
                                 this.contenido_aviso = data['contenido'];
                                 element.value = this.contenido_aviso;
                                 this.documento = data['url_documento'];
+                                this.documentoAnterior = this.documento;
                                 if( typeof(this.documento) === 'string'){
                                     this.imagenEs = 'string';
                                 }
