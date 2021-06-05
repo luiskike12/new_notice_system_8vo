@@ -24,7 +24,7 @@ class MatriculaController extends Controller
             WHEN 1 THEN "Escolarizado" 
             WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
             'matriculas.switch','matriculas.matricula','matriculas.nombre','matriculas.condicion')
-            ->orderBy('matriculas.id', 'desc')->paginate(3);
+            ->orderBy('matriculas.id', 'desc')->paginate(5);
         }
         else{
             $matriculas = Matricula::join('carreras','carreras.id','=','matriculas.id_carrera')
@@ -34,7 +34,7 @@ class MatriculaController extends Controller
             WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
             'matriculas.matricula','matriculas.nombre','matriculas.condicion')
             ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('matriculas.id', 'desc')->paginate(3);
+            ->orderBy('matriculas.id', 'desc')->paginate(5);
         }
         
         return[

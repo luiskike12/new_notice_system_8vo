@@ -23,14 +23,14 @@ class CarreraController extends Controller
             //se crea un array de todo lo que devuelva el metodo
             $carreras = Carrera::where('id','!=','1')
             ->orderBy('id', 'desc')
-            ->paginate(3);
+            ->paginate(5);
         }
         else{
             $carreras = Carrera::where($criterio, 'like', '%'.$buscar.'%')
             ->where(function ($query) {
                 $query->where('id','!=','1');
             })
-            ->orderBy('id', 'desc')->paginate(3);
+            ->orderBy('id', 'desc')->paginate(5);
         }
         
         return[

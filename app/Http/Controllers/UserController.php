@@ -22,7 +22,7 @@ class UserController extends Controller
             ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
             'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
             'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
-            ->orderBy('users.id', 'desc')->paginate(3);
+            ->orderBy('users.id', 'desc')->paginate(5);
         }
         else{
             $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
@@ -31,7 +31,7 @@ class UserController extends Controller
             'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
             'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
             ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('users.id', 'desc')->paginate(3);
+            ->orderBy('users.id', 'desc')->paginate(5);
         }
         
         return[

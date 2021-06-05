@@ -427,7 +427,6 @@
                         }).catch(function (error){
                             console.log(error)
                         });
-
                         
                     } else if (
                         /* Read more about handling dismissals below */

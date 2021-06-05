@@ -69,8 +69,7 @@ class AlumnoController extends Controller
             'matriculas.matricula as matricula_alumno',
             'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
             'alumnos.turno','alumnos.condicion')
-            ->orderBy('matriculas.id', 'desc')->paginate(3);
-
+            ->orderBy('matriculas.id', 'desc')->paginate(5);
         }
         else{
             $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
@@ -81,7 +80,7 @@ class AlumnoController extends Controller
             'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
             'alumnos.turno','alumnos.condicion')
             ->where('alumnos.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('matriculas.id', 'desc')->paginate(3);
+            ->orderBy('matriculas.id', 'desc')->paginate(5);
         }
         
         return[
@@ -123,7 +122,7 @@ class AlumnoController extends Controller
 
     public function actualizar(Request $request)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $esVacio = $request->password;
         try{
             DB::beginTransaction();
@@ -148,8 +147,6 @@ class AlumnoController extends Controller
 
             DB::commit();
         }catch (Exception $e){
-            $out->writeln("-------------- DOUH!! --------------");
-            $out->writeln($e);
             DB::rollBack();
         }
     }
