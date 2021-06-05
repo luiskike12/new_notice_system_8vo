@@ -2624,6 +2624,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5362,27 +5363,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -5708,6 +5688,49 @@ __webpack_require__.r(__webpack_exports__);
         me.listarAvisos(1, '', 'titulo');
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    reenviar_aviso: function reenviar_aviso(id_reenvio) {
+      var _this2 = this;
+
+      var swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: 'Desea reenviar este aviso?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Aceptar!',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then(function (result) {
+        if (result.value) {
+          var me = _this2;
+          axios.put('/aviso/reenviar_aviso', {
+            'id': id_reenvio
+          }).then(function (response) {
+            me.cerrarModal();
+            Swal.fire({
+              icon: 'success',
+              title: '¡Genial...!',
+              text: 'Se ha enviado correctamente'
+            });
+            me.listarAvisos(1, '', 'titulo');
+          })["catch"](function (error) {
+            Swal.fire({
+              icon: 'error',
+              title: '¡Ups...!',
+              text: 'Algo salio mal'
+            });
+            console.log(error);
+          });
+        } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel) {}
       });
     },
     validarAviso: function validarAviso() {
@@ -11084,7 +11107,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n/* TRIX-EDITOR  */\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/*  Posisionamiento de los cards */\n.card-izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.scroll-card-izquierda{\n    max-height: 510px;\n    overflow-y: auto;\n}\n.card-derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n.card-derecha .card-body{\n    padding: 18px !important;\n}\n.select-carrera{\n    padding: 0;\n}\n/*.container-1{\n    border: 1px solid black;\n}*/\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n/* TRIX-EDITOR  */\n.trix-editor{\n    min-height: 217px;\n    max-height: 217px !important;   /*#set whatever height you want*/\n    overflow-y: auto;\n}\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/*  Posisionamiento de los cards */\n.card-izquierda{\n    margin: 0 !important;\n    border-top: none;\n}\n.scroll-card-izquierda{\n    max-height: 510px;\n    overflow-y: auto;\n}\n.card-derecha{\n    margin: 0 !important;\n    max-width: 422px !important;\n    border-top: none;\n}\n.card-derecha .card-body{\n    padding: 18px !important;\n}\n.select-carrera{\n    padding: 0;\n}\n", ""]);
 
 // exports
 
@@ -11179,7 +11202,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 18px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.select-carrera{\n    padding: 0;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 18px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -48333,7 +48356,25 @@ var render = function() {
                         : _vm._e()
                     ]),
                     _vm._v(" "),
-                    _vm._m(5, true)
+                    _c("th", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "badge badge-primary",
+                          attrs: { type: "button", id: "btn-activo" },
+                          on: {
+                            click: function($event) {
+                              return _vm.reenviar_aviso(aviso.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\r\n                                    Reenviar\r\n                                "
+                          )
+                        ]
+                      )
+                    ])
                   ])
                 }),
                 0
@@ -48492,7 +48533,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(6),
+                        _vm._m(5),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-auto" }, [
                           _c("input", {
@@ -48552,7 +48593,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(7),
+                        _vm._m(6),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-auto" }, [
                           _c("input", {
@@ -48611,7 +48652,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _vm._m(8),
+                        _vm._m(7),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -48665,7 +48706,6 @@ var render = function() {
                       {
                         staticClass: "form-group",
                         staticStyle: {
-                          margin: "0",
                           "border-top": "1px solid #C6D7D1",
                           "border-bottom": "1px solid #C6D7D1"
                         }
@@ -48778,13 +48818,13 @@ var render = function() {
                           "label",
                           {
                             staticClass:
-                              "col-md form-control-label font-weight-bold text-center",
+                              "col-md-12 form-control-label font-weight-bold text-center",
                             attrs: { for: "email-input" }
                           },
                           [_vm._v("Carreras")]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "col-md" }, [
+                        _c("div", { staticClass: "col-md-12 select-carrera" }, [
                           _vm.tipo_envio == 1
                             ? _c("div", [
                                 _c(
@@ -48847,7 +48887,6 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
-                                    style: _vm.removeRedColor,
                                     attrs: { id: "id_carrera" },
                                     on: {
                                       click: _vm.tecleo,
@@ -48927,12 +48966,12 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "container-1" }, [
+                    _c("div", { staticClass: "form-group" }, [
                       _c("div", { staticClass: "row" }, [
                         _c(
                           "div",
                           {
-                            staticClass: "col",
+                            staticClass: "col-6",
                             staticStyle: { padding: "0 !important" }
                           },
                           [
@@ -48952,10 +48991,10 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md" }, [
                                   _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(9)])
+                                    ? _c("div", [_vm._m(8)])
                                     : _vm.tipo_envio == 0
                                     ? _c("div", [
-                                        _vm.id_carrera > 0
+                                        _vm.id_carrera != 0
                                           ? _c("div", [
                                               _c(
                                                 "select",
@@ -48969,7 +49008,6 @@ var render = function() {
                                                     }
                                                   ],
                                                   staticClass: "form-control",
-                                                  style: _vm.removeRedColor,
                                                   attrs: { id: "turno" },
                                                   on: {
                                                     click: _vm.tecleo,
@@ -49054,7 +49092,7 @@ var render = function() {
                                                 ]
                                               )
                                             ])
-                                          : _c("div", [_vm._m(10)])
+                                          : _c("div", [_vm._m(9)])
                                       ])
                                     : _vm._e()
                                 ]),
@@ -49075,7 +49113,7 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "col",
+                            staticClass: "col-6",
                             staticStyle: { padding: "0 !important" }
                           },
                           [
@@ -49095,7 +49133,7 @@ var render = function() {
                                 _vm._v(" "),
                                 _c("div", { staticClass: "col-md" }, [
                                   _vm.tipo_envio == 1
-                                    ? _c("div", [_vm._m(11)])
+                                    ? _c("div", [_vm._m(10)])
                                     : _vm.tipo_envio == 0
                                     ? _c("div", [
                                         _vm.id_carrera != 0
@@ -49112,7 +49150,6 @@ var render = function() {
                                                     }
                                                   ],
                                                   staticClass: "form-control",
-                                                  style: _vm.removeRedColor,
                                                   attrs: { id: "grado" },
                                                   on: {
                                                     click: _vm.tecleo,
@@ -49255,105 +49292,7 @@ var render = function() {
                           ]
                         )
                       ])
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(12),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
-                        staticClass: "form-group",
-                        staticStyle: { margin: "0" }
-                      },
-                      [
-                        _c(
-                          "table",
-                          {
-                            staticClass: "table",
-                            staticStyle: { margin: "0" }
-                          },
-                          [
-                            _c("tbody", [
-                              _c("tr", [
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "text-center",
-                                    staticStyle: { "border-top": "none" }
-                                  },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.guardar_enviar,
-                                          expression: "guardar_enviar"
-                                        }
-                                      ],
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "radio_guardar",
-                                        value: "0"
-                                      },
-                                      domProps: {
-                                        checked: _vm._q(_vm.guardar_enviar, "0")
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.guardar_enviar = "0"
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      "\r\n                                                Solo guardar.\r\n                                            "
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticClass: "text-center",
-                                    staticStyle: { "border-top": "none" }
-                                  },
-                                  [
-                                    _c("input", {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.guardar_enviar,
-                                          expression: "guardar_enviar"
-                                        }
-                                      ],
-                                      staticClass: "form-check-input",
-                                      attrs: {
-                                        type: "radio",
-                                        id: "radio_enviar",
-                                        value: "1"
-                                      },
-                                      domProps: {
-                                        checked: _vm._q(_vm.guardar_enviar, "1")
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          _vm.guardar_enviar = "1"
-                                        }
-                                      }
-                                    }),
-                                    _vm._v(
-                                      "\r\n                                                Guardar y enviar.\r\n                                            "
-                                    )
-                                  ]
-                                )
-                              ])
-                            ])
-                          ]
-                        )
-                      ]
-                    )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
@@ -49437,7 +49376,7 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
-              _vm._m(13),
+              _vm._m(11),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
                 _c(
@@ -49637,14 +49576,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("span", { staticClass: "badge badge-primary" }, [_vm._v("Reenviar")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-auto text-center" }, [
       _c(
         "label",
@@ -49723,126 +49654,6 @@ var staticRenderFns = [
         _vm._v("Todos los grados")
       ])
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "form-group", staticStyle: { margin: "0" } },
-      [
-        _c("table", { staticClass: "table", staticStyle: { margin: "0" } }, [
-          _c("thead", [
-            _c("tr", [
-              _c(
-                "th",
-                {
-                  staticClass: "text-center",
-                  staticStyle: { "border-bottom": "none" },
-                  attrs: { colspan: "4" }
-                },
-                [
-                  _c("input", {
-                    staticClass: "form-check-input",
-                    attrs: { type: "checkbox", id: "gridCheck" }
-                  }),
-                  _vm._v(
-                    "\r\n                                                Envío programado\r\n                                            "
-                  )
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", [
-              _c(
-                "td",
-                {
-                  staticClass: "text-center",
-                  staticStyle: { "border-top": "none", "padding-right": "0" }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "input-group-addon",
-                      staticStyle: { "border-right": "none" }
-                    },
-                    [_vm._v("Fecha:")]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass: "text-center",
-                  staticStyle: { "border-top": "none", "padding-left": "0" }
-                },
-                [
-                  _c("div", { staticClass: "input-group date asignar-fecha" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: { type: "text" }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "input-group-addon" }, [
-                      _c("i", {
-                        staticClass: "fa fa-calendar",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ])
-                  ])
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass: "text-center",
-                  staticStyle: { "border-top": "none", "padding-right": "0" }
-                },
-                [
-                  _c(
-                    "span",
-                    {
-                      staticClass: "input-group-addon",
-                      staticStyle: { "border-right": "none" }
-                    },
-                    [_vm._v("Hora:")]
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "td",
-                {
-                  staticClass: "text-center",
-                  staticStyle: { "border-top": "none", "padding-left": "0" }
-                },
-                [
-                  _c("div", { staticClass: "input-group date asignar-fecha" }, [
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: { type: "text" }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "input-group-addon" }, [
-                      _c("i", {
-                        staticClass: "fa fa-calendar",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ])
-                  ])
-                ]
-              )
-            ])
-          ])
-        ])
-      ]
-    )
   },
   function() {
     var _vm = this

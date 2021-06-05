@@ -195,8 +195,8 @@ class AvisoController extends Controller
     }
 
     public function guardar_y_enviar_aviso(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("guardar_y_enviar_aviso");
+        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        // $out->writeln("guardar_y_enviar_aviso");
         $ruta_documento = null;
 
         try{
@@ -271,23 +271,12 @@ class AvisoController extends Controller
             DB::commit();
         }catch (Exception $e){
             DB::rollBack();
-            //$out->writeln("-------------- DOUH!! --------------");
-            //$out->writeln($e);
         }
 
     }
 
     public function actualizar_aviso(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("id: ".$request->id);
-        $out->writeln("id_carrera: ".$request->id_carrera);
-        $out->writeln("turno: ".$request->turno);
-        $out->writeln("grado: ".$request->grado);
-        $out->writeln("titulo: ".$request->titulo);
-        $out->writeln("contenido: ".$request->contenido);
-        $out->writeln("documento: ".$request->documento);
-        $out->writeln("general: ".$request->general);
-
+        
         $ruta_documento = null;
         $url_img = '';
         
@@ -351,62 +340,65 @@ class AvisoController extends Controller
     }
 
     public function reenviar_aviso(Request $request){
+        try{
+            DB::beginTransaction();
 
-        $aviso = new Aviso();
-        $aviso->id_carrera = $request->id_carrera;
-        $aviso->id = $request->id_aviso;
-        
+            $aviso = Aviso::findOrFail($request->id);
+            $aviso->estado = '1';
+            $aviso->save();
 
-        // query notification
-        if($aviso->id_carrera == 1){
-            // todas las carreras
-            $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1 AND a.id_dispositivo IS NOT NULL ';
-            $resultados = DB::select($finalQuery);
-            
-            foreach($resultados as $usuario){
-                OneSignal::sendNotificationToUser(
-                    $request->titulo, 
-                    $userId = $usuario->id_dispositivo,
-                    $url = null, 
-                    $data = ["aviso" => $aviso], 
-                    $buttons = null, 
-                    $schedule = null
-                );
-            }
-        } else {
-            // especificos usuarios
-            $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo IS NOT NULL ';
-            $string2 = '';
-            $string3 = '';
+            // query notification
+            if($aviso->id_carrera == 1){
+                // todas las carreras
+                $finalQuery = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE a.condicion = 1 AND a.id_dispositivo IS NOT NULL ';
+                $resultados = DB::select($finalQuery);
+                
+                foreach($resultados as $usuario){
+                    OneSignal::sendNotificationToUser(
+                        $request->titulo, 
+                        $userId = $usuario->id_dispositivo,
+                        $url = null, 
+                        $data = ["aviso" => $aviso], 
+                        $buttons = null, 
+                        $schedule = null
+                    );
+                }
+            } else {
+                // especificos usuarios
+                $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo IS NOT NULL ';
+                $string2 = '';
+                $string3 = '';
 
-            // dinamic query
-            if($aviso->turno != 0){
-                $string2 = 'AND a.turno = :a_turno';
-            }
-            if($aviso->grado != 0){
-                $string3 = 'AND a.grado = :a_grado';
-            }
-            $string4 = 'AND a.condicion = 1';
-            $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
-            $resultados = DB::select($finalQuery, [
-                'a_carrera' => $aviso->id_carrera,
-                'a_turno' => $aviso->turno,
-                'a_grado' => $aviso->grado
-            ]);
+                // dinamic query
+                if($aviso->turno != 0){
+                    $string2 = 'AND a.turno = :a_turno';
+                }
+                if($aviso->grado != 0){
+                    $string3 = 'AND a.grado = :a_grado';
+                }
+                $string4 = 'AND a.condicion = 1';
+                $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
+                $resultados = DB::select($finalQuery, [
+                    'a_carrera' => $aviso->id_carrera,
+                    'a_turno' => $aviso->turno,
+                    'a_grado' => $aviso->grado
+                ]);
 
-            foreach($resultados as $usuario){
-                OneSignal::sendNotificationToUser(
-                    $request->titulo, 
-                    $userId = $usuario->id_dispositivo,
-                    $url = null, 
-                    $data = ["aviso" => $aviso], 
-                    $buttons = null, 
-                    $schedule = null
-                );
+                foreach($resultados as $usuario){
+                    OneSignal::sendNotificationToUser(
+                        $request->titulo, 
+                        $userId = $usuario->id_dispositivo,
+                        $url = null, 
+                        $data = ["aviso" => $aviso], 
+                        $buttons = null, 
+                        $schedule = null
+                    );
+                }
             }
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
         }
-
-
     }
 
 

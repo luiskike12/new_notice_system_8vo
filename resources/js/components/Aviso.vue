@@ -102,6 +102,7 @@
                                 </div>
                                 <msj-validacion v-if="msjValidacion[2].id_carrera==1">{{msjValidacion[2].mensaje}}</msj-validacion>
                             </div>
+
                             <!-- sección de parametros especificos de la carrera seleccionada -->
                             <div class="form-group" style="border-bottom: 1px solid #C6D7D1;">
                                 <div class="row">
@@ -638,7 +639,4 @@
     .select-carrera{
         padding: 0;
     }
-    /*.container-1{
-        border: 1px solid black;
-    }*/
 </style>

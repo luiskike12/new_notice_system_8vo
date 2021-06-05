@@ -86,8 +86,9 @@
                                 </div>
                             </th>
                             <th>
-                                <span class="badge badge-primary">Reenviar</span>
-                                <!-- <button type="button" class="badge badge-success">Reenviar</button> -->
+                                <button type="button" class="badge badge-primary" id="btn-activo" @click=" reenviar_aviso(aviso.id)">
+                                    Reenviar
+                                </button>
                             </th>
                         </tr>
                         <!-- vista de los elementos de la tabla users -->
@@ -169,10 +170,8 @@
                                 <msj-validacion v-if="msjValidacion[1].contenido_aviso==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                             </div>
 
-                            <!-- <hr style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 0px;"> -->
                             <!-- Segunda seccion -->
-
-                            <div class="form-group" style="margin: 0; border-top: 1px solid #C6D7D1; border-bottom: 1px solid #C6D7D1;">
+                            <div class="form-group" style="border-top: 1px solid #C6D7D1; border-bottom: 1px solid #C6D7D1;">
                                 <table class="table" style="margin: 0;">
                                     <tbody>
                                         <tr>
@@ -191,8 +190,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Carreras</label>
-                                <div class="col-md">
+                                <label class="col-md-12 form-control-label font-weight-bold text-center" for="email-input">Carreras</label>
+                                <div class="col-md-12 select-carrera">
                                     <!-- Seleccionar carrera -->
                                     <div v-if="tipo_envio == 1">
                                         <select class="form-control"  v-model="id_carrera">
@@ -200,7 +199,7 @@
                                         </select>
                                     </div>
                                     <div v-else-if="tipo_envio == 0">
-                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
+                                        <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
                                             <option value="1" disabled selected>Seleccione una carrera</option>
                                             <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                                 {{carrera.nombre}} - {{carrera.tipo_modalidad}}
@@ -212,9 +211,9 @@
                             </div>
 
                             <!-- sección de parametros especificos de la carrera seleccionada -->
-                            <div class="container-1">
+                            <div class="form-group">
                                 <div class="row">
-                                    <div class="col" style="padding: 0 !important;">
+                                    <div class="col-6" style="padding: 0 !important;">
                                         <div class="form-group">
                                             <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Turno</label>
                                             <div class="col-md">
@@ -224,8 +223,8 @@
                                                     </select>
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
-                                                    <div v-if="id_carrera > 0">
-                                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="turno" v-model="turno">
+                                                    <div v-if="id_carrera != 0">
+                                                        <select class="form-control" @click="tecleo" id="turno" v-model="turno">
                                                             <option value="0" disabled selected>Seleccione el turno</option>
                                                             <option value="1" v-if="t_matutino==1">Matutino</option>
                                                             <option value="2" v-if="t_vespertino==1">Vespertino</option>
@@ -243,7 +242,7 @@
                                             <msj-validacion v-if="msjValidacion[3].turno==1">{{msjValidacion[3].mensaje}}</msj-validacion>
                                         </div>
                                     </div>
-                                    <div class="col" style="padding: 0 !important;">
+                                    <div class="col-6" style="padding: 0 !important;">
                                         <div class="form-group">
                                             <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Grado</label>
                                             <div class="col-md">
@@ -254,7 +253,7 @@
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
                                                     <div v-if="id_carrera != 0">
-                                                        <select class="form-control" @click="tecleo" :style="removeRedColor" id="grado" v-model="grado">
+                                                        <select class="form-control" @click="tecleo" id="grado" v-model="grado">
                                                             <option value="0" disabled selected>Seleccione el grado</option>
                                                             <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
                                                                 {{grupo.num}}º
@@ -274,8 +273,8 @@
                                 </div>
                             </div>
 
-                            <!-- fecha programada -->
-                            <div class="form-group" style="margin: 0;">
+                            <!-- fecha programada del aviso-->
+                            <!-- <div class="form-group" style="margin: 0;">
                                 <table class="table" style="margin: 0;">
                                     <thead>
                                         <tr>
@@ -291,7 +290,7 @@
                                                 <span class="input-group-addon" style="border-right: none;">Fecha:</span>
                                             </td>
                                             <td class="text-center" style="border-top: none; padding-left: 0;">
-                                                <!-- datepicker -->
+                                                -- datepicker --
                                                 <div class="input-group date asignar-fecha">
                                                     <input type="text" class="form-control">
                                                     <span class="input-group-addon">
@@ -303,7 +302,7 @@
                                                 <span class="input-group-addon" style="border-right: none;">Hora:</span>
                                             </td>
                                             <td class="text-center" style="border-top: none; padding-left: 0;">
-                                                <!-- datepicker -->
+                                                -- datepicker --
 
                                                 <div class="input-group date asignar-fecha">
                                                     <input type="text" class="form-control">
@@ -316,33 +315,13 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div> 
-
-                            <!-- Sección de enviar el avios -->
-                            <div class="form-group" style="margin: 0;">
-                                <table class="table" style="margin: 0;">
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-center" style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_guardar" v-model="guardar_enviar" value="0">
-                                                Solo guardar.
-                                            </td>
-                                            <td class="text-center" style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_enviar" v-model="guardar_enviar" value="1">
-                                                Guardar y enviar.
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                
-                            </div>  
+                            </div>  -->
 
                         <!-- Formulario inputs del Modal actualizar -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
                         <input type="submit" name="submit"  id="submit" class="btn btn-primary" value="Actualizar" style="cursor:pointer;">
-                        <!-- <button type="button" id="boton-actualizar" class="btn btn-primary">Actualizar</button> -->
                     </div>
                 </form>
             </div>
@@ -729,6 +708,54 @@
                     console.log(error)
                 });
             },
+            reenviar_aviso(id_reenvio){
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: false
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Desea reenviar este aviso?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Aceptar!',
+                    cancelButtonText: 'Cancelar',
+                    reverseButtons: true
+                    }).then((result) => {
+                    if (result.value) {
+
+                        let me = this;
+                
+                        axios.put('/aviso/reenviar_aviso', {
+                            'id' : id_reenvio
+                        }).then(function (response){
+                            me.cerrarModal();
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Genial...!',
+                                text: 'Se ha enviado correctamente'
+                            })
+                            me.listarAvisos(1, '', 'titulo');
+                        }).catch(function (error){
+                            Swal.fire({
+                                icon: 'error',
+                                title: '¡Ups...!',
+                                text: 'Algo salio mal'
+                            })
+                            console.log(error)
+                        });
+                    
+                    } else if (
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        
+                    }
+                })
+            },
             validarAviso(){// se puede modificar, solo los mensajes de validacion
                 this.numErrors = 0;
 
@@ -931,6 +958,10 @@
         font: inherit;
         cursor: pointer;
         outline: inherit;
+    }
+
+    .select-carrera{
+        padding: 0;
     }
 
     /*  No mostrar el boton de seleccionar archivo  en trix-editor*/
