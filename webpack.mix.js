@@ -15,6 +15,7 @@ mix.styles([
     'resources/plantilla/css/font-awesome.min.css',
     'resources/plantilla/css/simple-line-icons.min.css',
     'resources/plantilla/css/style.css',
+    'resources/plantilla/css/trix.css',
     'resources/plantilla/css/estilos_login.css',
     'resources/plantilla/css/estilos_cabecera.css',
     'resources/plantilla/css/estilo_personalizable.css'
@@ -26,6 +27,7 @@ mix.styles([
     'resources/plantilla/js/pace.min.js',
     'resources/plantilla/js/Chart.min.js',
     'resources/plantilla/js/template.js',
-    'resources/plantilla/js/sweetalert2.all.js'
+    'resources/plantilla/js/sweetalert2.all.js',
+    'resources/plantilla/js/trix.js'
 ], 'public/js/plantilla.js')
 .js(['resources/js/app.js'], 'public/js/app.js');
