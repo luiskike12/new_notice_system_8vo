@@ -1,8 +1,11 @@
 @extends('auth.contenido')
 
-@section('login')  
-    <div class="row justify-content-center" style="margin-bottom: 15px;">
-      <img class="rounded-circle" src="img/logo-NotiSchool-login.jpg">
+@section('login') 
+<div class="contenido-login">
+    <div class="row justify-content-center" >
+      <div class="col-md-4 text-center logo-login-notischool">
+        <img class="rounded-circle" src="img/logo-NotiSchool-login.jpg">
+      </div>
     </div>
 
     <div class="row justify-content-center">
@@ -58,11 +61,19 @@
 
 
     <div class="row justify-content-center">
-      <span style="font-size: 25px; text-align: center; display: block; color: #E6E6E6;
-          ">Panel de acceso a la administración de notificaciones</span>
+      <div class="col-md-8">
+        <span style="font-size: 25px; text-align: center; display: block; color: #E6E6E6;">
+          Panel de acceso a la administración de notificaciones
+        </span>
+      </div>
     </div>
     <div class="row justify-content-center">
-      <span style="font-size: 18px; text-align: center; display: block; color: #fff;
-          ">www.notischool.com</span>
+      <div class="col-md-8">
+        <span style="font-size: 18px; text-align: center; display: block; color: #fff;">
+          www.notischool.com
+        </span>
+      </div>
     </div>
+<!-- contenido-login -->
+</div>
 @endsection
