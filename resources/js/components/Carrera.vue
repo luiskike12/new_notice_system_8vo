@@ -738,7 +738,7 @@
                     this.numErrors = 1;
                     document.getElementById('nombre').style.cssText = this.colorError;
                     this.msjValidacion[0].nombre = 1;
-                    this.msjValidacion[0].mensaje = "El campo nombre de la carrera, no puede estar vacío";
+                    this.msjValidacion[0].mensaje = "El campo nombre de la carrera no puede estar vacío";
                 }else{
                     this.msjValidacion[0].mensaje = "";
                     document.getElementById('nombre').style.cssText = this.colorGood;
@@ -748,7 +748,7 @@
                     this.numErrors = 1;
                     document.getElementById('tipo_plan').style.cssText = this.colorError;
                     this.msjValidacion[1].tipo_plan = 1;
-                    this.msjValidacion[1].mensaje = "Seleccione una opción del plan de estudios";
+                    this.msjValidacion[1].mensaje = "Seleccione un plan de estudios";
                 }else{
                     this.msjValidacion[1].mensaje = "";
                     document.getElementById('tipo_plan').style.cssText = this.colorGood;
@@ -758,7 +758,7 @@
                     this.numErrors = 1;
                     document.getElementById('tipo_modalidad').style.cssText = this.colorError;
                     this.msjValidacion[2].tipo_modalidad = 1;
-                    this.msjValidacion[2].mensaje = "Seleccione una opción de modalidad de estudio";
+                    this.msjValidacion[2].mensaje = "Seleccione la modalidad de estudio";
                 }else{
                     this.msjValidacion[2].mensaje = "";
                     document.getElementById('tipo_modalidad').style.cssText = this.colorGood;
@@ -768,7 +768,7 @@
                     this.numErrors = 1;
                     document.getElementById('num_grados').style.cssText = this.colorError;
                     this.msjValidacion[3].num_grados = 1;
-                    this.msjValidacion[3].mensaje = "El campo No. Grados no debe estar vacio";
+                    this.msjValidacion[3].mensaje = "El campo No. Grados no debe estar vacío";
                 }else if(isNaN(this.num_grados)){//isNaN() funcion que regresa True (si no es numero) y False (si si es un numero)
                     this.numErrors = 1;
                     document.getElementById('num_grados').style.cssText = this.colorError;

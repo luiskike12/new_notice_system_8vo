@@ -2090,6 +2090,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2105,6 +2113,7 @@ __webpack_require__.r(__webpack_exports__);
       turno: 0,
       arrayAlumnos: [],
       arrayTurnos: [],
+      arrayGrados: [],
       t_matutino: 0,
       t_vespertino: 0,
       t_nocturno: 0,
@@ -2216,6 +2225,13 @@ __webpack_require__.r(__webpack_exports__);
       this.t_nocturno = this.arrayTurnos["0"]["turno_nocturno"];
       this.t_mixto = this.arrayTurnos["0"]["turno_mixto"];
     },
+    listarGrados: function listarGrados(numGrados) {
+      for (var i = 1; i <= numGrados; i++) {
+        this.arrayGrados.push({
+          num: i
+        });
+      }
+    },
     actualizarAlumno: function actualizarAlumno() {
       //se puede modificar, aqui se actualiza
       if (this.validarAlumno()) {
@@ -2254,12 +2270,18 @@ __webpack_require__.r(__webpack_exports__);
     validarAlumno: function validarAlumno() {
       // se puede modificar, solo los mensajes de validacion
       this.numErrors = 0;
+      var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
       if (!this.correo) {
         this.numErrors = 1;
         document.getElementById('correo').style.cssText = this.colorError;
         this.msjValidacion[0].correo = 1;
-        this.msjValidacion[0].mensaje = "El campo correo, no puede estar vacío";
+        this.msjValidacion[0].mensaje = "El campo correo no puede estar vacío";
+      } else if (validarEmail.test(this.correo) == false) {
+        this.numErrors = 1;
+        document.getElementById('correo').style.cssText = this.colorError;
+        this.msjValidacion[0].correo = 1;
+        this.msjValidacion[0].mensaje = "El correo no esta bien escrito";
       } else {
         this.msjValidacion[0].mensaje = "";
         document.getElementById('correo').style.cssText = this.colorGood;
@@ -2279,7 +2301,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('turno').style.cssText = this.colorError;
         this.msjValidacion[2].turno = 1;
-        this.msjValidacion[2].mensaje = "No dejar sin seleccionar el turno";
+        this.msjValidacion[2].mensaje = "Seleccione un turno";
       } else {
         this.msjValidacion[2].mensaje = "";
         document.getElementById('turno').style.cssText = this.colorGood;
@@ -2313,7 +2335,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         turno: 0,
         mensaje: ''
-      }]; //variables de seleccion de turno
+      }]; //Numero de grados de la carrera asignada
+
+      this.arrayGrados = []; //variables de seleccion de turno
 
       this.t_matutino = 0;
       this.t_vespertino = 0;
@@ -2340,6 +2364,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.turno = data['turno'];
                   this.tipoAccion = 1; //no
 
+                  this.listarGrados(data['num_grados']);
                   this.seleccionarTurno(this.id_matricula);
                   break;
                 }
@@ -3677,7 +3702,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('nombre').style.cssText = this.colorError;
         this.msjValidacion[0].nombre = 1;
-        this.msjValidacion[0].mensaje = "El campo nombre de la carrera, no puede estar vacío";
+        this.msjValidacion[0].mensaje = "El campo nombre de la carrera no puede estar vacío";
       } else {
         this.msjValidacion[0].mensaje = "";
         document.getElementById('nombre').style.cssText = this.colorGood;
@@ -3687,7 +3712,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('tipo_plan').style.cssText = this.colorError;
         this.msjValidacion[1].tipo_plan = 1;
-        this.msjValidacion[1].mensaje = "Seleccione una opción del plan de estudios";
+        this.msjValidacion[1].mensaje = "Seleccione un plan de estudios";
       } else {
         this.msjValidacion[1].mensaje = "";
         document.getElementById('tipo_plan').style.cssText = this.colorGood;
@@ -3697,7 +3722,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('tipo_modalidad').style.cssText = this.colorError;
         this.msjValidacion[2].tipo_modalidad = 1;
-        this.msjValidacion[2].mensaje = "Seleccione una opción de modalidad de estudio";
+        this.msjValidacion[2].mensaje = "Seleccione la modalidad de estudio";
       } else {
         this.msjValidacion[2].mensaje = "";
         document.getElementById('tipo_modalidad').style.cssText = this.colorGood;
@@ -3707,7 +3732,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('num_grados').style.cssText = this.colorError;
         this.msjValidacion[3].num_grados = 1;
-        this.msjValidacion[3].mensaje = "El campo No. Grados no debe estar vacio";
+        this.msjValidacion[3].mensaje = "El campo No. Grados no debe estar vacío";
       } else if (isNaN(this.num_grados)) {
         //isNaN() funcion que regresa True (si no es numero) y False (si si es un numero)
         this.numErrors = 1;
@@ -4226,7 +4251,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('carrera').style.cssText = this.colorError;
         this.msjValidacion[0].carrera = 1;
-        this.msjValidacion[0].mensaje = "Seleccione la carrera, a la que esta inscrito el alumno";
+        this.msjValidacion[0].mensaje = "Seleccione la carrera en la que esta inscrito el alumno";
       } else {
         this.msjValidacion[0].mensaje = "";
         document.getElementById('carrera').style.cssText = this.colorGood;
@@ -4236,7 +4261,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('matricula').style.cssText = this.colorError;
         this.msjValidacion[1].matricula = 1;
-        this.msjValidacion[1].mensaje = "El campo matrícula, no puede estar vacío";
+        this.msjValidacion[1].mensaje = "El campo matrícula no puede estar vacío";
       } else {
         this.msjValidacion[1].mensaje = "";
         document.getElementById('matricula').style.cssText = this.colorGood;
@@ -4246,7 +4271,7 @@ __webpack_require__.r(__webpack_exports__);
         this.numErrors = 1;
         document.getElementById('nombre').style.cssText = this.colorError;
         this.msjValidacion[2].nombre = 1;
-        this.msjValidacion[2].mensaje = "El campo nombre, no puede estar vacío";
+        this.msjValidacion[2].mensaje = "El campo nombre no puede estar vacío";
       } else {
         this.msjValidacion[2].mensaje = "";
         document.getElementById('nombre').style.cssText = this.colorGood;
@@ -6444,7 +6469,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (this.arrayCarrera.length) {
-        if (this.id_carrera == 0) {
+        if (this.id_carrera == 0 && this.id_rol != 1 && this.id_rol != 4) {
           this.numErrors = 1;
           this.msjValidacion.carrera.color = {
             'border': this.colorError
@@ -6471,7 +6496,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msjValidacion.usuario.color = {
           'border': this.colorError
         };
-        this.msjValidacion.usuario.mensaje = "El campo usuario, no puede estar vacío";
+        this.msjValidacion.usuario.mensaje = "El campo usuario no puede estar vacío";
       } else {
         this.msjValidacion.usuario.color = {
           'border': this.colorGood
@@ -6484,7 +6509,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msjValidacion.password.color = {
           'border': this.colorError
         };
-        this.msjValidacion.password.mensaje = "El campo contraña, no puede estar vacío";
+        this.msjValidacion.password.mensaje = "El campo contraña no puede estar vacío";
       } else {
         this.msjValidacion.password.color = {
           'border': this.colorGood
@@ -6497,7 +6522,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msjValidacion.nombre.color = {
           'border': this.colorError
         };
-        this.msjValidacion.nombre.mensaje = "El campo nombre, no puede estar vacío";
+        this.msjValidacion.nombre.mensaje = "El campo nombre no puede estar vacío";
       } else {
         this.msjValidacion.nombre.color = {
           'border': this.colorGood
@@ -6512,7 +6537,7 @@ __webpack_require__.r(__webpack_exports__);
         this.msjValidacion.correo.color = {
           'border': this.colorError
         };
-        this.msjValidacion.correo.mensaje = "El campo correo, no puede estar vacío";
+        this.msjValidacion.correo.mensaje = "El campo correo no puede estar vacío";
       } else if (validarEmail.test(this.correo) == false) {
         this.numErrors = 1;
         this.msjValidacion.correo.color = {
@@ -11132,7 +11157,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
 
 // exports
 
@@ -43543,9 +43568,7 @@ var render = function() {
                       domProps: { textContent: _vm._s(alumno.correo) }
                     }),
                     _vm._v(" "),
-                    _c("th", {
-                      domProps: { textContent: _vm._s(alumno.grado) }
-                    }),
+                    _c("th", [_vm._v(_vm._s(alumno.grado) + "º")]),
                     _vm._v(" "),
                     _c("th", [
                       alumno.turno == 1
@@ -43842,47 +43865,69 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("div", { staticClass: "col-md-9" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.grado,
-                                expression: "grado"
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.grado,
+                                  expression: "grado"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "grado" },
+                              on: {
+                                click: _vm.tecleo,
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.grado = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
                               }
-                            ],
-                            staticClass: "form-control",
-                            attrs: {
-                              type: "text",
-                              id: "grado",
-                              placeholder: "Grado al que pertenece"
                             },
-                            domProps: { value: _vm.grado },
-                            on: {
-                              keypress: _vm.tecleo,
-                              keyup: function($event) {
-                                if (
-                                  !$event.type.indexOf("key") &&
-                                  _vm._k(
-                                    $event.keyCode,
-                                    "delete",
-                                    [8, 46],
-                                    $event.key,
-                                    ["Backspace", "Delete", "Del"]
-                                  )
-                                ) {
-                                  return null
-                                }
-                                return _vm.tecleo($event)
-                              },
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.grado = $event.target.value
-                              }
-                            }
-                          })
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "0",
+                                    disabled: "",
+                                    selected: ""
+                                  }
+                                },
+                                [_vm._v("Seleccione el grado")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.arrayGrados, function(grupo) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: grupo.num,
+                                    domProps: { value: grupo.num }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\r\n                                        " +
+                                        _vm._s(grupo.num) +
+                                        "º\r\n                                    "
+                                    )
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
                         ]),
                         _vm._v(" "),
                         _vm.msjValidacion[1].grado == 1

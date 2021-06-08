@@ -56,7 +56,7 @@ class AlumnoController extends Controller
 
     public function index(Request $request)
     {
-        //if(!$request->ajax())return redirect('/');
+        if(!$request->ajax())return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
@@ -64,7 +64,7 @@ class AlumnoController extends Controller
             //se crea un array de todo lo que devuelva el metodo
             $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
             ->join('carreras','carreras.id','=','matriculas.id_carrera')
-            ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera',
+            ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
             DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
             'matriculas.matricula as matricula_alumno',
             'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
@@ -74,7 +74,7 @@ class AlumnoController extends Controller
         else{
             $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
             ->join('carreras','carreras.id','=','matriculas.id_carrera')
-            ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera',
+            ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
             DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
             'matriculas.matricula as matricula_alumno',
             'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',

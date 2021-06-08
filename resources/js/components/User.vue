@@ -497,7 +497,7 @@
                 }
 
                 if(this.arrayCarrera.length){
-                    if(this.id_carrera==0){
+                    if(this.id_carrera == 0 && this.id_rol!= 1 && this.id_rol != 4){
                         this.numErrors = 1;
                         this.msjValidacion.carrera.color = {'border':this.colorError};
                         this.msjValidacion.carrera.mensaje = "Seleccione una carrera";
@@ -516,7 +516,7 @@
                 if(!this.usuario){
                     this.numErrors = 1;
                     this.msjValidacion.usuario.color = {'border':this.colorError};
-                    this.msjValidacion.usuario.mensaje = "El campo usuario, no puede estar vacío";
+                    this.msjValidacion.usuario.mensaje = "El campo usuario no puede estar vacío";
                 }else{
                     this.msjValidacion.usuario.color = {'border':this.colorGood};
                     this.msjValidacion.usuario.mensaje = '';
@@ -525,7 +525,7 @@
                 if(!this.password){
                     this.numErrors = 1;
                     this.msjValidacion.password.color = {'border':this.colorError};
-                    this.msjValidacion.password.mensaje = "El campo contraña, no puede estar vacío";
+                    this.msjValidacion.password.mensaje = "El campo contraña no puede estar vacío";
                 }else{
                     this.msjValidacion.password.color = {'border':this.colorGood};
                     this.msjValidacion.password.mensaje = '';
@@ -534,7 +534,7 @@
                 if(!this.nombre){
                     this.numErrors = 1;
                     this.msjValidacion.nombre.color = {'border':this.colorError};
-                    this.msjValidacion.nombre.mensaje = "El campo nombre, no puede estar vacío";
+                    this.msjValidacion.nombre.mensaje = "El campo nombre no puede estar vacío";
                 }else{
                     this.msjValidacion.nombre.color = {'border':this.colorGood};
                     this.msjValidacion.nombre.mensaje = '';
@@ -544,7 +544,7 @@
                 if(!this.correo){
                     this.numErrors = 1;
                     this.msjValidacion.correo.color = {'border':this.colorError};
-                    this.msjValidacion.correo.mensaje = "El campo correo, no puede estar vacío";
+                    this.msjValidacion.correo.mensaje = "El campo correo no puede estar vacío";
                 }
                 else if(validarEmail.test(this.correo)==false){
                     this.numErrors = 1;

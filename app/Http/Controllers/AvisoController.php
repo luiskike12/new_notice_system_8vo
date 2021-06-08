@@ -15,6 +15,8 @@ class AvisoController extends Controller
     public function index(Request $request){
         if(!$request->ajax())return redirect('/');
         
+        $id_usuario = Auth::user()->id;
+
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         if($buscar==''){
@@ -22,7 +24,9 @@ class AvisoController extends Controller
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
             'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
             'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+            ->where('avisos.id_usuario','=',$id_usuario)
             ->orderBy('avisos.id', 'desc')->paginate(5);
+            //->where('avisos.id_usuario','=',$id_usuario)
             /*  Código Anterior
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
@@ -44,6 +48,7 @@ class AvisoController extends Controller
             'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
             'avisos.general','avisos.turno','avisos.grado','avisos.estado')
             ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+            ->where('avisos.id_usuario','=',$id_usuario)
             ->orderBy('avisos.id', 'desc')->paginate(5);
         }
         

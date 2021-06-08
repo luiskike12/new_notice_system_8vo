@@ -394,7 +394,7 @@
                     this.numErrors = 1;
                     document.getElementById('carrera').style.cssText = this.colorError;
                     this.msjValidacion[0].carrera = 1;
-                    this.msjValidacion[0].mensaje = "Seleccione la carrera, a la que esta inscrito el alumno";
+                    this.msjValidacion[0].mensaje = "Seleccione la carrera en la que esta inscrito el alumno";
                 }else{
                     this.msjValidacion[0].mensaje = "";
                     document.getElementById('carrera').style.cssText = this.colorGood;
@@ -404,7 +404,7 @@
                     this.numErrors = 1;
                     document.getElementById('matricula').style.cssText = this.colorError;
                     this.msjValidacion[1].matricula = 1;
-                    this.msjValidacion[1].mensaje = "El campo matrícula, no puede estar vacío";
+                    this.msjValidacion[1].mensaje = "El campo matrícula no puede estar vacío";
                 }else{
                     this.msjValidacion[1].mensaje = "";
                     document.getElementById('matricula').style.cssText = this.colorGood;
@@ -414,7 +414,7 @@
                     this.numErrors = 1;
                     document.getElementById('nombre').style.cssText = this.colorError;
                     this.msjValidacion[2].nombre = 1;
-                    this.msjValidacion[2].mensaje = "El campo nombre, no puede estar vacío";
+                    this.msjValidacion[2].mensaje = "El campo nombre no puede estar vacío";
                 }else{
                     this.msjValidacion[2].mensaje = "";
                     document.getElementById('nombre').style.cssText = this.colorGood;

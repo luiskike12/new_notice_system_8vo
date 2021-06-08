@@ -56,7 +56,7 @@
                             <th v-text="alumno.matricula_alumno"></th>
                             <th v-text="alumno.nombre_alumno"></th>
                             <th v-text="alumno.correo"></th>
-                            <th v-text="alumno.grado"></th>
+                            <th>{{alumno.grado}}º</th>
                             <th>
                                 <div v-if="alumno.turno==1">Matutino</div>
                                 <div v-else-if="alumno.turno==2">Vespertino</div>
@@ -92,6 +92,8 @@
         </div>
         <!-- Fin ejemplo de tabla Listado -->
     </div>
+
+
     <!--Inicio del modal agregar/actualizar-->
     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -121,7 +123,13 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Grado (*)</label>
                             <div class="col-md-9">
-                                <input type="text" id="grado" v-model="grado" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Grado al que pertenece">
+                                <select class="form-control" @click="tecleo" id="grado" v-model="grado">
+                                    <option value="0" disabled selected>Seleccione el grado</option>
+                                    <option v-for="grupo in arrayGrados" :key="grupo.num" :value="grupo.num">
+                                        {{grupo.num}}º
+                                    </option>
+                                </select>
+                                <!-- <input type="text" id="grado" v-model="grado" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Grado al que pertenece"> -->
                             </div>
                             <msj-validacion v-if="msjValidacion[1].grado==1">{{msjValidacion[1].mensaje}}</msj-validacion>
                         </div>
@@ -196,6 +204,7 @@
                 turno : 0,
                 arrayAlumnos : [],
                 arrayTurnos : [],
+                arrayGrados : [],
                 t_matutino : 0,
                 t_vespertino : 0,
                 t_nocturno : 0,
@@ -303,6 +312,11 @@
                 this.t_nocturno = this.arrayTurnos["0"]["turno_nocturno"];
                 this.t_mixto = this.arrayTurnos["0"]["turno_mixto"];
             },
+            listarGrados(numGrados){
+                for(var i = 1; i <= numGrados; i++){
+                    this.arrayGrados.push({num: i})
+                }
+            },
             actualizarAlumno(){//se puede modificar, aqui se actualiza
                 if(this.validarAlumno()){
                     return;
@@ -341,11 +355,17 @@
             validarAlumno(){// se puede modificar, solo los mensajes de validacion
                 this.numErrors = 0;
 
+                var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                 if(!this.correo){
                     this.numErrors = 1;
                     document.getElementById('correo').style.cssText = this.colorError;
                     this.msjValidacion[0].correo = 1;
-                    this.msjValidacion[0].mensaje = "El campo correo, no puede estar vacío";
+                    this.msjValidacion[0].mensaje = "El campo correo no puede estar vacío";
+                }else if(validarEmail.test(this.correo)==false){
+                    this.numErrors = 1;
+                    document.getElementById('correo').style.cssText = this.colorError;
+                    this.msjValidacion[0].correo = 1;
+                    this.msjValidacion[0].mensaje = "El correo no esta bien escrito";
                 }else{
                     this.msjValidacion[0].mensaje = "";
                     document.getElementById('correo').style.cssText = this.colorGood;
@@ -365,7 +385,7 @@
                     this.numErrors = 1;
                     document.getElementById('turno').style.cssText = this.colorError;
                     this.msjValidacion[2].turno = 1;
-                    this.msjValidacion[2].mensaje = "No dejar sin seleccionar el turno";
+                    this.msjValidacion[2].mensaje = "Seleccione un turno";
                 }else{
                     this.msjValidacion[2].mensaje = "";
                     document.getElementById('turno').style.cssText = this.colorGood;
@@ -389,6 +409,8 @@
                     {grado : 0, mensaje : ''},
                     {turno : 0, mensaje : ''}
                 ];
+                //Numero de grados de la carrera asignada
+                this.arrayGrados = [];
                 //variables de seleccion de turno
                 this.t_matutino = 0;
                 this.t_vespertino = 0;
@@ -410,6 +432,7 @@
                                 this.grado = data['grado'];
                                 this.turno = data['turno'];
                                 this.tipoAccion = 1;//no
+                                this.listarGrados(data['num_grados']);
                                 this.seleccionarTurno(this.id_matricula);
                                 break;
                             }
