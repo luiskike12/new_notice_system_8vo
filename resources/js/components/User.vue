@@ -103,6 +103,8 @@
         </div>
         <!-- Fin ejemplo de tabla Listado -->
     </div>
+
+
     <!--Inicio del modal agregar/actualizar-->
     <div class="modal fade" tabindex="-1" :class="{'mostrar' : modal}" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -119,13 +121,13 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Rol (*)</label>
                             <div class="col-md-9">
-                                <select class="form-control" id="id_rol" @change="obtenerIdRol($event)" v-model="id_rol" @click="tecleo">
+                                <select class="form-control" :style="msjValidacion.rol.color" @change="obtenerIdRol($event)" v-model="id_rol" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione un rol</option>
                                     <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.nombre">
                                     </option>
                                 </select>
                             </div>
-                            <msj-validacion v-if="msjValidacion[0].rol==1">{{msjValidacion[0].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.rol.mensaje != ''">{{msjValidacion.rol.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Carrera (*)</label>
@@ -135,8 +137,13 @@
                                         <option value="1" disabled selected>Funciones Generales</option>
                                     </select>
                                 </div>
+                                <div v-else-if="id_rol==4">
+                                    <select class="form-control">
+                                        <option value="2" disabled selected>Cualquier programa</option>
+                                    </select>
+                                </div>
                                 <div v-else>
-                                    <select class="form-control" id="id_carrera" v-model="id_carrera" @click="tecleo">
+                                    <select class="form-control" :style="msjValidacion.carrera.color" v-model="id_carrera" @click="tecleo">
                                         <option value="0" disabled selected>Seleccione una carrera</option>
                                         <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                             {{carrera.nombre}} - {{carrera.tipo_modalidad}}
@@ -144,35 +151,35 @@
                                     </select>
                                  </div>
                             </div>
-                            <msj-validacion v-if="msjValidacion[1].carrera==1">{{msjValidacion[0].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.carrera.mensaje != ''">{{msjValidacion.carrera.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Usuario (*)</label>
                             <div class="col-md-9">
-                                <input type="text" v-model="usuario" id="usuario" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre del usuario">
+                                <input type="text" v-model="usuario" :style="msjValidacion.usuario.color" id="usuario" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre del usuario">
                             </div>
-                            <msj-validacion v-if="msjValidacion[2].usuario==1">{{msjValidacion[2].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.usuario.mensaje != ''">{{msjValidacion.usuario.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Contraseña (*)</label>
                             <div class="col-md-9">
-                                <input type="password" id="password" v-model="password" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Contraseña de acceso">
+                                <input type="password" id="password" :style="msjValidacion.password.color" v-model="password" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Contraseña de acceso">
                             </div>
-                            <msj-validacion v-if="msjValidacion[3].password==1">{{msjValidacion[3].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.password.mensaje != ''">{{msjValidacion.password.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Nombre (*)</label>
                             <div class="col-md-9">
-                                <input type="text" id="nombre" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre de la persona">
+                                <input type="text" id="nombre" :style="msjValidacion.nombre.color" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre de la persona">
                             </div>
-                            <msj-validacion v-if="msjValidacion[4].nombre==1">{{msjValidacion[4].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.nombre.mensaje != ''">{{msjValidacion.nombre.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Correo (*)</label>
                             <div class="col-md-9">
-                                <input type="email" id="correo" v-model="correo" @keypress="tecleo" @keyup.delete="tecleo" class="form-control"  placeholder="Email de la persona acargo">
+                                <input type="email" id="correo" :style="msjValidacion.correo.color" v-model="correo" @keypress="tecleo" @keyup.delete="tecleo" class="form-control"  placeholder="Email de la persona acargo">
                             </div>
-                            <msj-validacion v-if="msjValidacion[5].correo==1">{{msjValidacion[5].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.correo.mensaje != ''">{{msjValidacion.correo.mensaje}}</msj-validacion>
                         </div>
                         <!-- inputs del Modal agregar -->
                     </form>
@@ -242,16 +249,16 @@
                 tipoAccion : 0,
                 //Validación de campos
                 numErrors : 0,
-                msjValidacion : [
-                    {rol : 0, mensaje : ''},
-                    {carrera : 0, mensaje : ''},
-                    {usuario : 0, mensaje : ''},
-                    {password : 0, mensaje : ''},
-                    {nombre : 0, mensaje : ''},
-                    {correo : 0, mensaje : ''}
-                ],
-                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
-                colorGood : 'border: 1px solid #BBCDD5;',
+                msjValidacion : {
+                    rol : {mensaje : '', color : ''},
+                    carrera : {mensaje : '', color : ''},
+                    usuario : {mensaje : '', color : ''},
+                    password : {mensaje : '', color : ''},
+                    nombre : {mensaje : '', color : ''},
+                    correo : {mensaje : '', color : ''}
+                },
+                colorError : '2px solid rgba(231, 76, 60, 0.5)',
+                colorGood : '1px solid #BBCDD5',
                 pagination:{
                     'total' : 0,
                     'current_page' : 0,
@@ -482,69 +489,70 @@
 
                 if(this.id_rol==0){
                     this.numErrors = 1;
-                    document.getElementById('id_rol').style.cssText = this.colorError;
-                    this.msjValidacion[0].rol = 1;
-                    this.msjValidacion[0].mensaje = "Seleccione el rol del usuario";
+                    this.msjValidacion.rol.color = {'border':this.colorError};
+                    this.msjValidacion.rol.mensaje = "Seleccione el rol del usuario";
                 }else{
-                    this.msjValidacion[0].mensaje = "";
-                    document.getElementById('id_rol').style.cssText = this.colorGood;
+                    this.msjValidacion.rol.color = {'border':this.colorGood};
+                    this.msjValidacion.rol.mensaje = '';
                 }
 
-                if(this.id_carrera==0){
-                    this.numErrors = 1;
-                    document.getElementById('id_carrera').style.cssText = this.colorError;
-                    this.msjValidacion[1].carrera = 1;
-                    this.msjValidacion[1].mensaje = "Seleccione la carrera, acargo del usuario";
+                if(this.arrayCarrera.length){
+                    if(this.id_carrera==0){
+                        this.numErrors = 1;
+                        this.msjValidacion.carrera.color = {'border':this.colorError};
+                        this.msjValidacion.carrera.mensaje = "Seleccione una carrera";
+                    }else{
+                        this.msjValidacion.carrera.color = {'border':this.colorGood};
+                        this.msjValidacion.carrera.mensaje = '';
+                    }
                 }else{
-                    this.msjValidacion[1].mensaje = "";
-                    document.getElementById('id_carrera').style.cssText = this.colorGood;
+                    if(this.id_rol!= 1 && this.id_rol!= 4){
+                        this.numErrors = 1;
+                        this.msjValidacion.carrera.color = {'border':this.colorError};
+                        this.msjValidacion.carrera.mensaje = "Actualmente no se ha creado ningún programa";
+                    }
                 }
                 
                 if(!this.usuario){
                     this.numErrors = 1;
-                    document.getElementById('usuario').style.cssText = this.colorError;
-                    this.msjValidacion[2].usuario = 1;
-                    this.msjValidacion[2].mensaje = "El campo usuario, no puede estar vacío";
+                    this.msjValidacion.usuario.color = {'border':this.colorError};
+                    this.msjValidacion.usuario.mensaje = "El campo usuario, no puede estar vacío";
                 }else{
-                    this.msjValidacion[2].mensaje = "";
-                    document.getElementById('usuario').style.cssText = this.colorGood;
+                    this.msjValidacion.usuario.color = {'border':this.colorGood};
+                    this.msjValidacion.usuario.mensaje = '';
                 }
 
                 if(!this.password){
                     this.numErrors = 1;
-                    document.getElementById('password').style.cssText = this.colorError;
-                    this.msjValidacion[3].password = 1;
-                    this.msjValidacion[3].mensaje = "El campo contraña, no puede estar vacío";
+                    this.msjValidacion.password.color = {'border':this.colorError};
+                    this.msjValidacion.password.mensaje = "El campo contraña, no puede estar vacío";
                 }else{
-                    this.msjValidacion[3].mensaje = "";
-                    document.getElementById('password').style.cssText = this.colorGood;
+                    this.msjValidacion.password.color = {'border':this.colorGood};
+                    this.msjValidacion.password.mensaje = '';
                 }
 
                 if(!this.nombre){
                     this.numErrors = 1;
-                    document.getElementById('nombre').style.cssText = this.colorError;
-                    this.msjValidacion[4].nombre = 1;
-                    this.msjValidacion[4].mensaje = "El campo nombre, no puede estar vacío";
+                    this.msjValidacion.nombre.color = {'border':this.colorError};
+                    this.msjValidacion.nombre.mensaje = "El campo nombre, no puede estar vacío";
                 }else{
-                    this.msjValidacion[4].mensaje = "";
-                    document.getElementById('nombre').style.cssText = this.colorGood;
+                    this.msjValidacion.nombre.color = {'border':this.colorGood};
+                    this.msjValidacion.nombre.mensaje = '';
                 }
                 
                 var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
                 if(!this.correo){
                     this.numErrors = 1;
-                    document.getElementById('correo').style.cssText = this.colorError;
-                    this.msjValidacion[5].correo = 1;
-                    this.msjValidacion[5].mensaje = "El campo correo, no puede estar vacío";
+                    this.msjValidacion.correo.color = {'border':this.colorError};
+                    this.msjValidacion.correo.mensaje = "El campo correo, no puede estar vacío";
                 }
                 else if(validarEmail.test(this.correo)==false){
                     this.numErrors = 1;
-                    document.getElementById('correo').style.cssText = this.colorError;
-                    this.msjValidacion[5].correo = 1;
-                    this.msjValidacion[5].mensaje = "El correo no esta bien escrito";
+                    this.msjValidacion.correo.color = {'border':this.colorError};
+                    this.msjValidacion.correo.mensaje = "El correo no esta bien escrito";
                 }else{
-                    this.msjValidacion[5].mensaje = "";
-                    document.getElementById('correo').style.cssText = this.colorGood;
+                    this.msjValidacion.correo.color = {'border':this.colorGood};
+                    this.msjValidacion.correo.mensaje = '';
                 }
 
                 return this.numErrors;
@@ -562,22 +570,22 @@
                 this.modal = 0;//no
                 this.tituloModal = '';//no
                 this.id_usuario = 0; 
-                this.id_carrera = 0; document.getElementById('id_carrera').style.cssText = this.colorGood;
-                this.id_rol = 0; document.getElementById('id_rol').style.cssText = this.colorGood;
-                this.usuario = ''; document.getElementById('usuario').style.cssText = this.colorGood;
-                this.password = ''; document.getElementById('password').style.cssText = this.colorGood;
-                this.nombre = ''; document.getElementById('nombre').style.cssText = this.colorGood;
-                this.correo = ''; document.getElementById('correo').style.cssText = this.colorGood;
+                this.id_carrera = 0; 
+                this.id_rol = 0; 
+                this.usuario = '';
+                this.password = '';
+                this.nombre = '';
+                this.correo = '';
 
                 this.numErrors = 0;
-                this.msjValidacion = [
-                    {rol : 0, mensaje : ''},
-                    {carrera : 0, mensaje : ''},
-                    {usuario : 0, mensaje : ''},
-                    {password : 0, mensaje : ''},
-                    {nombre : 0, mensaje : ''},
-                    {correo : 0, mensaje : ''}
-                ]
+                this.msjValidacion = {
+                    rol : {mensaje : '', color : ''},
+                    carrera : {mensaje : '', color : ''},
+                    usuario : {mensaje : '', color : ''},
+                    password : {mensaje : '', color : ''},
+                    nombre : {mensaje : '', color : ''},
+                    correo : {mensaje : '', color : ''}
+                };
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();

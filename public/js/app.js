@@ -6157,6 +6157,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -6181,27 +6188,34 @@ __webpack_require__.r(__webpack_exports__);
       tipoAccion: 0,
       //Validación de campos
       numErrors: 0,
-      msjValidacion: [{
-        rol: 0,
-        mensaje: ''
-      }, {
-        carrera: 0,
-        mensaje: ''
-      }, {
-        usuario: 0,
-        mensaje: ''
-      }, {
-        password: 0,
-        mensaje: ''
-      }, {
-        nombre: 0,
-        mensaje: ''
-      }, {
-        correo: 0,
-        mensaje: ''
-      }],
-      colorError: 'border: 2px solid rgba(231, 76, 60, 0.5);',
-      colorGood: 'border: 1px solid #BBCDD5;',
+      msjValidacion: {
+        rol: {
+          mensaje: '',
+          color: ''
+        },
+        carrera: {
+          mensaje: '',
+          color: ''
+        },
+        usuario: {
+          mensaje: '',
+          color: ''
+        },
+        password: {
+          mensaje: '',
+          color: ''
+        },
+        nombre: {
+          mensaje: '',
+          color: ''
+        },
+        correo: {
+          mensaje: '',
+          color: ''
+        }
+      },
+      colorError: '2px solid rgba(231, 76, 60, 0.5)',
+      colorGood: '1px solid #BBCDD5',
       pagination: {
         'total': 0,
         'current_page': 0,
@@ -6418,69 +6432,98 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.id_rol == 0) {
         this.numErrors = 1;
-        document.getElementById('id_rol').style.cssText = this.colorError;
-        this.msjValidacion[0].rol = 1;
-        this.msjValidacion[0].mensaje = "Seleccione el rol del usuario";
+        this.msjValidacion.rol.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.rol.mensaje = "Seleccione el rol del usuario";
       } else {
-        this.msjValidacion[0].mensaje = "";
-        document.getElementById('id_rol').style.cssText = this.colorGood;
+        this.msjValidacion.rol.color = {
+          'border': this.colorGood
+        };
+        this.msjValidacion.rol.mensaje = '';
       }
 
-      if (this.id_carrera == 0) {
-        this.numErrors = 1;
-        document.getElementById('id_carrera').style.cssText = this.colorError;
-        this.msjValidacion[1].carrera = 1;
-        this.msjValidacion[1].mensaje = "Seleccione la carrera, acargo del usuario";
+      if (this.arrayCarrera.length) {
+        if (this.id_carrera == 0) {
+          this.numErrors = 1;
+          this.msjValidacion.carrera.color = {
+            'border': this.colorError
+          };
+          this.msjValidacion.carrera.mensaje = "Seleccione una carrera";
+        } else {
+          this.msjValidacion.carrera.color = {
+            'border': this.colorGood
+          };
+          this.msjValidacion.carrera.mensaje = '';
+        }
       } else {
-        this.msjValidacion[1].mensaje = "";
-        document.getElementById('id_carrera').style.cssText = this.colorGood;
+        if (this.id_rol != 1 && this.id_rol != 4) {
+          this.numErrors = 1;
+          this.msjValidacion.carrera.color = {
+            'border': this.colorError
+          };
+          this.msjValidacion.carrera.mensaje = "Actualmente no se ha creado ningún programa";
+        }
       }
 
       if (!this.usuario) {
         this.numErrors = 1;
-        document.getElementById('usuario').style.cssText = this.colorError;
-        this.msjValidacion[2].usuario = 1;
-        this.msjValidacion[2].mensaje = "El campo usuario, no puede estar vacío";
+        this.msjValidacion.usuario.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.usuario.mensaje = "El campo usuario, no puede estar vacío";
       } else {
-        this.msjValidacion[2].mensaje = "";
-        document.getElementById('usuario').style.cssText = this.colorGood;
+        this.msjValidacion.usuario.color = {
+          'border': this.colorGood
+        };
+        this.msjValidacion.usuario.mensaje = '';
       }
 
       if (!this.password) {
         this.numErrors = 1;
-        document.getElementById('password').style.cssText = this.colorError;
-        this.msjValidacion[3].password = 1;
-        this.msjValidacion[3].mensaje = "El campo contraña, no puede estar vacío";
+        this.msjValidacion.password.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.password.mensaje = "El campo contraña, no puede estar vacío";
       } else {
-        this.msjValidacion[3].mensaje = "";
-        document.getElementById('password').style.cssText = this.colorGood;
+        this.msjValidacion.password.color = {
+          'border': this.colorGood
+        };
+        this.msjValidacion.password.mensaje = '';
       }
 
       if (!this.nombre) {
         this.numErrors = 1;
-        document.getElementById('nombre').style.cssText = this.colorError;
-        this.msjValidacion[4].nombre = 1;
-        this.msjValidacion[4].mensaje = "El campo nombre, no puede estar vacío";
+        this.msjValidacion.nombre.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.nombre.mensaje = "El campo nombre, no puede estar vacío";
       } else {
-        this.msjValidacion[4].mensaje = "";
-        document.getElementById('nombre').style.cssText = this.colorGood;
+        this.msjValidacion.nombre.color = {
+          'border': this.colorGood
+        };
+        this.msjValidacion.nombre.mensaje = '';
       }
 
       var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
       if (!this.correo) {
         this.numErrors = 1;
-        document.getElementById('correo').style.cssText = this.colorError;
-        this.msjValidacion[5].correo = 1;
-        this.msjValidacion[5].mensaje = "El campo correo, no puede estar vacío";
+        this.msjValidacion.correo.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.correo.mensaje = "El campo correo, no puede estar vacío";
       } else if (validarEmail.test(this.correo) == false) {
         this.numErrors = 1;
-        document.getElementById('correo').style.cssText = this.colorError;
-        this.msjValidacion[5].correo = 1;
-        this.msjValidacion[5].mensaje = "El correo no esta bien escrito";
+        this.msjValidacion.correo.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.correo.mensaje = "El correo no esta bien escrito";
       } else {
-        this.msjValidacion[5].mensaje = "";
-        document.getElementById('correo').style.cssText = this.colorGood;
+        this.msjValidacion.correo.color = {
+          'border': this.colorGood
+        };
+        this.msjValidacion.correo.mensaje = '';
       }
 
       return this.numErrors;
@@ -6503,37 +6546,38 @@ __webpack_require__.r(__webpack_exports__);
 
       this.id_usuario = 0;
       this.id_carrera = 0;
-      document.getElementById('id_carrera').style.cssText = this.colorGood;
       this.id_rol = 0;
-      document.getElementById('id_rol').style.cssText = this.colorGood;
       this.usuario = '';
-      document.getElementById('usuario').style.cssText = this.colorGood;
       this.password = '';
-      document.getElementById('password').style.cssText = this.colorGood;
       this.nombre = '';
-      document.getElementById('nombre').style.cssText = this.colorGood;
       this.correo = '';
-      document.getElementById('correo').style.cssText = this.colorGood;
       this.numErrors = 0;
-      this.msjValidacion = [{
-        rol: 0,
-        mensaje: ''
-      }, {
-        carrera: 0,
-        mensaje: ''
-      }, {
-        usuario: 0,
-        mensaje: ''
-      }, {
-        password: 0,
-        mensaje: ''
-      }, {
-        nombre: 0,
-        mensaje: ''
-      }, {
-        correo: 0,
-        mensaje: ''
-      }];
+      this.msjValidacion = {
+        rol: {
+          mensaje: '',
+          color: ''
+        },
+        carrera: {
+          mensaje: '',
+          color: ''
+        },
+        usuario: {
+          mensaje: '',
+          color: ''
+        },
+        password: {
+          mensaje: '',
+          color: ''
+        },
+        nombre: {
+          mensaje: '',
+          color: ''
+        },
+        correo: {
+          mensaje: '',
+          color: ''
+        }
+      };
     },
     abrirModal: function abrirModal(modelo, accion) {
       var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
@@ -11221,7 +11265,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
 
 // exports
 
@@ -50105,7 +50149,7 @@ var render = function() {
                                 }
                               ],
                               staticClass: "form-control",
-                              attrs: { id: "id_rol" },
+                              style: _vm.msjValidacion.rol.color,
                               on: {
                                 change: [
                                   function($event) {
@@ -50156,9 +50200,9 @@ var render = function() {
                           )
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[0].rol == 1
+                        _vm.msjValidacion.rol.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[0].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.rol.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50181,6 +50225,8 @@ var render = function() {
                         _c("div", { staticClass: "col-md-9" }, [
                           _vm.id_rol == 1
                             ? _c("div", [_vm._m(2)])
+                            : _vm.id_rol == 4
+                            ? _c("div", [_vm._m(3)])
                             : _c("div", [
                                 _c(
                                   "select",
@@ -50194,7 +50240,7 @@ var render = function() {
                                       }
                                     ],
                                     staticClass: "form-control",
-                                    attrs: { id: "id_carrera" },
+                                    style: _vm.msjValidacion.carrera.color,
                                     on: {
                                       click: _vm.tecleo,
                                       change: function($event) {
@@ -50252,9 +50298,9 @@ var render = function() {
                               ])
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[1].carrera == 1
+                        _vm.msjValidacion.carrera.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[0].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.carrera.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50285,6 +50331,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            style: _vm.msjValidacion.usuario.color,
                             attrs: {
                               type: "text",
                               id: "usuario",
@@ -50318,9 +50365,9 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[2].usuario == 1
+                        _vm.msjValidacion.usuario.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[2].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.usuario.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50351,6 +50398,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            style: _vm.msjValidacion.password.color,
                             attrs: {
                               type: "password",
                               id: "password",
@@ -50384,9 +50432,9 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[3].password == 1
+                        _vm.msjValidacion.password.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[3].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.password.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50417,6 +50465,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            style: _vm.msjValidacion.nombre.color,
                             attrs: {
                               type: "text",
                               id: "nombre",
@@ -50450,9 +50499,9 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[4].nombre == 1
+                        _vm.msjValidacion.nombre.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[4].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.nombre.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50483,6 +50532,7 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
+                            style: _vm.msjValidacion.correo.color,
                             attrs: {
                               type: "email",
                               id: "correo",
@@ -50516,9 +50566,9 @@ var render = function() {
                           })
                         ]),
                         _vm._v(" "),
-                        _vm.msjValidacion[5].correo == 1
+                        _vm.msjValidacion.correo.mensaje != ""
                           ? _c("msj-validacion", [
-                              _vm._v(_vm._s(_vm.msjValidacion[5].mensaje))
+                              _vm._v(_vm._s(_vm.msjValidacion.correo.mensaje))
                             ])
                           : _vm._e()
                       ],
@@ -50581,7 +50631,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _vm._m(3)
+    _vm._m(4)
   ])
 }
 var staticRenderFns = [
@@ -50630,6 +50680,16 @@ var staticRenderFns = [
     return _c("select", { staticClass: "form-control" }, [
       _c("option", { attrs: { value: "1", disabled: "", selected: "" } }, [
         _vm._v("Funciones Generales")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("select", { staticClass: "form-control" }, [
+      _c("option", { attrs: { value: "2", disabled: "", selected: "" } }, [
+        _vm._v("Cualquier programa")
       ])
     ])
   },

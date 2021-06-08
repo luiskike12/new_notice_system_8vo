@@ -40,11 +40,16 @@ class User extends Authenticatable
     public $timestamps = false;
 
     public function rol(){
-        return $this->belongsTo('App\Rol');
+        return $this->belongsTo('App\Rol', 'id');
     }
 
     public function carrera(){
-        return $this->belongsTo('App\Carrera');
+        return $this->belongsTo('App\Carrera', 'id');
+    }
+
+    /* Un usuaio puede tener muchos avisos, uno a muchos */
+    public function avisos(){
+        return $this->hasMany('App\Aviso', 'id_user');
     }
     
 }

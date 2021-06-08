@@ -13,10 +13,14 @@ class CreateAvisosTable extends Migration
      */
     public function up()
     {
-        Schema::create('avisos', function (Blueprint $table) {
+        Schema::create('avisos', function (Blueprint $table){
             $table->increments('id');
             $table->integer('id_carrera')->unsigned();
             $table->foreign('id_carrera')->references('id')->on('carreras');
+
+            $table->integer('id_usuario')->unsigned();
+            $table->foreign('id_usuario')->references('id')->on('users');
+
             $table->integer('turno');
             $table->integer('grado');
             $table->string('titulo',80);//255 caracteres

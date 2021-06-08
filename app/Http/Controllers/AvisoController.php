@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use App\Aviso;
+use Illuminate\Support\Facades\Auth;
 use OneSignal;
 
 class AvisoController extends Controller
@@ -177,6 +178,7 @@ class AvisoController extends Controller
             }
             
             $aviso = new Aviso();
+            $aviso->id_usuario = Auth::user()->id;
             $aviso->id_carrera = $request->id_carrera;
             $aviso->turno = $request->turno;
             $aviso->grado = $request->grado;
@@ -209,6 +211,7 @@ class AvisoController extends Controller
             }
             
             $aviso = new Aviso();
+            $aviso->id_usuario = Auth::user()->id;
             $aviso->id_carrera = $request->id_carrera;
             $aviso->turno = $request->turno;
             $aviso->grado = $request->grado;

@@ -108,15 +108,14 @@
         <div class="app-body">
             
             @if(Auth::check())
-                @if(Auth::user()->id_rol == 1){
-
-                    @include('plantilla.sidebar')
-
-                    <!-- Contenido Principal -->
-                    @yield('contenido')
-                    <!-- /Fin del contenido principal -->
+                <!-- @if(Auth::user()->id_rol == 1){
                 }
-                @endif
+                @endif -->
+                
+                @include('plantilla.sidebar')
+                <!-- Contenido Principal -->
+                @yield('contenido')
+                <!-- /Fin del contenido principal -->
             @endif
 
         </div>

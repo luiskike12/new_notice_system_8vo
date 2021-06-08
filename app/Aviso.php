@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Aviso extends Model
 {
     //asignacion de valores en masa
-    protected $fillable = ['id_carrera', 'turno', 'grado', 'titulo', 'contenido', 'documento', 'general'];
+    protected $fillable = ['id_carrera', 'turno', 'grado', 'titulo', 'contenido', 'documento', 'general', 'estado'];
 
     public function alumno(){
         return $this->hasMany('App\Alumnos', 'id_matricula');
     }
 
+    
 }

@@ -15,20 +15,21 @@ class CarreraController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$request->ajax())return redirect('/');
+        //if(!$request->ajax())return redirect('/');
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
         if($buscar==''){
             //se crea un array de todo lo que devuelva el metodo
             $carreras = Carrera::where('id','!=','1')
+            ->where('id','!=','2')
             ->orderBy('id', 'desc')
             ->paginate(5);
         }
         else{
             $carreras = Carrera::where($criterio, 'like', '%'.$buscar.'%')
             ->where(function ($query) {
-                $query->where('id','!=','1');
+                $query->where('id','!=','1')->where('id','!=','2');
             })
             ->orderBy('id', 'desc')->paginate(5);
         }
@@ -210,5 +211,4 @@ class CarreraController extends Controller
 
         return ['carreras' => $carreras];
     }
-    
 }

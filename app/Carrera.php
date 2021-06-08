@@ -12,12 +12,14 @@ class Carrera extends Model
     //asignacion de valores en masa
     protected $fillable = ['nombre', 'tipo_plan', 'tipo_modalidad', 'num_grados', 'turno_matutino', 'turno_vespertino', 'turno_nocturno', 'turno_mixto'];
 
+    //Una carrera puede tener asociados varios Usuarios
     public function users(){
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\User', 'id_carrera');
     }
 
-    public function matricula(){
-        return $this->hasMany('App\Matricula');
+    //Una carrera puede tener asociadas muchas matriculas
+    public function matriculas(){
+        return $this->hasMany('App\Matricula', 'id_carrera');
     }
 
 }
