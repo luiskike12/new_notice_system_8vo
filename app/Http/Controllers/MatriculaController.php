@@ -27,14 +27,28 @@ class MatriculaController extends Controller
             ->orderBy('matriculas.id', 'desc')->paginate(5);
         }
         else{
-            $matriculas = Matricula::join('carreras','carreras.id','=','matriculas.id_carrera')
-            ->select('matriculas.id','matriculas.id_carrera','carreras.nombre as nombre_carrera',
-            DB::raw('CASE carreras.tipo_modalidad 
-            WHEN 1 THEN "Escolarizado" 
-            WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
-            'matriculas.matricula','matriculas.nombre','matriculas.condicion')
-            ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('matriculas.id', 'desc')->paginate(5);
+
+            if($criterio=='tipo_modalidad'){
+                $matriculas = Matricula::join('carreras','carreras.id','=','matriculas.id_carrera')
+                ->select('matriculas.id','matriculas.id_carrera','carreras.nombre as nombre_carrera',
+                DB::raw('CASE carreras.tipo_modalidad 
+                WHEN 1 THEN "Escolarizado" 
+                WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                'matriculas.switch','matriculas.matricula','matriculas.nombre','matriculas.condicion')
+                ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                ->orderBy('matriculas.id', 'desc')->paginate(5);
+            }else{
+                $matriculas = Matricula::join('carreras','carreras.id','=','matriculas.id_carrera')
+                ->select('matriculas.id','matriculas.id_carrera','carreras.nombre as nombre_carrera',
+                DB::raw('CASE carreras.tipo_modalidad 
+                WHEN 1 THEN "Escolarizado" 
+                WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                'matriculas.switch','matriculas.matricula','matriculas.nombre','matriculas.condicion')
+                ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
+                ->orderBy('matriculas.id', 'desc')->paginate(5);
+            }
+
+            
         }
         
         return[

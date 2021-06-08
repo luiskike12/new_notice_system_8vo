@@ -24,7 +24,11 @@
                                     <option value="nombre">Carrera</option>
                                     <option value="tipo_plan">Plan de Estudio</option>
                                     <option value="tipo_modalidad">Modalidad</option>
-                                    <option value="num_grados"><span id="ejemplo">No. Grados</span></option>
+                                    <option value="num_grados">No. Grados</option>
+                                    <option value="turno_matutino">Turno Matutino</option>
+                                    <option value="turno_vespertino">Turno Vespertino</option>
+                                    <option value="turno_nocturno">Turno Nocturno</option>
+                                    <option value="turno_mixto">Turno Mixto</option>
                                 </select>
                                 <select v-if="criterio==='tipo_plan'" v-model="buscar" class="form-control">
                                     <option value="" disabled selected>Seleccione una opción</option>
@@ -35,6 +39,13 @@
                                     <option value="" disabled selected>Seleccione una opción</option>
                                     <option value="1">Escolarizado</option>
                                     <option value="2">Semiescolarizado</option>
+                                </select>
+                                <select v-else-if="criterio==='turno_matutino' || criterio==='turno_vespertino' 
+                                || criterio==='turno_nocturno' || criterio==='turno_mixto'" 
+                                v-model="buscar" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Desactivado</option>
                                 </select>
                                 <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarCarrera(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarCarrera(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
@@ -312,11 +323,14 @@
         },
         watch : {
             criterio : function(opcion){
-                //$('input[type="text"]').val('');
                 if(opcion=='nombre')this.buscar = '';
                 if(opcion=='tipo_plan')this.buscar = '';
                 if(opcion=='tipo_modalidad')this.buscar = '';
                 if(opcion=='num_grados')this.buscar = '';
+                if(opcion=='turno_matutino')this.buscar = '';
+                if(opcion=='turno_vespertino')this.buscar = '';
+                if(opcion=='turno_nocturno')this.buscar = '';
+                if(opcion=='turno_mixto')this.buscar = '';
             }
         },
         methods : {

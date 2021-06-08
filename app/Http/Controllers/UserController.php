@@ -10,7 +10,7 @@ use App\User;
 class UserController extends Controller
 {
     public function index(Request $request)
-    {
+    {   
         if(!$request->ajax())return redirect('/');
 
         $buscar = $request->buscar;
@@ -25,13 +25,23 @@ class UserController extends Controller
             ->orderBy('users.id', 'desc')->paginate(5);
         }
         else{
-            $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
-            ->join('roles', 'users.id_rol', '=', 'roles.id')
-            ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
-            'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
-            'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
-            ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
-            ->orderBy('users.id', 'desc')->paginate(5);
+            if($criterio=='tipo_modalidad'){
+                $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                ->join('roles', 'users.id_rol', '=', 'roles.id')
+                ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
+                'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                ->orderBy('users.id', 'desc')->paginate(5);
+            }else{
+                $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                ->join('roles', 'users.id_rol', '=', 'roles.id')
+                ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
+                'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                ->orderBy('users.id', 'desc')->paginate(5);
+            }
         }
         
         return[

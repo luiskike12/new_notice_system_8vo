@@ -18,11 +18,39 @@
                         <div class="col-md-6 scroll-busqueda-filtro-x">
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
+                                    <option value="id_carrera">Carrera</option>
+                                    <option value="tipo_modalidad">Modalida</option>
+                                    <option value="matricula">Matrícula</option>
+                                    <option value="nombre">Nombre</option>
                                     <option value="correo">Correo</option>
                                     <option value="grado">No. Grado</option>
-                                    <option value="turno">Num Turno</option>
+                                    <option value="turno">Turno</option>
+                                    <option value="condicion">Estado</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarAlumnos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una carrera</option>
+                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                    </option>
+                                </select>
+                                <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Escolarizado</option>
+                                    <option value="2">Semiescolarizado</option>
+                                </select>
+                                <select v-else-if="criterio==='turno'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Matutino</option>
+                                    <option value="2">Vespertino</option>
+                                    <option value="3">Nocturno</option>
+                                    <option value="4">Mixto</option>
+                                </select>
+                                <select v-else-if="criterio==='condicion'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Desactivado</option>
+                                </select>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarAlumnos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarAlumnos(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
@@ -211,7 +239,8 @@
                 t_vespertino : 0,
                 t_nocturno : 0,
                 t_mixto : 0,
-
+                //Variables para busqueda por filtro
+                arrayCarrera : [],
                 //variables para las funciones especificas del componente
                 modal : 0,
                 modal_eliminar : 0,
@@ -235,7 +264,8 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'correo',
+                //Busqueda por filtro
+                criterio : 'id_carrera',
                 buscar : ''
             }
         },
@@ -267,6 +297,18 @@
                 return pagesArray;
             }
         },
+        watch : {
+            criterio : function(opcion){
+                if(opcion=='id_carrera')this.buscar = '';
+                if(opcion=='tipo_modalidad')this.buscar = '';
+                if(opcion=='matricula')this.buscar = '';
+                if(opcion=='nombre')this.buscar = '';
+                if(opcion=='correo')this.buscar = '';
+                if(opcion=='grado')this.buscar = '';
+                if(opcion=='turno')this.buscar = '';
+                if(opcion=='condicion')this.buscar = '';
+            }
+        },
         methods : {
             listarAlumnos(page, buscar, criterio){
                 let me = this;
@@ -282,7 +324,7 @@
                 })
                 .then(function () {
                     // always executed
-                    
+                    me.limpiarTextBuscar();
                 });
             },
             cambiarPagina(page, buscar, criterio){//No mover
@@ -291,6 +333,25 @@
                 me.pagination.current_page = page;
                 //Envia la peticion para visualizar la data de esa pagina, es para buscar
                 me.listarAlumnos(page, buscar, criterio);
+            },
+            limpiarTextBuscar(){
+                $('#buscar').val('');
+                this.buscar = '';
+            },
+            seleccionarCarrera(){//se puede modificar
+                //obtener el valor de un <select>
+                let me = this;
+                var url = '/carrera/selectCarrera';
+                axios.get(url).then(function (response) {
+                    var respuesta = response.data;
+                    me.arrayCarrera = respuesta.carreras;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
             },
             seleccionarTurno(id_alumno){//se puede modificar
                 //obtener el valor de un <select>
@@ -418,6 +479,9 @@
                 this.t_vespertino = 0;
                 this.t_nocturno = 0;
                 this.t_mixto = 0;
+                //arreglo para el filtro por busqueda
+                this.arrayCarrera = [];
+                this.seleccionarCarrera();
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 switch(modelo){
@@ -459,6 +523,7 @@
         },
         mounted() {//no modificar
             this.listarAlumnos(1, this.buscar, this.criterio);
+            this.seleccionarCarrera();
         }
     }
 </script>

@@ -21,10 +21,36 @@
                         <div class="col-md-6 scroll-busqueda-filtro-x">    
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
+                                    <option value="id_carrera">Carrera</option>
+                                    <option value="tipo_modalidad">Modalidad</option>
+                                    <option value="switch">Switch</option>
                                     <option value="matricula">Matrícula</option>
                                     <option value="nombre">Nombre</option>
+                                    <option value="condicion">Estado</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarMatriculas(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una carrera</option>
+                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                    </option>
+                                </select>
+                                <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Escolarizado</option>
+                                    <option value="2">Semiescolarizado</option>
+                                </select>
+                                <select v-else-if="criterio==='switch'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">En servicio</option>
+                                    <option value="0">Fuera de servicio</option>
+                                </select>
+                                <select v-else-if="criterio==='condicion'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Registrado</option>
+                                    <option value="0">No registrado</option>
+                                    <option value="2">Desactivado</option>
+                                </select>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarMatriculas(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarMatriculas(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
@@ -241,7 +267,8 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'matricula',
+                //Busqueda por filtro
+                criterio : 'id_carrera',
                 buscar : ''
             }
         },
@@ -273,6 +300,16 @@
                 return pagesArray;
             }
         },
+        watch : {
+            criterio : function(opcion){
+                if(opcion=='id_carrera')this.buscar = '';
+                if(opcion=='tipo_modalidad')this.buscar = '';
+                if(opcion=='switch')this.buscar = '';
+                if(opcion=='matricula')this.buscar = '';
+                if(opcion=='nombre')this.buscar = '';
+                if(opcion=='condicion')this.buscar = '';
+            }
+        },
         methods : {
             listarMatriculas(page, buscar, criterio){
                 let me = this;
@@ -288,7 +325,12 @@
                 })
                 .then(function () {
                     // always executed
+                    me.limpiarTextBuscar();
                 });
+            },
+            limpiarTextBuscar(){
+                $('#buscar').val('');
+                this.buscar = '';
             },
             cambiarPagina(page, buscar, criterio){//No mover
                 let me = this;
@@ -438,7 +480,10 @@
                     {carrera : 0, mensaje : ''},
                     {matricula : 0, mensaje : ''},
                     {nombre : 0, mensaje : ''}
-                ]
+                ];
+                //Busqueda por filtro
+                this.arrayCarrera = [];
+                this.seleccionarCarrera();
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
@@ -489,6 +534,7 @@
         },
         mounted() {//no modificar
             this.listarMatriculas(1, this.buscar, this.criterio);
+            this.seleccionarCarrera();
         }
     }
 </script>

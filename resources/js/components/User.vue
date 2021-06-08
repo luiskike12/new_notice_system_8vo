@@ -21,11 +21,38 @@
                         <div class="col-md-6 scroll-busqueda-filtro-x">
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
+                                    <option value="id_rol">Rol</option>
+                                    <option value="id_carrera">Carrera</option>
+                                    <option value="tipo_modalidad">Modalidad</option>
                                     <option value="usuario">Usuario</option>
                                     <option value="nombre">Nombre</option>
                                     <option value="correo">Correo</option>
+                                    <option value="condicion">Estado</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarUser(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <select v-if="criterio==='id_rol'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Coordinador</option>
+                                    <option value="3">Asistente</option>
+                                    <option value="4">Docente</option>
+                                </select>
+                                <select v-else-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una carrera</option>
+                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                    </option>
+                                </select>
+                                <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Escolarizado</option>
+                                    <option value="2">Semiescolarizado</option>
+                                </select>
+                                <select v-else-if="criterio==='condicion'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Activo</option>
+                                    <option value="0">Desactivado</option>
+                                </select>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarUser(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarUser(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
@@ -270,7 +297,7 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'usuario',
+                criterio : 'id_rol',
                 buscar : ''
             }
         },
@@ -302,6 +329,17 @@
                 return pagesArray;
             }
         },
+        watch : {
+            criterio : function(opcion){
+                if(opcion=='id_rol')this.buscar = '';
+                if(opcion=='id_carrera')this.buscar = '';
+                if(opcion=='tipo_modalidad')this.buscar = '';
+                if(opcion=='usuario')this.buscar = '';
+                if(opcion=='nombre')this.buscar = '';
+                if(opcion=='correo')this.buscar = '';
+                if(opcion=='condicion')this.buscar = '';
+            }
+        },
         methods : {
             listarUser(page, buscar, criterio){
                 let me = this;
@@ -317,6 +355,7 @@
                 })
                 .then(function () {
                     // always executed
+                    me.limpiarTextBuscar(); 
                 });
             },
             cambiarPagina(page, buscar, criterio){//No mover
@@ -325,6 +364,10 @@
                 me.pagination.current_page = page;
                 //Envia la peticion para visualizar la data de esa pagina, es para buscar
                 me.listarUser(page, buscar, criterio);
+            },
+            limpiarTextBuscar(){
+                $('#buscar').val('');
+                this.buscar = '';
             },
             seleccionarCarrera(){//se puede modificar
                 //obtener el valor de un <select>
@@ -564,7 +607,10 @@
                 var rol = event.target.value;
                 if(rol==1){
                     this.id_carrera = 1;
-                }else{
+                }else if(rol==4){
+                    this.id_carrera = 2;
+                }
+                else{
                     this.id_carrera = 0;
                 }
             },
@@ -588,6 +634,7 @@
                     nombre : {mensaje : '', color : ''},
                     correo : {mensaje : '', color : ''}
                 };
+                this.seleccionarCarrera();
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
@@ -638,6 +685,7 @@
         },
         mounted() {//no modificar
             this.listarUser(1, this.buscar, this.criterio);
+            this.seleccionarCarrera();
         }
     }
 </script>

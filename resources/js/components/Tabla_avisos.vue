@@ -21,9 +21,31 @@
                         <div class="col-md-6 scroll-busqueda-filtro-x">
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
+                                    <option value="id_carrera">Carrera</option>
+                                    <option value="turno">Turno</option>
+                                    <option value="grado">Grado</option>
                                     <option value="titulo">Título</option>
+                                    <option value="estado">Estado</option>
                                 </select>
-                                <input type="text" v-model="buscar" @keyup.enter="listarAvisos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una carrera</option>
+                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                    </option>
+                                </select>
+                                <select v-else-if="criterio==='turno'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Matutino</option>
+                                    <option value="2">Vespertino</option>
+                                    <option value="3">Nocturno</option>
+                                    <option value="4">Mixto</option>
+                                </select>
+                                <select v-else-if="criterio==='estado'" class="form-control" v-model="buscar">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Enviado</option>
+                                    <option value="0">Guardado</option>
+                                </select>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarAvisos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
                                 <button type="submit" @click="listarAvisos(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
@@ -461,7 +483,8 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'titulo',
+                //Busqueda por filtro
+                criterio : 'id_carrera',
                 buscar : ''
             }
         },
@@ -503,6 +526,15 @@
                 }
             }
         },
+        watch : {
+            criterio : function(opcion){
+                if(opcion=='id_carrera')this.buscar = '';
+                if(opcion=='turno')this.buscar = '';
+                if(opcion=='grado')this.buscar = '';
+                if(opcion=='titulo')this.buscar = '';
+                if(opcion=='estado')this.buscar = '';
+            }
+        },
         methods : {
             listarAvisos(page, buscar, criterio){
                 let me = this;
@@ -518,7 +550,12 @@
                 })
                 .then(function () {
                     // always executed
+                    me.limpiarTextBuscar();
                 });
+            },
+            limpiarTextBuscar(){
+                $('#buscar').val('');
+                this.buscar = '';
             },
             cambiarPagina(page, buscar, criterio){//No mover
                 let me = this;
