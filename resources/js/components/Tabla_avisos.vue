@@ -16,14 +16,16 @@
                 </button> -->
             </div>
             <div class="card-body">
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <select class="form-control col-md-3" v-model="criterio">
-                                <option value="titulo">Título</option>
-                            </select>
-                            <input type="text" v-model="buscar" @keyup.enter="listarAvisos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
-                            <button type="submit" @click="listarAvisos(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                <div class="form-group">
+                    <div class="row scroll-busqueda-filtro">
+                        <div class="col-md-6 scroll-busqueda-filtro-x">
+                            <div class="input-group">
+                                <select class="form-control col-md-3" v-model="criterio">
+                                    <option value="titulo">Título</option>
+                                </select>
+                                <input type="text" v-model="buscar" @keyup.enter="listarAvisos(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <button type="submit" @click="listarAvisos(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>

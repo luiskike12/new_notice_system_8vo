@@ -16,27 +16,29 @@
                 </button>
             </div>
             <div class="card-body">
-                <div class="form-group row">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <select class="form-control col-md-4" v-model="criterio">
-                                <option value="nombre">Carrera</option>
-                                <option value="tipo_plan">Plan de Estudio</option>
-                                <option value="tipo_modalidad">Modalidad</option>
-                                <option value="num_grados"><span id="ejemplo">No. Grados</span></option>
-                            </select>
-                            <select v-if="criterio==='tipo_plan'" v-model="buscar" class="form-control">
-                                <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="6">Semestral</option>
-                                <option value="4">Cuatrimestral</option>
-                            </select>
-                            <select v-else-if="criterio==='tipo_modalidad'" v-model="buscar" class="form-control">
-                                <option value="" disabled selected>Seleccione una opción</option>
-                                <option value="1">Escolarizado</option>
-                                <option value="2">Semiescolarizado</option>
-                            </select>
-                            <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarCarrera(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
-                            <button type="submit" @click="listarCarrera(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                <div class="form-group">
+                    <div class="row scroll-busqueda-filtro">
+                        <div class="col-md-6 scroll-busqueda-filtro-x">
+                            <div class="input-group">
+                                <select v-model="criterio" class="form-control col-md-4">
+                                    <option value="nombre">Carrera</option>
+                                    <option value="tipo_plan">Plan de Estudio</option>
+                                    <option value="tipo_modalidad">Modalidad</option>
+                                    <option value="num_grados"><span id="ejemplo">No. Grados</span></option>
+                                </select>
+                                <select v-if="criterio==='tipo_plan'" v-model="buscar" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="6">Semestral</option>
+                                    <option value="4">Cuatrimestral</option>
+                                </select>
+                                <select v-else-if="criterio==='tipo_modalidad'" v-model="buscar" class="form-control">
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="1">Escolarizado</option>
+                                    <option value="2">Semiescolarizado</option>
+                                </select>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarCarrera(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
+                                <button type="submit" @click="listarCarrera(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -880,4 +882,5 @@
         cursor: pointer;
         outline: inherit;
     }
+
 </style>
