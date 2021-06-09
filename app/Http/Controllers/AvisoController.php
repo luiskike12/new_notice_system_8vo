@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use App\Aviso;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use OneSignal;
 
@@ -176,6 +177,8 @@ class AvisoController extends Controller
         try{
             DB::beginTransaction();
             
+            $fecha = Carbon::now('America/Mexico_City');
+
             if ($request->hasFile('documento')){
                 //$nombre = $file->getClientOriginalName();//nombre del archivo
                 //$ruta_documento = $request->documento->store('upload-documents','public');
@@ -192,6 +195,7 @@ class AvisoController extends Controller
             $aviso->documento = $ruta_documento;
             $aviso->general = $request->general;
             $aviso->estado = $request->estado;
+            $aviso->fecha_hora = $fecha->toDateString();
             $aviso->save();
             
             DB::commit();
@@ -208,6 +212,8 @@ class AvisoController extends Controller
 
         try{
             DB::beginTransaction();
+
+            $fecha = Carbon::now('America/Mexico_City');
             
             if ($request->hasFile('documento')){
                 //$nombre = $file->getClientOriginalName();//nombre del archivo
@@ -225,6 +231,7 @@ class AvisoController extends Controller
             $aviso->documento = $ruta_documento;
             $aviso->general = $request->general;
             $aviso->estado = $request->estado;
+            $aviso->fecha_hora = $fecha->toDateString();
             $aviso->save();
 
             // query notification

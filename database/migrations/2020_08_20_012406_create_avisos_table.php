@@ -28,6 +28,7 @@ class CreateAvisosTable extends Migration
             $table->string('documento')->nullable();
             $table->boolean('general')->default(0);
             $table->boolean('estado')->default(0);
+            $table->dateTime('fecha_hora');
             $table->timestamps();
         });
     }

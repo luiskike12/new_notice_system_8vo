@@ -567,12 +567,12 @@
         mounted() {//no modificar
             this.seleccion_de_envio();
             
-            $('.asignar-fecha').datepicker({
-                format: "dd/mm/yyyy",
-                language: "es",
-                autoclose: true,
-                todayHighlight: true
-            });
+            // $('.asignar-fecha').datepicker({
+            //     format: "dd/mm/yyyy",
+            //     language: "es",
+            //     autoclose: true,
+            //     todayHighlight: true
+            // });
 
         }
     }

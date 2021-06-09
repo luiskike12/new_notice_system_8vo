@@ -16,6 +16,8 @@ Route::get('/main', function () {
     return view('contenido/contenido');
 })->name('main');
 
+//Dashboard de graficos
+Route::get('/dashboard', 'DashboardController');
 
 //Rutas del controlador Carrera
 Route::get('/carrera', 'CarreraController@index');

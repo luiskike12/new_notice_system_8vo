@@ -13,7 +13,7 @@
     <link href="css/plantilla.css" rel="stylesheet">
 
     <!-- bootstrap-datepicker sandbox -->
-    <link href="css/bootstrap-datepicker.css" rel="stylesheet">
+    <!-- <link href="css/bootstrap-datepicker.css" rel="stylesheet"> -->
     
 </head>
 
@@ -130,10 +130,11 @@
     <!-- Archivos js compilados con Laravel mix -->
     <script src="js/app.js"></script>
     <script src="js/plantilla.js"></script>
+    <!-- <script src="js/chart.min.js"></script> -->
 
     <!-- bootstrap-datepicker sandbox -->
-    <script src="js/bootstrap-datepicker.min.js"></script>
-    <script src="js/bootstrap-datepicker.es.min.js"></script>
+    <!-- <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker.es.min.js"></script> -->
 
 </body>
 

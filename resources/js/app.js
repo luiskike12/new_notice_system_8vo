@@ -27,6 +27,7 @@ Vue.component('matricula', require('./components/Matricula.vue').default);
 Vue.component('alumno', require('./components/Alumno.vue').default);
 Vue.component('aviso', require('./components/Aviso.vue').default);
 Vue.component('tabla-avisos', require('./components/Tabla_avisos.vue').default);
+Vue.component('dashboard', require('./components/Dashboard.vue').default);
 
 //Pruebas de un Alumno registrandose
 Vue.component('registro', require('./components/Registro.vue').default);
