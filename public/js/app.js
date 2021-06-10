@@ -3985,6 +3985,74 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4063,11 +4131,51 @@ __webpack_require__.r(__webpack_exports__);
       var fecha = new Date();
       var anoActual = fecha.getFullYear();
       document.getElementById('year').innerHTML = anoActual.toString();
+    },
+    mostrarReloj: function mostrarReloj() {
+      /**
+       * Muestra la hora del 
+       * servidor en tiempo real 
+       * en el formato de 12 horas
+       */
+      var HORA = function HORA() {
+        // Constante que almacena el id del elemento donde
+        // se va a mostrar el reloj
+        var ID_ELEMENT = document.getElementById("reloj"); // Función que añade un cero a la izquierda
+        // a la hora, minutos y segundos cuando el
+        // valor de estos es inferior a 10 
+
+        var CERO = function CERO(n) {
+          return n = n < 10 ? "0" + n : n;
+        };
+
+        var hora, minutos, segundos, meridiano; // Funcion que retorna el Reloj
+
+        var RELOJ = function RELOJ() {
+          var DATE = new Date();
+          hora = DATE.getHours();
+          minutos = DATE.getMinutes();
+          segundos = DATE.getSeconds(); // Determinar el meridiano
+
+          meridiano = hora < 12 ? "am" : "pm"; // Dar formato de 12 horas ya que por defecto el formato es de 24 horas
+
+          hora = hora == 0 ? 12 : hora || hora > 12 ? hora -= 12 : hora;
+          return ID_ELEMENT.textContent = "".concat(CERO(hora), ":").concat(CERO(minutos), ":").concat(CERO(segundos), " ").concat(meridiano);
+        }; // Llama a la función RELOJ cada segundo
+        // para que se vaya actualizando la hora
+
+
+        return setInterval(RELOJ, 1000);
+      }; // Llama a la funcion HORA cuando el DOM se haya cargado
+
+
+      document.addEventListener("DOMContentLoaded", HORA);
     }
   },
   mounted: function mounted() {
     this.getReporteAvisos();
     this.anioActual();
+    this.mostrarReloj();
   }
 });
 
@@ -11590,7 +11698,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-content[data-v-040e2ab9]{\n    padding-left: 10px;\n    padding-right: 10px;\n}\n.estilo-header-footer-escritorio[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7);\n    margin-bottom: 0;\n}\n\n", ""]);
+exports.push([module.i, "\n.card-content[data-v-040e2ab9]{\n    padding-left: 10px;\n    padding-right: 10px;\n}\n.estilo-grafica-avisos[data-v-040e2ab9]{\n    max-height: 243px;\n}\n.estilo-header-footer-escritorio[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7);\n    margin-bottom: 0;\n}\n.seccion-izquierda-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n.seccion-derecha-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n\n/* -------------- estilos para el reloj -----------------------*/\n.col-contenedor-reloj[data-v-040e2ab9]{\n    padding-bottom: 18px;\n}\n.contenedor-reloj[data-v-040e2ab9]{\n    width: 150px;\n    margin: auto;\n}\n.contenedor-reloj > tbody > tr > .icono-reloj[data-v-040e2ab9]{\n    padding-right: 0;\n}\n.icono-reloj[data-v-040e2ab9]{\n    width: 20%;\n}\n.icono-reloj > span[data-v-040e2ab9]{\n    font-size: 17px;\n}\n.caja-reloj[data-v-040e2ab9]{\n    padding: 0;\n}\n.caja-reloj > .borde-caja-reloj[data-v-040e2ab9]{\n    height: 35px;\n    border: 1px solid #BBCDD5;\n    border-left: none;\n    display: flex;\n}\n.caja-reloj > .borde-caja-reloj > .reloj[data-v-040e2ab9]{\n    margin: auto;\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7 );\n}\n\n/*@media only screen and (max-width:768px){\n    .tr-reloj > .col-md-2{\n        width: 34px;\n    }\n} */\n\n/* estilos de columna de imagen de perfil */\n.col-imagen-perfil[data-v-040e2ab9]{\n    margin-bottom: 18px;\n}\n\n\n/* ----------- Estilos de la tabla de infrmacion del usuario ----------*/\n.tabla-info-usuario[data-v-040e2ab9]{\n    margin-bottom: 0;\n    border: 1px solid #BBCDD5;\n}\n.tabla-info-usuario > thead > .row[data-v-040e2ab9]{\n    margin: auto;\n    background-color: rgba(213, 219, 219, 0.3);\n    /* background: linear-gradient(to bottom, rgb(128, 139, 150, 0.3), white 100%); */\n}\n.tabla-info-usuario > thead > .row > td[data-v-040e2ab9]{\n    color: rgb(39, 55, 70, 0.9);\n    font-weight: bold;\n    font-size: 15px;\n}\n.tabla-info-usuario > tbody > .row[data-v-040e2ab9]{\n    margin: auto;\n}\n.tabla-info-usuario > tbody > .row > .col-sm[data-v-040e2ab9]{\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.tabla-info-usuario > tbody > .etiqueta[data-v-040e2ab9]{\n    background-color: rgba(255, 250, 205, 0.4);\n}\n.tabla-info-usuario > tbody > .etiqueta > td[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(39, 55, 70, 0.8);\n}\n.tabla-info-usuario > tbody > .descripcion[data-v-040e2ab9]{\n    background-color: white;\n}\n", ""]);
 
 // exports
 
@@ -47157,7 +47265,10 @@ var staticRenderFns = [
                   _vm._v(" "),
                   _c("div", { staticClass: "card-content" }, [
                     _c("div", { staticClass: "ct-chart" }, [
-                      _c("canvas", { attrs: { id: "graficaAvisos" } })
+                      _c("canvas", {
+                        staticClass: "estilo-grafica-avisos",
+                        attrs: { id: "graficaAvisos" }
+                      })
                     ])
                   ]),
                   _vm._v(" "),
@@ -47177,7 +47288,7 @@ var staticRenderFns = [
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-6" }, [
-                _c("div", { staticClass: "card card-chart" }, [
+                _c("div", { staticClass: "card" }, [
                   _c("div", { staticClass: "card-header" }, [
                     _c(
                       "h5",
@@ -47186,8 +47297,235 @@ var staticRenderFns = [
                     )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "card-content" }, [
-                    _c("p", [_vm._v("Xd")])
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-sm-6 seccion-izquierda-datos-personales"
+                        },
+                        [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "div",
+                              { staticClass: "col-sm col-contenedor-reloj" },
+                              [
+                                _c(
+                                  "table",
+                                  { staticClass: "contenedor-reloj" },
+                                  [
+                                    _c("tbody", [
+                                      _c("tr", [
+                                        _c(
+                                          "td",
+                                          { staticClass: "icono-reloj" },
+                                          [
+                                            _c(
+                                              "span",
+                                              {
+                                                staticClass: "input-group-addon"
+                                              },
+                                              [
+                                                _c("i", {
+                                                  staticClass: "fa fa-clock-o",
+                                                  attrs: {
+                                                    "aria-hidden": "true"
+                                                  }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "td",
+                                          { staticClass: "caja-reloj" },
+                                          [
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass: "borde-caja-reloj"
+                                              },
+                                              [
+                                                _c("p", {
+                                                  staticClass: "reloj",
+                                                  attrs: { id: "reloj" }
+                                                })
+                                              ]
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ])
+                                  ]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-sm text-center col-imagen-perfil"
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "rounded-circle",
+                                  attrs: {
+                                    src: "img/avatars/usuario.png",
+                                    width: "80px",
+                                    height: "80px"
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass: "col-sm text-center",
+                                staticStyle: { "margin-bottom": "18px" }
+                              },
+                              [
+                                _c(
+                                  "p",
+                                  {
+                                    staticStyle: {
+                                      "font-weight": "bold",
+                                      color: "rgb(0, 0, 0, 0.7)"
+                                    }
+                                  },
+                                  [_vm._v("Imagen de perfil")]
+                                )
+                              ]
+                            )
+                          ])
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-sm-6 seccion-derecha-datos-personales"
+                        },
+                        [
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("div", { staticClass: "row" }, [
+                              _c("div", { staticClass: "col-sm text-center" }, [
+                                _c(
+                                  "table",
+                                  { staticClass: "table tabla-info-usuario" },
+                                  [
+                                    _c("thead", [
+                                      _c("tr", { staticClass: "row" }, [
+                                        _c(
+                                          "td",
+                                          {
+                                            staticClass: "col-sm text-center",
+                                            staticStyle: {
+                                              "border-top": "none"
+                                            }
+                                          },
+                                          [_vm._v("Información del usuario")]
+                                        )
+                                      ])
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("tbody", [
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row etiqueta" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Usuario")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row descripcion" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Coordinador")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row etiqueta" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Carrera")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row descripcion" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Institucional general")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row etiqueta" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Nombre")]
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "tr",
+                                        { staticClass: "row descripcion" },
+                                        [
+                                          _c(
+                                            "td",
+                                            {
+                                              staticClass: "col-sm text-center"
+                                            },
+                                            [_vm._v("Julian Pineda")]
+                                          )
+                                        ]
+                                      )
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          ])
+                        ]
+                      )
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-footer text-center" }, [
