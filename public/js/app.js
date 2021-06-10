@@ -4053,6 +4053,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4069,7 +4071,12 @@ __webpack_require__.r(__webpack_exports__);
       //Aqui se almacena el número de avisos que fueron guardados en el mes
       avisosGuardados: [],
       //Aqui se almacenan los nombres de los meses
-      varMesAvisos: []
+      varMesAvisos: [],
+      //Datos del usuario
+      arrayDatosUsuario: [],
+      rol: '',
+      carrera: '',
+      nombre: ''
     };
   },
   methods: {
@@ -4079,13 +4086,22 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(url).then(function (response) {
         var respuesta = response.data;
-        me.arrayAvisos = respuesta.avisosEnviados; //carga los datos en el chart
+        me.arrayAvisos = respuesta.reporteAvisos;
+        me.arrayDatosUsuario = respuesta.datosUsuario; //carga los datos en el chart
 
-        me.mostrarReporteAvisos();
+        me.mostrarReporteAvisos(); //mostrar datos del usuario
+
+        me.mostrarDatosUsuario();
       })["catch"](function (error) {
         console.log(error);
       }).then(function () {// always executed
       });
+    },
+    mostrarDatosUsuario: function mostrarDatosUsuario() {
+      var me = this;
+      me.rol = me.arrayDatosUsuario[0]['nombre_rol'];
+      me.carrera = me.arrayDatosUsuario[0]['nombre_carrera'];
+      me.nombre = me.arrayDatosUsuario[0]['nombre'];
     },
     mostrarReporteAvisos: function mostrarReporteAvisos() {
       var me = this;
@@ -11698,7 +11714,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.card-content[data-v-040e2ab9]{\n    padding-left: 10px;\n    padding-right: 10px;\n}\n.estilo-grafica-avisos[data-v-040e2ab9]{\n    max-height: 243px;\n}\n.estilo-header-footer-escritorio[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7);\n    margin-bottom: 0;\n}\n.seccion-izquierda-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n.seccion-derecha-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n\n/* -------------- estilos para el reloj -----------------------*/\n.col-contenedor-reloj[data-v-040e2ab9]{\n    padding-bottom: 18px;\n}\n.contenedor-reloj[data-v-040e2ab9]{\n    width: 150px;\n    margin: auto;\n}\n.contenedor-reloj > tbody > tr > .icono-reloj[data-v-040e2ab9]{\n    padding-right: 0;\n}\n.icono-reloj[data-v-040e2ab9]{\n    width: 20%;\n}\n.icono-reloj > span[data-v-040e2ab9]{\n    font-size: 17px;\n}\n.caja-reloj[data-v-040e2ab9]{\n    padding: 0;\n}\n.caja-reloj > .borde-caja-reloj[data-v-040e2ab9]{\n    height: 35px;\n    border: 1px solid #BBCDD5;\n    border-left: none;\n    display: flex;\n}\n.caja-reloj > .borde-caja-reloj > .reloj[data-v-040e2ab9]{\n    margin: auto;\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7 );\n}\n\n/*@media only screen and (max-width:768px){\n    .tr-reloj > .col-md-2{\n        width: 34px;\n    }\n} */\n\n/* estilos de columna de imagen de perfil */\n.col-imagen-perfil[data-v-040e2ab9]{\n    margin-bottom: 18px;\n}\n\n\n/* ----------- Estilos de la tabla de infrmacion del usuario ----------*/\n.tabla-info-usuario[data-v-040e2ab9]{\n    margin-bottom: 0;\n    border: 1px solid #BBCDD5;\n}\n.tabla-info-usuario > thead > .row[data-v-040e2ab9]{\n    margin: auto;\n    background-color: rgba(213, 219, 219, 0.3);\n    /* background: linear-gradient(to bottom, rgb(128, 139, 150, 0.3), white 100%); */\n}\n.tabla-info-usuario > thead > .row > td[data-v-040e2ab9]{\n    color: rgb(39, 55, 70, 0.9);\n    font-weight: bold;\n    font-size: 15px;\n}\n.tabla-info-usuario > tbody > .row[data-v-040e2ab9]{\n    margin: auto;\n}\n.tabla-info-usuario > tbody > .row > .col-sm[data-v-040e2ab9]{\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.tabla-info-usuario > tbody > .etiqueta[data-v-040e2ab9]{\n    background-color: rgba(255, 250, 205, 0.4);\n}\n.tabla-info-usuario > tbody > .etiqueta > td[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(39, 55, 70, 0.8);\n}\n.tabla-info-usuario > tbody > .descripcion[data-v-040e2ab9]{\n    background-color: white;\n}\n", ""]);
+exports.push([module.i, "\n.card-content[data-v-040e2ab9]{\n    padding-left: 10px;\n    padding-right: 10px;\n}\n@media only screen and (max-width:1130px){\n.estilo-grafica-avisos[data-v-040e2ab9]{\n        /* max-height: 243px; */\n        min-height: auto;\n}\n}\n@media only screen and (min-width: 1131px){\n.estilo-grafica-avisos[data-v-040e2ab9]{\n        max-height: 243px;\n}\n}\n.estilo-header-footer-escritorio[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7);\n    margin-bottom: 0;\n}\n.seccion-izquierda-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n.seccion-derecha-datos-personales > .form-group[data-v-040e2ab9]{\n    margin-bottom: 22px;\n}\n\n/* -------------- estilos para el reloj -----------------------*/\n.col-contenedor-reloj[data-v-040e2ab9]{\n    padding-bottom: 18px;\n}\n.contenedor-reloj[data-v-040e2ab9]{\n    width: 150px;\n    margin: auto;\n}\n.contenedor-reloj > tbody > tr > .icono-reloj[data-v-040e2ab9]{\n    padding-right: 0;\n}\n.icono-reloj[data-v-040e2ab9]{\n    width: 20%;\n}\n.icono-reloj > span[data-v-040e2ab9]{\n    font-size: 17px;\n}\n.caja-reloj[data-v-040e2ab9]{\n    padding: 0;\n}\n.caja-reloj > .borde-caja-reloj[data-v-040e2ab9]{\n    height: 35px;\n    border: 1px solid #BBCDD5;\n    border-left: none;\n    display: flex;\n}\n.caja-reloj > .borde-caja-reloj > .reloj[data-v-040e2ab9]{\n    margin: auto;\n    font-weight: bold;\n    color: rgb(0, 0, 0, 0.7 );\n}\n\n/*@media only screen and (max-width:768px){\n    .tr-reloj > .col-md-2{\n        width: 34px;\n    }\n} */\n\n/* estilos de columna de imagen de perfil */\n.col-imagen-perfil[data-v-040e2ab9]{\n    margin-bottom: 18px;\n}\n\n\n/* ----------- Estilos de la tabla de infrmacion del usuario ----------*/\n.tabla-info-usuario[data-v-040e2ab9]{\n    margin-bottom: 0;\n    border: 1px solid #BBCDD5;\n}\n.tabla-info-usuario > thead > .row[data-v-040e2ab9]{\n    margin: auto;\n    background-color: rgba(213, 219, 219, 0.3);\n    /* background: linear-gradient(to bottom, rgb(128, 139, 150, 0.3), white 100%); */\n}\n.tabla-info-usuario > thead > .row > td[data-v-040e2ab9]{\n    color: rgb(39, 55, 70, 0.9);\n    font-weight: bold;\n    font-size: 15px;\n}\n.tabla-info-usuario > tbody > .row[data-v-040e2ab9]{\n    margin: auto;\n}\n.tabla-info-usuario > tbody > .row > .col-sm[data-v-040e2ab9]{\n    padding-top: 0;\n    padding-bottom: 0;\n}\n.tabla-info-usuario > tbody > .etiqueta[data-v-040e2ab9]{\n    background-color: rgba(255, 250, 205, 0.4);\n}\n.tabla-info-usuario > tbody > .etiqueta > td[data-v-040e2ab9]{\n    font-weight: bold;\n    color: rgb(39, 55, 70, 0.8);\n}\n.tabla-info-usuario > tbody > .descripcion[data-v-040e2ab9]{\n    background-color: white;\n}\n", ""]);
 
 // exports
 
@@ -47230,316 +47246,281 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("main", { staticClass: "main" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "card" }, [
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(2),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "card" }, [
+                _vm._m(3),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-6 seccion-derecha-datos-personales"
+                      },
+                      [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-sm text-center" }, [
+                              _c(
+                                "table",
+                                { staticClass: "table tabla-info-usuario" },
+                                [
+                                  _vm._m(5),
+                                  _vm._v(" "),
+                                  _c("tbody", [
+                                    _vm._m(6),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      { staticClass: "row descripcion" },
+                                      [
+                                        _c("td", {
+                                          staticClass: "col-sm text-center",
+                                          domProps: {
+                                            textContent: _vm._s(_vm.rol)
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(7),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      { staticClass: "row descripcion" },
+                                      [
+                                        _c("td", {
+                                          staticClass: "col-sm text-center",
+                                          domProps: {
+                                            textContent: _vm._s(_vm.carrera)
+                                          }
+                                        })
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm._m(8),
+                                    _vm._v(" "),
+                                    _c(
+                                      "tr",
+                                      { staticClass: "row descripcion" },
+                                      [
+                                        _c("td", {
+                                          staticClass: "col-sm text-center",
+                                          domProps: {
+                                            textContent: _vm._s(_vm.nombre)
+                                          }
+                                        })
+                                      ]
+                                    )
+                                  ])
+                                ]
+                              )
+                            ])
+                          ])
+                        ])
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(9)
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("main", { staticClass: "main" }, [
-      _c("ol", { staticClass: "breadcrumb" }, [
-        _c("li", { staticClass: "breadcrumb-item" }, [
-          _c("a", { attrs: { href: "/" } }, [_vm._v(" Escritorio ")])
+    return _c("ol", { staticClass: "breadcrumb" }, [
+      _c("li", { staticClass: "breadcrumb-item" }, [
+        _c("a", { attrs: { href: "/" } }, [_vm._v(" Escritorio ")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("i", { staticClass: "icon-speedometer" }),
+      _vm._v(" Escritorio\r\n            ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-6 col-grafica-avisos" }, [
+      _c("div", { staticClass: "card card-chart" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _c("h5", { staticClass: "estilo-header-footer-escritorio" }, [
+            _vm._v("Reporte de avisos")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-content" }, [
+          _c("div", { staticClass: "ct-chart" }, [
+            _c("canvas", {
+              staticClass: "estilo-grafica-avisos",
+              attrs: { id: "graficaAvisos" }
+            })
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-footer text-center" }, [
+          _c("p", { staticClass: "estilo-header-footer-escritorio" }, [
+            _vm._v(
+              "\r\n                                    Reporte de avisos por mes del año "
+            ),
+            _c("span", { attrs: { id: "year" } })
+          ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("i", { staticClass: "icon-speedometer" }),
-            _vm._v(" Escritorio\r\n            ")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("div", { staticClass: "card card-chart" }, [
-                  _c("div", { staticClass: "card-header" }, [
-                    _c(
-                      "h5",
-                      { staticClass: "estilo-header-footer-escritorio" },
-                      [_vm._v("Reporte de avisos")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-content" }, [
-                    _c("div", { staticClass: "ct-chart" }, [
-                      _c("canvas", {
-                        staticClass: "estilo-grafica-avisos",
-                        attrs: { id: "graficaAvisos" }
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h5", { staticClass: "estilo-header-footer-escritorio" }, [
+        _vm._v("Tarjeta de datos")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "col-sm-6 seccion-izquierda-datos-personales" },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("div", { staticClass: "col-sm col-contenedor-reloj" }, [
+            _c("table", { staticClass: "contenedor-reloj" }, [
+              _c("tbody", [
+                _c("tr", [
+                  _c("td", { staticClass: "icono-reloj" }, [
+                    _c("span", { staticClass: "input-group-addon" }, [
+                      _c("i", {
+                        staticClass: "fa fa-clock-o",
+                        attrs: { "aria-hidden": "true" }
                       })
                     ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "card-footer text-center" }, [
-                    _c(
-                      "p",
-                      { staticClass: "estilo-header-footer-escritorio" },
-                      [
-                        _vm._v(
-                          "\r\n                                    Reporte de avisos por mes del año "
-                        ),
-                        _c("span", { attrs: { id: "year" } })
-                      ]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
-                _c("div", { staticClass: "card" }, [
-                  _c("div", { staticClass: "card-header" }, [
-                    _c(
-                      "h5",
-                      { staticClass: "estilo-header-footer-escritorio" },
-                      [_vm._v("Datos personales")]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-body" }, [
-                    _c("div", { staticClass: "row" }, [
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "col-sm-6 seccion-izquierda-datos-personales"
-                        },
-                        [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c(
-                              "div",
-                              { staticClass: "col-sm col-contenedor-reloj" },
-                              [
-                                _c(
-                                  "table",
-                                  { staticClass: "contenedor-reloj" },
-                                  [
-                                    _c("tbody", [
-                                      _c("tr", [
-                                        _c(
-                                          "td",
-                                          { staticClass: "icono-reloj" },
-                                          [
-                                            _c(
-                                              "span",
-                                              {
-                                                staticClass: "input-group-addon"
-                                              },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "fa fa-clock-o",
-                                                  attrs: {
-                                                    "aria-hidden": "true"
-                                                  }
-                                                })
-                                              ]
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "td",
-                                          { staticClass: "caja-reloj" },
-                                          [
-                                            _c(
-                                              "div",
-                                              {
-                                                staticClass: "borde-caja-reloj"
-                                              },
-                                              [
-                                                _c("p", {
-                                                  staticClass: "reloj",
-                                                  attrs: { id: "reloj" }
-                                                })
-                                              ]
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ])
-                                  ]
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "col-sm text-center col-imagen-perfil"
-                              },
-                              [
-                                _c("img", {
-                                  staticClass: "rounded-circle",
-                                  attrs: {
-                                    src: "img/avatars/usuario.png",
-                                    width: "80px",
-                                    height: "80px"
-                                  }
-                                })
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass: "col-sm text-center",
-                                staticStyle: { "margin-bottom": "18px" }
-                              },
-                              [
-                                _c(
-                                  "p",
-                                  {
-                                    staticStyle: {
-                                      "font-weight": "bold",
-                                      color: "rgb(0, 0, 0, 0.7)"
-                                    }
-                                  },
-                                  [_vm._v("Imagen de perfil")]
-                                )
-                              ]
-                            )
-                          ])
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "col-sm-6 seccion-derecha-datos-personales"
-                        },
-                        [
-                          _c("div", { staticClass: "form-group" }, [
-                            _c("div", { staticClass: "row" }, [
-                              _c("div", { staticClass: "col-sm text-center" }, [
-                                _c(
-                                  "table",
-                                  { staticClass: "table tabla-info-usuario" },
-                                  [
-                                    _c("thead", [
-                                      _c("tr", { staticClass: "row" }, [
-                                        _c(
-                                          "td",
-                                          {
-                                            staticClass: "col-sm text-center",
-                                            staticStyle: {
-                                              "border-top": "none"
-                                            }
-                                          },
-                                          [_vm._v("Información del usuario")]
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tbody", [
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row etiqueta" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Usuario")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row descripcion" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Coordinador")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row etiqueta" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Carrera")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row descripcion" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Institucional general")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row etiqueta" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Nombre")]
-                                          )
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "tr",
-                                        { staticClass: "row descripcion" },
-                                        [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass: "col-sm text-center"
-                                            },
-                                            [_vm._v("Julian Pineda")]
-                                          )
-                                        ]
-                                      )
-                                    ])
-                                  ]
-                                )
-                              ])
-                            ])
-                          ])
-                        ]
-                      )
+                  _c("td", { staticClass: "caja-reloj" }, [
+                    _c("div", { staticClass: "borde-caja-reloj" }, [
+                      _c("p", { staticClass: "reloj", attrs: { id: "reloj" } })
                     ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "card-footer text-center" }, [
-                    _c(
-                      "p",
-                      { staticClass: "estilo-header-footer-escritorio" },
-                      [_vm._v("Datos del usuario")]
-                    )
                   ])
                 ])
               ])
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm text-center col-imagen-perfil" }, [
+            _c("img", {
+              staticClass: "rounded-circle",
+              attrs: {
+                src: "img/avatars/usuario.png",
+                width: "80px",
+                height: "80px"
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "col-sm text-center",
+              staticStyle: { "margin-bottom": "18px" }
+            },
+            [
+              _c(
+                "p",
+                {
+                  staticStyle: {
+                    "font-weight": "bold",
+                    color: "rgb(0, 0, 0, 0.7)"
+                  }
+                },
+                [_vm._v("Imagen de perfil")]
+              )
+            ]
+          )
         ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "row" }, [
+        _c(
+          "td",
+          {
+            staticClass: "col-sm text-center",
+            staticStyle: { "border-top": "none" }
+          },
+          [_vm._v("Información del usuario")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "row etiqueta" }, [
+      _c("td", { staticClass: "col-sm text-center" }, [_vm._v("Rol")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "row etiqueta" }, [
+      _c("td", { staticClass: "col-sm text-center" }, [_vm._v("Carrera")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "row etiqueta" }, [
+      _c("td", { staticClass: "col-sm text-center" }, [_vm._v("Nombre")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer text-center" }, [
+      _c("p", { staticClass: "estilo-header-footer-escritorio" }, [
+        _vm._v("Datos del usuario")
       ])
     ])
   }

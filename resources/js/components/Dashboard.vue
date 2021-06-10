@@ -13,7 +13,8 @@
             <!-- card-body padre-->
                 <div class="row">
                     <!-- columna del card-grafica-avisos -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-grafica-avisos">
+
                         <div class="card card-chart">
                             <div class="card-header">
                                 <h5 class="estilo-header-footer-escritorio">Reporte de avisos</h5>
@@ -29,13 +30,14 @@
                                 </p>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- columna de datos del usuario -->
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-header">
-                                <h5 class="estilo-header-footer-escritorio">Datos personales</h5>
+                                <h5 class="estilo-header-footer-escritorio">Tarjeta de datos</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -81,22 +83,22 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr class="row etiqueta">
-                                                                <td class="col-sm text-center">Usuario</td>
+                                                                <td class="col-sm text-center">Rol</td>
                                                             </tr>
                                                             <tr class="row descripcion">
-                                                                <td class="col-sm text-center">Coordinador</td>
+                                                                <td class="col-sm text-center" v-text="rol"></td>
                                                             </tr>
                                                             <tr class="row etiqueta">
                                                                 <td class="col-sm text-center">Carrera</td>
                                                             </tr>
                                                             <tr class="row descripcion">
-                                                                <td class="col-sm text-center">Institucional general</td>
+                                                                <td class="col-sm text-center" v-text="carrera"></td>
                                                             </tr>
                                                             <tr class="row etiqueta">
                                                                 <td class="col-sm text-center">Nombre</td>
                                                             </tr>
                                                             <tr class="row descripcion">
-                                                                <td class="col-sm text-center">Julian Pineda</td>
+                                                                <td class="col-sm text-center" v-text="nombre"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -141,6 +143,12 @@ export default {
             avisosGuardados : [],
             //Aqui se almacenan los nombres de los meses
             varMesAvisos : [],
+
+            //Datos del usuario
+            arrayDatosUsuario : [],
+            rol : '',
+            carrera : '',
+            nombre : ''
         }
     },
     methods : {
@@ -150,10 +158,13 @@ export default {
             //devuelve los avisos enviados en determinado mes
             axios.get(url).then(function (response) {
                 var respuesta = response.data;
-                me.arrayAvisos = respuesta.avisosEnviados;
+                me.arrayAvisos = respuesta.reporteAvisos;
+                me.arrayDatosUsuario = respuesta.datosUsuario;
                 
                 //carga los datos en el chart
                 me.mostrarReporteAvisos();
+                //mostrar datos del usuario
+                me.mostrarDatosUsuario();
             })
             .catch(function (error) {
                 console.log(error);
@@ -161,6 +172,13 @@ export default {
             .then(function () {
                 // always executed
             });
+        },
+        mostrarDatosUsuario(){
+            let me = this;
+            
+            me.rol = me.arrayDatosUsuario[0]['nombre_rol'];
+            me.carrera = me.arrayDatosUsuario[0]['nombre_carrera'];
+            me.nombre = me.arrayDatosUsuario[0]['nombre'];
         },
         mostrarReporteAvisos(){
             let me = this;
@@ -275,9 +293,21 @@ export default {
         padding-right: 10px;
     }
 
-    .estilo-grafica-avisos{
-        max-height: 243px;
+    @media only screen and (max-width:1130px){
+        
+        .estilo-grafica-avisos{
+            /* max-height: 243px; */
+            min-height: auto;
+        }
+
     }
+
+    @media only screen and (min-width: 1131px){
+        .estilo-grafica-avisos{
+            max-height: 243px;
+        }
+    }
+    
 
     .estilo-header-footer-escritorio{
         font-weight: bold;

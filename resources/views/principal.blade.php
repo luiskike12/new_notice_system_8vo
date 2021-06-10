@@ -130,7 +130,6 @@
     <!-- Archivos js compilados con Laravel mix -->
     <script src="js/app.js"></script>
     <script src="js/plantilla.js"></script>
-    <!-- <script src="js/chart.min.js"></script> -->
 
     <!-- bootstrap-datepicker sandbox -->
     <!-- <script src="js/bootstrap-datepicker.min.js"></script>
