@@ -5819,9 +5819,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -11790,7 +11787,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.select-carrera{\n    padding: 0;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 18px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n.select-carrera{\n    padding: 0;\n}\n\n/*  No mostrar el boton de seleccionar archivo  en trix-editor*/\ntrix-toolbar .trix-button-group--file-tools{\n    display: none;\n}\n\n/* botones circulares */\n.xyz { \n    background-size: auto; \n    text-align: center; \n    padding-top: 100px;\n}\n.btn-circle.btn-sm { \n    width: 30px; \n    height: 30px; \n    padding: 0px 0px; /* ponerlo a 0 para que quede en el centro */\n    border-radius: 15px; \n    font-size: 18px; /* tamaño de letra del boton */\n    text-align: center;\n}\n.btn-circle.btn-md { \n    width: 50px; \n    height: 50px; \n    padding: 7px 10px; \n    border-radius: 25px; \n    font-size: 10px; \n    text-align: center;\n}\n.btn-circle.btn-xl { \n    width: 70px; \n    height: 70px; \n    padding: 10px 16px; \n    border-radius: 35px; \n    font-size: 12px; \n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -44960,13 +44957,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Alumnos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Tabla de alumnos")
+      ])
     ])
   },
   function() {
@@ -44974,8 +44971,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Alumnos\r\n            ")
+      _c("i", {
+        staticClass: "fa fa-list-ul",
+        attrs: { "aria-hidden": "true" }
+      }),
+      _vm._v("Alumnos\r\n            ")
     ])
   },
   function() {
@@ -45981,13 +45981,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Avisos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Crear avisos")
+      ])
     ])
   },
   function() {
@@ -45995,7 +45995,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("i", { staticClass: "fa fa-align-justify" }),
+      _c("i", { staticClass: "icon-note" }),
       _vm._v("Crear Aviso\r\n            ")
     ])
   },
@@ -46065,8 +46065,8 @@ var render = function() {
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Carreras\r\n                "),
+          _c("i", { staticClass: "fa fa-list-ul" }),
+          _vm._v("Carreras\r\n                "),
           _c(
             "button",
             {
@@ -47189,13 +47189,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Carreras")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Tabla de carreras")
+      ])
     ])
   },
   function() {
@@ -47351,9 +47351,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "/" } }, [_vm._v(" Escritorio ")])
-      ])
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")])
     ])
   },
   function() {
@@ -47552,8 +47550,8 @@ var render = function() {
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Matrículas\r\n                "),
+          _c("i", { staticClass: "fa fa-id-card-o" }),
+          _vm._v("Matrículas\r\n                "),
           _c(
             "button",
             {
@@ -48582,13 +48580,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Alumnos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Registro de Matrículas")
+      ])
     ])
   },
   function() {
@@ -49608,13 +49606,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Accesos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Roles de Usuario")
+      ])
     ])
   },
   function() {
@@ -49622,8 +49620,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Roles\r\n            ")
+      _c("i", { staticClass: "fa fa-address-book-o" }),
+      _vm._v("Roles\r\n            ")
     ])
   },
   function() {
@@ -51215,13 +51213,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Avisos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Tabla de avisos")
+      ])
     ])
   },
   function() {
@@ -51229,8 +51227,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("i", { staticClass: "fa fa-align-justify" }),
-      _vm._v(" Avisos\r\n                ")
+      _c("i", { staticClass: "fa fa-list-ul" }),
+      _vm._v("Avisos\r\n            ")
     ])
   },
   function() {
@@ -51397,8 +51395,8 @@ var render = function() {
     _c("div", { staticClass: "container-fluid" }, [
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-header" }, [
-          _c("i", { staticClass: "fa fa-align-justify" }),
-          _vm._v(" Usuarios\r\n                "),
+          _c("i", { staticClass: "icon-people" }),
+          _vm._v("Usuarios\r\n                "),
           _c(
             "button",
             {
@@ -52539,13 +52537,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ol", { staticClass: "breadcrumb" }, [
-      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Home")]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Escritorio")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item" }, [
-        _c("a", { attrs: { href: "#" } }, [_vm._v("Admin")])
-      ]),
+      _c("li", { staticClass: "breadcrumb-item" }, [_vm._v("Accesos")]),
       _vm._v(" "),
-      _c("li", { staticClass: "breadcrumb-item active" }, [_vm._v("Dashboard")])
+      _c("li", { staticClass: "breadcrumb-item active" }, [
+        _vm._v("Tabla de Usuarios")
+      ])
     ])
   },
   function() {

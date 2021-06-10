@@ -33,9 +33,9 @@
         <aviso></aviso>
     </template>
 
-    <template v-if="menu==8">
+    <!-- <template v-if="menu==8">
         <h1>...........................Componente Reporte de Avisos</h1>
-    </template>
+    </template> -->
 
     <template v-if="menu==9">
         <h1>...........................Componente Ayuda</h1>

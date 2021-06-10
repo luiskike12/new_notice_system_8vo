@@ -2,16 +2,16 @@
 <main class="main">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">Home</li>
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">Escritorio</li>
+        <li class="breadcrumb-item">Avisos</li>
+        <li class="breadcrumb-item active">Crear avisos</li>
     </ol>
     <div class="container-fluid">
         <!-- Ejemplo de tabla Listado -->
         <div class="card" style="min-height: 426px;"> 
             <!-- div del contenedor -->
             <div class="card-header">
-                <i class="fa fa-align-justify"></i>Crear Aviso
+                <i class="icon-note"></i>Crear Aviso
             </div>
 
             <!--******************************************************************************* -->

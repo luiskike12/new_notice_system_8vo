@@ -2,15 +2,15 @@
 <main class="main">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">Home</li>
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">Escritorio</li>
+        <li class="breadcrumb-item">Alumnos</li>
+        <li class="breadcrumb-item active">Tabla de alumnos</li>
     </ol>
     <div class="container-fluid">
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Alumnos
+                <i class="fa fa-list-ul" aria-hidden="true"></i>Alumnos
             </div>
             <div class="card-body">
                 <div class="form-group">

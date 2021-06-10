@@ -2,15 +2,15 @@
 <main class="main">
     <!-- Breadcrumb -->
     <ol class="breadcrumb">
-        <li class="breadcrumb-item">Home</li>
-        <li class="breadcrumb-item"><a href="#">Admin</a></li>
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item">Escritorio</li>
+        <li class="breadcrumb-item">Alumnos</li>
+        <li class="breadcrumb-item active">Registro de Matrículas</li>
     </ol>
     <div class="container-fluid">
         <!-- Ejemplo de tabla Listado -->
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-align-justify"></i> Matrículas
+                <i class="fa fa-id-card-o"></i>Matrículas
                 <button type="button" @click="abrirModal('matricula', 'registrar')" class="btn btn-secondary">
                     <i class="icon-plus"></i>&nbsp;Nuevo
                 </button>
