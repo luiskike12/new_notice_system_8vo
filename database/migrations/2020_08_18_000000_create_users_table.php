@@ -21,14 +21,16 @@ class CreateUsersTable extends Migration
             $table->integer('id_rol')->unsigned();
             $table->foreign('id_rol')->references('id')->on('roles');
 
-            $table->string('usuario', 30)->unique();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('usuario')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('nombre', 80);
-            $table->string('correo', 80);
+            $table->string('avatar')->nullable();
             $table->boolean('condicion')->default(1);
 
             $table->rememberToken();
-            //$table->timestamps();
+            $table->timestamps();
         });
     }
 

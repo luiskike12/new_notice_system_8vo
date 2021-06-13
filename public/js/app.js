@@ -4055,6 +4055,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -4076,7 +4077,8 @@ __webpack_require__.r(__webpack_exports__);
       arrayDatosUsuario: [],
       rol: '',
       carrera: '',
-      nombre: ''
+      nombre: '',
+      avatar: ''
     };
   },
   methods: {
@@ -4102,6 +4104,7 @@ __webpack_require__.r(__webpack_exports__);
       me.rol = me.arrayDatosUsuario[0]['nombre_rol'];
       me.carrera = me.arrayDatosUsuario[0]['nombre_carrera'];
       me.nombre = me.arrayDatosUsuario[0]['nombre'];
+      me.avatar = me.arrayDatosUsuario[0]['avatar'];
     },
     mostrarReporteAvisos: function mostrarReporteAvisos() {
       var me = this;
@@ -6677,9 +6680,13 @@ __webpack_require__.r(__webpack_exports__);
       id_carrera: 0,
       id_rol: 0,
       usuario: '',
+      usuarioExiste: '',
+      //mensaje en caso de que ya exista el nombre de usuario
       password: '',
       nombre: '',
       correo: '',
+      correoExiste: '',
+      //mensaje en caso de que ya este en uso un correo
       arrayUsers: [],
       arrayRol: [],
       arrayCarrera: [],
@@ -6990,6 +6997,12 @@ __webpack_require__.r(__webpack_exports__);
           'border': this.colorError
         };
         this.msjValidacion.usuario.mensaje = "El campo usuario no puede estar vacío";
+      } else if (this.usuarioExiste != '') {
+        this.numErrors = 1;
+        this.msjValidacion.usuario.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.usuario.mensaje = this.usuarioExiste;
       } else {
         this.msjValidacion.usuario.color = {
           'border': this.colorGood
@@ -7003,6 +7016,12 @@ __webpack_require__.r(__webpack_exports__);
           'border': this.colorError
         };
         this.msjValidacion.password.mensaje = "El campo contraña no puede estar vacío";
+      } else if (this.password.length < 8) {
+        this.numErrors = 1;
+        this.msjValidacion.password.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.password.mensaje = "La contraseña debe contener minimo 8 caracteres";
       } else {
         this.msjValidacion.password.color = {
           'border': this.colorGood
@@ -7037,6 +7056,12 @@ __webpack_require__.r(__webpack_exports__);
           'border': this.colorError
         };
         this.msjValidacion.correo.mensaje = "El correo no esta bien escrito";
+      } else if (this.correoExiste != '') {
+        this.numErrors = 1;
+        this.msjValidacion.correo.color = {
+          'border': this.colorError
+        };
+        this.msjValidacion.correo.mensaje = this.correoExiste;
       } else {
         this.msjValidacion.correo.color = {
           'border': this.colorGood
@@ -7044,7 +7069,38 @@ __webpack_require__.r(__webpack_exports__);
         this.msjValidacion.correo.mensaje = '';
       }
 
+      this.usuarioExiste = '';
+      this.correoExiste = '';
       return this.numErrors;
+    },
+    verificar_y_validar: function verificar_y_validar(opcion) {
+      var me = this;
+
+      if (opcion === 'Guardar') {
+        var url = '/user/verificarUsuarioEmail_guardar?usuario=' + this.usuario + '&email=' + this.correo;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.usuarioExiste = respuesta.respuestaUsuario;
+          me.correoExiste = respuesta.respuestaEmail; //Ejecutar la funcion guardar
+
+          me.registrarUser();
+        })["catch"](function (error) {
+          console.log(error);
+        }).then(function () {// always executed
+        });
+      } else if (opcion === 'Actualizar') {
+        var url = '/user/verificarUsuarioEmail_actualizar?usuario=' + this.usuario + '&email=' + this.correo + '&id_usuario=' + this.id_usuario;
+        axios.get(url).then(function (response) {
+          var respuesta = response.data;
+          me.usuarioExiste = respuesta.respuestaUsuario;
+          me.correoExiste = respuesta.respuestaEmail; //Ejecutar la funcion guardar
+
+          me.actualizarUser();
+        })["catch"](function (error) {
+          console.log(error);
+        }).then(function () {// always executed
+        });
+      }
     },
     obtenerIdRol: function obtenerIdRol($event) {
       //obtener el valor del <select> plan de estudio
@@ -7098,6 +7154,8 @@ __webpack_require__.r(__webpack_exports__);
           color: ''
         }
       };
+      this.usuarioExiste = '';
+      this.correoExiste = '';
       this.seleccionarCarrera();
     },
     abrirModal: function abrirModal(modelo, accion) {
@@ -11806,7 +11864,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* no modificar */\n.modal-content{\n    width: 100% !important;\n    position: absolute !important;\n}\n.mostrar{\n    display: list-item !important;\n    opacity: 1 !important;\n    position: absolute !important;\n    background-color: #110f0fc0  !important;\n}\n.div-error{\n    display: flex;\n    justify-content: center;\n}\n.text-error{\n    color: red !important;\n    font-weight: bold;\n}\nbutton{\n    background: none;\n    color: inherit;\n    border: none;\n    padding: 0;\n    font: inherit;\n    cursor: pointer;\n    outline: inherit;\n}\n", ""]);
 
 // exports
 
@@ -47263,7 +47321,47 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "row" }, [
-                    _vm._m(4),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "col-sm-6 seccion-izquierda-datos-personales"
+                      },
+                      [
+                        _c("div", { staticClass: "form-group" }, [
+                          _vm._m(4),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "col-sm text-center col-imagen-perfil"
+                            },
+                            [
+                              _vm.avatar
+                                ? _c("img", {
+                                    staticClass: "rounded-circle",
+                                    attrs: {
+                                      src: "storage/" + _vm.avatar,
+                                      width: "80px",
+                                      height: "80px"
+                                    }
+                                  })
+                                : _c("img", {
+                                    staticClass: "rounded-circle",
+                                    attrs: {
+                                      src: "img/avatars/avatar.png",
+                                      width: "80px",
+                                      height: "80px"
+                                    }
+                                  })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm._m(5)
+                        ])
+                      ]
+                    ),
                     _vm._v(" "),
                     _c(
                       "div",
@@ -47278,10 +47376,10 @@ var render = function() {
                                 "table",
                                 { staticClass: "table tabla-info-usuario" },
                                 [
-                                  _vm._m(5),
+                                  _vm._m(6),
                                   _vm._v(" "),
                                   _c("tbody", [
-                                    _vm._m(6),
+                                    _vm._m(7),
                                     _vm._v(" "),
                                     _c(
                                       "tr",
@@ -47296,7 +47394,7 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _vm._m(7),
+                                    _vm._m(8),
                                     _vm._v(" "),
                                     _c(
                                       "tr",
@@ -47311,7 +47409,7 @@ var render = function() {
                                       ]
                                     ),
                                     _vm._v(" "),
-                                    _vm._m(8),
+                                    _vm._m(9),
                                     _vm._v(" "),
                                     _c(
                                       "tr",
@@ -47336,7 +47434,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(9)
+                _vm._m(10)
               ])
             ])
           ])
@@ -47409,65 +47507,47 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "col-sm-6 seccion-izquierda-datos-personales" },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("div", { staticClass: "col-sm col-contenedor-reloj" }, [
-            _c("table", { staticClass: "contenedor-reloj" }, [
-              _c("tbody", [
-                _c("tr", [
-                  _c("td", { staticClass: "icono-reloj" }, [
-                    _c("span", { staticClass: "input-group-addon" }, [
-                      _c("i", {
-                        staticClass: "fa fa-clock-o",
-                        attrs: { "aria-hidden": "true" }
-                      })
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("td", { staticClass: "caja-reloj" }, [
-                    _c("div", { staticClass: "borde-caja-reloj" }, [
-                      _c("p", { staticClass: "reloj", attrs: { id: "reloj" } })
-                    ])
-                  ])
-                ])
+    return _c("div", { staticClass: "col-sm col-contenedor-reloj" }, [
+      _c("table", { staticClass: "contenedor-reloj" }, [
+        _c("tbody", [
+          _c("tr", [
+            _c("td", { staticClass: "icono-reloj" }, [
+              _c("span", { staticClass: "input-group-addon" }, [
+                _c("i", {
+                  staticClass: "fa fa-clock-o",
+                  attrs: { "aria-hidden": "true" }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", { staticClass: "caja-reloj" }, [
+              _c("div", { staticClass: "borde-caja-reloj" }, [
+                _c("p", { staticClass: "reloj", attrs: { id: "reloj" } })
               ])
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm text-center col-imagen-perfil" }, [
-            _c("img", {
-              staticClass: "rounded-circle",
-              attrs: {
-                src: "img/avatars/usuario.png",
-                width: "80px",
-                height: "80px"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "col-sm text-center",
-              staticStyle: { "margin-bottom": "18px" }
-            },
-            [
-              _c(
-                "p",
-                {
-                  staticStyle: {
-                    "font-weight": "bold",
-                    color: "rgb(0, 0, 0, 0.7)"
-                  }
-                },
-                [_vm._v("Imagen de perfil")]
-              )
-            ]
-          )
+          ])
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "col-sm text-center",
+        staticStyle: { "margin-bottom": "18px" }
+      },
+      [
+        _c(
+          "p",
+          {
+            staticStyle: { "font-weight": "bold", color: "rgb(0, 0, 0, 0.7)" }
+          },
+          [_vm._v("Imagen de perfil")]
+        )
       ]
     )
   },
@@ -52498,7 +52578,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.registrarUser()
+                            return _vm.verificar_y_validar("Guardar")
                           }
                         }
                       },
@@ -52514,7 +52594,7 @@ var render = function() {
                         attrs: { type: "button" },
                         on: {
                           click: function($event) {
-                            return _vm.actualizarUser()
+                            return _vm.verificar_y_validar("Actualizar")
                           }
                         }
                       },
@@ -65952,7 +66032,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\pruebas_new_notice_system_8vo\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\test_sistema_avisos\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })

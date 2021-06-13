@@ -215,8 +215,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarUser()">Guardar</button>
-                    <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarUser()">Actualizar</button>
+                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="verificar_y_validar('Guardar')">Guardar</button>
+                    <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="verificar_y_validar('Actualizar')">Actualizar</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -265,9 +265,11 @@
                 id_carrera : 0,
                 id_rol : 0,
                 usuario : '',
+                usuarioExiste : '',//mensaje en caso de que ya exista el nombre de usuario
                 password : '',
                 nombre : '',
                 correo : '',
+                correoExiste : '',//mensaje en caso de que ya este en uso un correo
                 arrayUsers : [],  
                 arrayRol : [],
                 arrayCarrera : [],
@@ -562,7 +564,13 @@
                     this.numErrors = 1;
                     this.msjValidacion.usuario.color = {'border':this.colorError};
                     this.msjValidacion.usuario.mensaje = "El campo usuario no puede estar vacío";
-                }else{
+                }
+                else if(this.usuarioExiste != ''){
+                    this.numErrors = 1;
+                    this.msjValidacion.usuario.color = {'border':this.colorError};
+                    this.msjValidacion.usuario.mensaje = this.usuarioExiste;
+                }
+                else{
                     this.msjValidacion.usuario.color = {'border':this.colorGood};
                     this.msjValidacion.usuario.mensaje = '';
                 }
@@ -571,7 +579,13 @@
                     this.numErrors = 1;
                     this.msjValidacion.password.color = {'border':this.colorError};
                     this.msjValidacion.password.mensaje = "El campo contraña no puede estar vacío";
-                }else{
+                }
+                else if(this.password.length < 8){
+                    this.numErrors = 1;
+                    this.msjValidacion.password.color = {'border':this.colorError};
+                    this.msjValidacion.password.mensaje = "La contraseña debe contener minimo 8 caracteres";
+                }
+                else{
                     this.msjValidacion.password.color = {'border':this.colorGood};
                     this.msjValidacion.password.mensaje = '';
                 }
@@ -595,12 +609,63 @@
                     this.numErrors = 1;
                     this.msjValidacion.correo.color = {'border':this.colorError};
                     this.msjValidacion.correo.mensaje = "El correo no esta bien escrito";
-                }else{
+                }
+                else if(this.correoExiste != ''){
+                    this.numErrors = 1;
+                    this.msjValidacion.correo.color = {'border':this.colorError};
+                    this.msjValidacion.correo.mensaje = this.correoExiste;
+                }
+                else{
                     this.msjValidacion.correo.color = {'border':this.colorGood};
                     this.msjValidacion.correo.mensaje = '';
                 }
 
+                this.usuarioExiste = '';
+                this.correoExiste = '';
+
                 return this.numErrors;
+            },
+            verificar_y_validar(opcion){
+
+                let me = this;
+                
+                if(opcion === 'Guardar'){
+                    var url = '/user/verificarUsuarioEmail_guardar?usuario=' + this.usuario + '&email=' + this.correo;
+                    axios.get(url).then(function (response){
+                        var respuesta = response.data;
+                        me.usuarioExiste = respuesta.respuestaUsuario;
+                        me.correoExiste = respuesta.respuestaEmail;
+
+                        //Ejecutar la funcion guardar
+                        me.registrarUser();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+
+                }else if(opcion === 'Actualizar'){
+
+                    var url = '/user/verificarUsuarioEmail_actualizar?usuario=' + this.usuario + '&email=' + this.correo +'&id_usuario='+ this.id_usuario;
+                    axios.get(url).then(function (response) {
+                        var respuesta = response.data;
+                        me.usuarioExiste = respuesta.respuestaUsuario;
+                        me.correoExiste = respuesta.respuestaEmail;
+
+                        //Ejecutar la funcion guardar
+                        me.actualizarUser();
+                    })
+                    .catch(function (error){
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+
+                }
+
             },
             obtenerIdRol($event){
                 //obtener el valor del <select> plan de estudio
@@ -634,6 +699,9 @@
                     nombre : {mensaje : '', color : ''},
                     correo : {mensaje : '', color : ''}
                 };
+                this.usuarioExiste = '';
+                this.correoExiste = '';
+
                 this.seleccionarCarrera();
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables

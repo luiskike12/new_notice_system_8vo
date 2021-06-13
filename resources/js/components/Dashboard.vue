@@ -63,7 +63,8 @@
                                                 </table>
                                             </div>
                                             <div class="col-sm text-center col-imagen-perfil">
-                                                <img class="rounded-circle" src="img/avatars/usuario.png" width="80px" height="80px">
+                                                <img v-if="avatar" class="rounded-circle" :src="'storage/' + avatar" width="80px" height="80px">
+                                                <img v-else class="rounded-circle" :src="'img/avatars/avatar.png'" width="80px" height="80px">
                                             </div>
                                             <div class="col-sm text-center" style="margin-bottom: 18px;">
                                                 <p style="font-weight: bold;color: rgb(0, 0, 0, 0.7);">Imagen de perfil</p>
@@ -148,7 +149,8 @@ export default {
             arrayDatosUsuario : [],
             rol : '',
             carrera : '',
-            nombre : ''
+            nombre : '',
+            avatar : ''
         }
     },
     methods : {
@@ -179,6 +181,7 @@ export default {
             me.rol = me.arrayDatosUsuario[0]['nombre_rol'];
             me.carrera = me.arrayDatosUsuario[0]['nombre_carrera'];
             me.nombre = me.arrayDatosUsuario[0]['nombre'];
+            me.avatar = me.arrayDatosUsuario[0]['avatar'];
         },
         mostrarReporteAvisos(){
             let me = this;

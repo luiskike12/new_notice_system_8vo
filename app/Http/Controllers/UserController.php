@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
-use App\User;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -20,7 +21,7 @@ class UserController extends Controller
             $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
             ->join('roles', 'users.id_rol', '=', 'roles.id')
             ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
-            'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
+            'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
             'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
             ->orderBy('users.id', 'desc')->paginate(5);
         }
@@ -29,7 +30,7 @@ class UserController extends Controller
                 $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
                 ->join('roles', 'users.id_rol', '=', 'roles.id')
                 ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
-                'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
+                'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
                 'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
                 ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
                 ->orderBy('users.id', 'desc')->paginate(5);
@@ -37,7 +38,7 @@ class UserController extends Controller
                 $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
                 ->join('roles', 'users.id_rol', '=', 'roles.id')
                 ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
-                'users.password', 'users.nombre', 'users.correo', 'users.condicion', 
+                'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
                 'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
                 ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
                 ->orderBy('users.id', 'desc')->paginate(5);
@@ -65,10 +66,11 @@ class UserController extends Controller
             $user = new User();
             $user->id_carrera = $request->id_carrera;
             $user->id_rol = $request->id_rol;
+            $user->name = $request->nombre;
+            $user->email = $request->correo;
             $user->usuario = $request->usuario;
             $user->password = bcrypt($request->password);
-            $user->nombre = $request->nombre;
-            $user->correo = $request->correo;
+            $user->avatar = 'avatars/avatar.png';
             $user->condicion = '1';
             $user->save();
 
@@ -83,15 +85,102 @@ class UserController extends Controller
     {
         try{
             DB::beginTransaction();
+
+            $ruta_avatar = '';
+
             //para filtrar el id del usuario
             $user = User::findOrFail($request->id);
+
+            if($request->hasFile('avatar')){
+                if(strcmp($request->avatar, 'avatars/avatar.png')===0){
+                    $ruta_avatar = 'avatars/avatar.png';
+                }else{
+                    if(strcmp($user->avatar, $request->avatar)===0){
+                        $ruta_avatar = $user->avatar;
+                    }else{
+                        $url_avatar = 'public/'.$user->avatar;
+                        Storage::delete($url_avatar);
+                        $ruta_avatar = Storage::disk('public')->put('avatars', $request->file('avatar'));
+                    }
+                }
+            }else{
+                if($request->avatar===''){
+                    $ruta_avatar = 'avatars/avatar.png';
+                }
+            }
+
             $user->id_carrera = $request->id_carrera;
             $user->id_rol = $request->id_rol;
+            $user->name = $request->nombre;
+            $user->email = $request->correo;
             $user->usuario = $request->usuario;
             $user->password = bcrypt($request->password);
-            $user->nombre = $request->nombre;
-            $user->correo = $request->correo;
+            $user->avatar = $ruta_avatar;
+            $user->condicion = '1';
             $user->save();
+
+
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function verificarUsuarioEmail_guardar(Request $request){
+        
+        try{
+            DB::beginTransaction();
+
+            $respuestaUsuario = '';
+            $respuestaEmail = '';
+            
+            $usuario = User::where('usuario','=',$request->usuario)->first();
+            if($usuario === null){
+                $respuestaUsuario = '';
+            }else{
+                $respuestaUsuario = 'El usuario "'.$request->usuario.'" ya existe';
+            }
+
+            $email = User::where('email','=',$request->email)->first();
+            if($email === null){
+                $respuestaEmail = '';
+            }else{
+                $respuestaEmail = 'Este correo ya esta en uso';
+            }
+
+            return ['respuestaUsuario' => $respuestaUsuario,'respuestaEmail' => $respuestaEmail];
+
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function verificarUsuarioEmail_actualizar(Request $request){
+
+        try{
+            DB::beginTransaction();
+
+            $respuestaUsuario = '';
+            $respuestaEmail = '';
+            
+            $usuario = User::select('id')->where('usuario','=',$request->usuario)->first();
+
+            if($usuario['id'] == $request->id_usuario){
+                $respuestaUsuario = '';
+            }else{
+                $respuestaUsuario = 'El usuario "'.$request->usuario.'" ya existe';
+            }
+
+            $email = User::select('id')->where('email','=',$request->email)->first();
+ 
+            if($email['id'] == $request->id_usuario){
+                $respuestaEmail = '';
+            }else{
+                $respuestaEmail = 'Este correo ya esta en uso';
+            }
+
+            return ['respuestaUsuario' => $respuestaUsuario,'respuestaEmail' => $respuestaEmail];
 
             DB::commit();
         }catch (Exception $e){

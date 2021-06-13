@@ -91,7 +91,7 @@
                             </a>
                             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <li id="item">
-                                    <i class="fa fa-lock"></i> Cerrar sesión
+                                    <i class="fa fa-lock"></i> {{__('Cerrar sesión')}}
                                 </li>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -108,9 +108,9 @@
         <div class="app-body">
             
             @if(Auth::check())
-                <!-- @if(Auth::user()->id_rol == 1){
-                }
-                @endif -->
+                {{-- @if(Auth::user()->id_rol == 1)
+                
+                @endif --}}
                 
                 @include('plantilla.sidebar')
                 <!-- Contenido Principal -->

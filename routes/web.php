@@ -16,6 +16,7 @@ Route::get('/main', function () {
     return view('contenido/contenido');
 })->name('main');
 
+
 //Dashboard de graficos
 Route::get('/dashboard', 'DashboardController');
 
@@ -41,6 +42,8 @@ Route::get('/rol/selectRol', 'RolController@selectRol');
 Route::get('/user', 'UserController@index');
 Route::post('/user/registrar', 'UserController@registrar');
 Route::put('/user/actualizar', 'UserController@actualizar');
+Route::get('/user/verificarUsuarioEmail_guardar', 'UserController@verificarUsuarioEmail_guardar');
+Route::get('/user/verificarUsuarioEmail_actualizar', 'UserController@verificarUsuarioEmail_actualizar');
 Route::put('/user/desactivar', 'UserController@desactivar');
 Route::put('/user/activar', 'UserController@activar');
 
@@ -72,10 +75,10 @@ Route::post('/aviso/actualizar_aviso', 'AvisoController@actualizar_aviso');
 Route::delete('/aviso/eliminar_aviso', 'AvisoController@eliminar_aviso');
 
 
-// Auth::routes();
+Auth::routes();
 //Acceso al sistema
 Route::get('/', 'Auth\LoginController@showLoginForm');
-Route::post('/login', 'Auth\LoginController@login')->name('login');
-Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+// Route::post('/login', 'Auth\LoginController@login')->name('login');
+// Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Route::get('/home', 'HomeController@index')->name('home');
