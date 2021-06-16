@@ -401,7 +401,7 @@ export default {
     }
 
     .tabla-info-usuario > tbody > .etiqueta{
-        background-color: rgba(255, 250, 205, 0.4);        
+        background-color: rgba(244, 246, 246, 0.7);       
     }
 
     .tabla-info-usuario > tbody > .etiqueta > td{

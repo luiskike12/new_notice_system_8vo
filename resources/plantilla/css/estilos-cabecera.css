@@ -1,0 +1,41 @@
+@charset "utf-8";
+/* CSS Document  */
+
+/*  
+################################# Menu desplegable NOTIFICACIONES ####################################
+*/
+
+/*  
+################################# Menu desplegable USUARIO ####################################
+*/
+.nav-menu-usuario{
+    padding-right: 8px;
+}
+
+.nav-item-menu-usuario{
+    /* list-style: none; */
+    padding: 0;
+}
+
+.nav-item-menu-usuario > .item-menu-usuario{
+    display: flex;
+}
+
+.nav-item-menu-usuario > .item-menu-usuario:hover{
+    background: rgb(234, 250, 241, 0.7);
+}
+
+/* .nav-item-menu-usuario > a:hover{
+    background: rgb(234, 250, 241, 0.7);
+} */
+
+.nav-item-menu-usuario > .item-menu-usuario > div{
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 158px;
+}
+
+.nav-item-menu-usuario > .item-menu-usuario > div > i{
+    margin-left: 15px;
+}
+/* a los 991px cambiar la posision del nav desplegable */

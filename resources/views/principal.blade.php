@@ -37,69 +37,47 @@
             <!-- Configuraciones  -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-3 active">
-                    <a class="nav-link" href="#">Escritorio</a>
+                    <a class="nav-link" href="#"></a>
                 </li>
                 <li class="nav-item px-3 active">
-                    <a class="nav-link" href="#">Configuraciones</a>
+                    <a class="nav-link" href="#"></a>
                 </li>
             </ul>
 
 
             <!-- Menu desplegable -->
             <ul class="navbar-nav ml-auto">
-                <div id="menu-notificaciones" class="nav-item d-md-down-none px-2">
-                    <input type="checkbox" id="btn-menu-notificaciones" checked>
-                    <label for="btn-menu-notificaciones">
-                        <i class="icon-bell"></i>
-                        <span class="badge badge-pill badge-danger">5</span>
-                        Notificaciones
-                    </label>
-                    <nav id="despliega-menu-notificaciones" class="dropdown-menu-right">
-                        <ul>
-                            <li id="cabecera-item"><strong>Bandeja</strong></li>
-                            <a href="">
-                                <li id="item">
-                                    <i class="fa fa-envelope-o"></i> Correos
-                                    <span class="badge badge-success">3</span>
-                                </li>
-                            </a>
-                            <a href="">
-                                <li id="item">
-                                    <i class="fa fa-tasks"></i> Solicitudes
-                                    <span class="badge badge-danger">2</span>
-                                </li>
-                            </a>
-                        </ul>
-                    </nav>
-                </div>
-             
 
-                <div id="menu-usuario" class="nav-item px-5">
-                    <input type="checkbox" id="btn-menu-usuario" checked>
-                    <label for="btn-menu-usuario">
-                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        {{ Auth::user()->usuario }}
-                        <i class="fa fa-sort-desc" aria-hidden="true"></i>
-                    </label>
-                    <nav id="despliega-menu-usuario" class="dropdown-menu-right">
-                        <ul>
-                            <li id="cabecera-item"><strong>Cuenta</strong></li>
-                            <a href="">
-                                <li id="item">
+                <b-nav-item-dropdown right class="nav-menu-usuario">
+                    <!-- Using 'button-content' slot -->
+                    <template #button-content>
+                        <img src="{{ asset('storage/'.Auth::user()->avatar)  }}" class="img-avatar" alt="Foto de perfil">
+                        <em style="font-weight: bold;">{{ Auth::user()->usuario }}</em>
+                    </template>
+                    
+                    <template v-if="showItemUsuario">
+                        <div class="nav-item b-nav-dropdown dropdown nav-item-menu-usuario">
+                            <div class="dropdown-header text-center">
+                                <strong>Cuenta</strong>
+                            </div>
+                            <a class="nav-link item-menu-usuario" href="#" v-b-hover="hoverPerfil" v-bind:style="colorHover.perfil"
+                            style="border-bottom:  1px solid #D2D2D2;">
+                                <div class="text-left">
                                     <i class="fa fa-user"></i> Perfil
-                                </li>
+                                </div>
                             </a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <li id="item">
-                                    <i class="fa fa-lock"></i> {{__('Cerrar sesión')}}
-                                </li>
+                            <a class="nav-link item-menu-usuario" v-b-hover="hoverCerrar" v-bind:style="colorHover.cerrar"
+                            href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <div class="text-left">
+                                    <i class="fa fa-lock"></i> Cerrar sesión
+                                </div>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-                        </ul>
-                    </nav>
-                </div>
+                        </div>
+                    </template>
+                </b-nav-item-dropdown>
             </ul>  
 
         </header>

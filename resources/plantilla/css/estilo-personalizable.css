@@ -1,0 +1,40 @@
+.mensaje-eliminar{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Colocar Scrollbar en los modales cuando 
+    sobrepase el limite del modal-body Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+
+.modal-body{
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+ /* -----------------------Scroll en la busqueda por filtro------------------------*/
+ @media only screen and (max-width:557px){
+    .scroll-busqueda-filtro{
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .scroll-busqueda-filtro > .col-md-6{
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .scroll-busqueda-filtro-x{
+        white-space: nowrap;
+        overflow-x: auto;
+    } 
+
+    .scroll-busqueda-filtro-x > .input-group{
+        width: 455px;
+        height: auto;
+        padding: auto;
+    }
+}
+
