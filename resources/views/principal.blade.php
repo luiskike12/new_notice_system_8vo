@@ -60,7 +60,7 @@
                             <div class="dropdown-header text-center">
                                 <strong>Cuenta</strong>
                             </div>
-                            <a class="nav-link item-menu-usuario" href="#" v-b-hover="hoverPerfil" v-bind:style="colorHover.perfil"
+                            <a class="nav-link item-menu-usuario" href="#" @click="menu=10" v-b-hover="hoverPerfil" v-bind:style="colorHover.perfil"
                             style="border-bottom:  1px solid #D2D2D2;">
                                 <div class="text-left">
                                     <i class="fa fa-user"></i> Perfil

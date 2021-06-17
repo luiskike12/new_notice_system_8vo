@@ -17,8 +17,12 @@ Route::get('/main', function () {
 })->name('main');
 
 
-//Dashboard de graficos
+//Ruta del Dashboard de graficos y tarjeta de datos del usuario
 Route::get('/dashboard', 'DashboardController');
+
+//Rutas del controlador Perfil del usuario
+Route::get('/perfil', 'PerfilController@index');
+Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
 
 //Rutas del controlador Carrera
 Route::get('/carrera', 'CarreraController@index');

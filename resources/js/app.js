@@ -23,18 +23,20 @@ Vue.use(BootstrapVue)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-//COMPONENTES GLOBALES
+//##################   COMPONENTES GLOBALES DEL SISTEMA ##################################
 Vue.component('carrera', require('./components/Carrera.vue').default);
 Vue.component('rol', require('./components/Rol.vue').default);
 Vue.component('user', require('./components/User.vue').default);
 Vue.component('matricula', require('./components/Matricula.vue').default);
 Vue.component('alumno', require('./components/Alumno.vue').default);
 Vue.component('aviso', require('./components/Aviso.vue').default);
-Vue.component('tabla-avisos', require('./components/Tabla_avisos.vue').default);
+Vue.component('tabla-avisos', require('./components/Tabla-avisos.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
+Vue.component('perfil-usuario', require('./components/Perfil-usuario.vue').default);
 
+//*************Componentes de pruebas para el sistema con ruta "test-components" **************/
 //Pruebas de un Alumno registrandose
-Vue.component('registro', require('./components/Registro.vue').default);
+// Vue.component('registro', require('./components/test-components/Registro.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

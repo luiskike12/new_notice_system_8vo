@@ -2,7 +2,8 @@
 @section('contenido')
     <template v-if="menu==0">
         <!-- <registro></registro> -->
-        <dashboard></dashboard>
+        {{-- <dashboard></dashboard> --}}
+        <perfil-usuario></perfil-usuario>
     </template>
 
     <template v-if="menu==1">
@@ -33,16 +34,16 @@
         <aviso></aviso>
     </template>
 
-    <!-- <template v-if="menu==8">
-        <h1>...........................Componente Reporte de Avisos</h1>
-    </template> -->
-
-    <template v-if="menu==9">
+    <template v-if="menu==8">
         <h1>...........................Componente Ayuda</h1>
     </template>
 
-    <template v-if="menu==10">
+    <template v-if="menu==9">
         <h1>...........................Componente Acerca de...</h1>
+    </template>
+
+    <template v-if="menu==10">
+        {{-- <perfil-usuario></perfil-usuario> --}}
     </template>
     
 @endsection
