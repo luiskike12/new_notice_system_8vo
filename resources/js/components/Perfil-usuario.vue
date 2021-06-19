@@ -138,42 +138,113 @@
 
                         <div class="form-group">
                             <label class="col-md estilo-columna-global" for="password">
-                                <em>Para modificar su informacón, deberá confirmar su identidad 
+                                <em>Para actualizar su informacón, deberá confirmar su identidad 
                                     con su <b>Contraseña actual</b>, rellenando el campo y oprimiendo el boton 
                                     <b>Confirmar identidad</b>.
                                 </em>
                             </label>
                             <label class="col-md estilo-columna-global" for="password">
-                                <em>Modificar información (<span style="color: red;">requerido</span>)</em>
+                                <em>Actualizar información (<span style="color: red;">requerido</span>)</em>
                             </label>
                             <div class="col-md estilo-columna-confirmar-contrasena">
-                                <form action="">
+                                <form @submit.prevent="confirmarIdentidad" enctype="multipart/form-data">
                                     <div class="input-group">
-                                        <input type="password" class="form-control" id="password" placeholder="Contraseña actual">
-                                        <input type="submit" name="submit"  id="submit" class="btn btn-danger btn-sm" value="Confirmar identidad" style="cursor:pointer;">
+                                        <input type="password" class="form-control" id="identifyPassword" v-model="passwordActual" :style="msjValidacion.identidad.color" placeholder="Contraseña actual">
+                                        <input type="submit" name="submit"  id="identifySubmit" class="btn btn-danger btn-sm" value="Confirmar identidad" style="cursor:pointer;">
                                     </div>
                                 </form>
+                            </div>
+                            <msj-validacion v-if="msjValidacion.identidad.mensaje">{{msjValidacion.identidad.mensaje}}</msj-validacion>
+                        </div>
+
+                        <div class="form-group" v-bind:style="msjValidacion.informacion.color">
+                            <div class="row row-seleccion-campos">
+                                <label class="col-md col-seleccion-campos text-center" style="margin-bottom: 0;" for="descripcion">
+                                    <em>Seleccione la información ha actualizar</em>
+                                </label>
+                            </div>
+                            <div class="row row-seleccion-campos">
+                            <!-- fila del contenido -->
+                                <div class="col-md-6 col-seleccion-campos">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-addon">
+                                                <input type="checkbox" id="seleccionNombre" v-model="camposSeleccionados" @change="seleccionNombre" value="nombre">
+                                            </div>
+                                        </div>
+                                        <label class="form-control label-seleccion-campos" for="nombre">
+                                            <em class="texto-label">Nombre</em>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 col-seleccion-campos">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-addon">
+                                                <input type="checkbox" id="seleccionUsuario" v-model="camposSeleccionados" @change="seleccionUsuario" value="usuario">
+                                            </div>
+                                        </div>
+                                        <label class="form-control label-seleccion-campos" for="usuario">
+                                            <em class="texto-label">Usuario</em>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-seleccion-campos">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-addon">
+                                                <input type="checkbox" id="seleccionEmail" v-model="camposSeleccionados" @change="seleccionEmail" value="email">
+                                            </div>
+                                        </div>
+                                        <label class="form-control label-seleccion-campos" for="email">
+                                            <em class="texto-label">Correo electrónico</em>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-seleccion-campos">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-addon">
+                                                <input type="checkbox" id="seleccionPassword" v-model="camposSeleccionados" @change="seleccionPassword" value="password">
+                                            </div>
+                                        </div>
+                                        <label class="form-control label-seleccion-campos" for="email">
+                                            <em class="texto-label">Nueva contraseña</em>
+                                        </label>
+                                    </div>
+                                </div>
+                            <!-- fila del contenido -->
+                            </div>
+                            <div class="row row-seleccion-campos">
+                                <msj-validacion v-if="msjValidacion.informacion.mensaje">{{msjValidacion.informacion.mensaje}}</msj-validacion>
                             </div>
                         </div>
 
                         <div class="form-group">
-                                <label class="col-md estilo-columna-global" for="rol">
-                                    <em>
-                                        Nombre (<span style="color: red;">requerido</span>)
-                                    </em>
-                                </label>
-                                <div class="col-md estilo-columna-global">
-                                    <form action="">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-addon"><i class="fa fa-id-badge" style="font-size: 17px;"></i></div>
-                                            </div>
-                                            <input type="text" class="form-control" id="inlineFormInputGroup"
-                                            style="border-left: none;" v-bind:placeholder="nombre">
-                                            <input type="submit" name="submit"  id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
+                            <label class="col-md estilo-columna-global" for="rol">
+                                <em>
+                                    Nombre (<span style="color: red;">requerido</span>)
+                                </em>
+                            </label>
+                            <div class="col-md estilo-columna-global">
+                                <form @submit.prevent="actualizarNombre" enctype="multipart/form-data">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-addon"><i class="fa fa-id-badge" style="font-size: 17px;"></i></div>
                                         </div>
-                                    </form>
-                                </div>
+                                        <input type="text" v-model="nombre" class="form-control" id="nombre"
+                                        style="border-left: none;" v-bind:placeholder="nombre"
+                                        v-bind:style="msjValidacion.nombre.color"
+                                        v-bind:disabled="habilitarCambios.nombre.campo==false">
+                                        <input v-if="habilitarCambios.nombre.campo==true" type="submit" name="submit"  id="submit" 
+                                        class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
+                                    </div>
+                                </form>
+                            </div>
+                            <msj-validacion v-if="msjValidacion.nombre.mensaje">{{msjValidacion.nombre.mensaje}}</msj-validacion>
                         </div>
 
                         <div class="form-group">
@@ -183,17 +254,21 @@
                                 </em>
                             </label>
                             <div class="col-md estilo-columna-global">
-                                <form action="">
+                                <form @submit.prevent="validar_y_actualizarUsuario" enctype="multipart/form-data">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-addon"><i class="fa fa-user-o" style="font-size: 17px;"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" id="inlineFormInputGroup"
-                                        style="border-left: none;" v-bind:placeholder="usuario">
-                                        <input type="submit" name="submit"  id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
+                                        <input type="text" v-model="usuario" class="form-control" id="usuario"
+                                        style="border-left: none;" v-bind:placeholder="usuario"
+                                        v-bind:style="msjValidacion.usuario.color"
+                                        v-bind:disabled="habilitarCambios.usuario.campo==false">
+                                        <input v-if="habilitarCambios.usuario.campo==true" type="submit" name="submit"  
+                                        id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
                                     </div>
                                 </form>
                             </div>
+                            <msj-validacion v-if="msjValidacion.usuario.mensaje">{{msjValidacion.usuario.mensaje}}</msj-validacion>
                         </div>
 
                         <div class="form-group">
@@ -203,17 +278,21 @@
                                 </em>
                             </label>
                             <div class="col-md estilo-columna-global">
-                                <form action="">
+                                <form @submit.prevent="validar_y_actualizarEmail" enctype="multipart/form-data" novalidate>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-addon"><i class="fa fa-at" style="font-size: 17px;"></i></div>
                                         </div>
-                                        <input type="text" class="form-control" id="inlineFormInputGroup"
-                                        style="border-left: none;" v-bind:placeholder="email">
-                                        <input type="submit" name="submit"  id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
+                                        <input type="email" v-model="email" class="form-control" id="email"
+                                        style="border-left: none;" v-bind:placeholder="email"
+                                        v-bind:style="msjValidacion.email.color"
+                                        v-bind:disabled="habilitarCambios.email.campo==false">
+                                        <input v-if="habilitarCambios.email.campo==true" type="submit" name="submit"  
+                                        id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
                                     </div>
                                 </form>
                             </div>
+                            <msj-validacion v-if="msjValidacion.email.mensaje">{{msjValidacion.email.mensaje}}</msj-validacion>
                         </div>
 
                         <div class="form-group">
@@ -223,17 +302,21 @@
                                 </em>
                             </label>
                             <div class="col-md estilo-columna-global">
-                                <form action="">
+                                <form @submit.prevent="actualizarPassword" enctype="multipart/form-data">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-addon"><i class="fa fa-key" style="font-size: 17px;"></i></div>
                                         </div>
-                                        <input type="password" class="form-control" id="inlineFormInputGroup"
-                                        style="border-left: none;" placeholder="Ingrese la nueva contraseña">
-                                        <input type="submit" name="submit"  id="submit" class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
+                                        <input type="password" v-model="nuevoPassword" class="form-control" id="password"
+                                        style="border-left: none;" placeholder="Ingrese la nueva contraseña" 
+                                        v-bind:style="msjValidacion.password.color"
+                                        v-bind:disabled="habilitarCambios.password.campo==false">
+                                        <input v-if="habilitarCambios.password.campo==true" type="submit" name="submit"  id="submit" 
+                                        class="btn btn-primary btn-sm" value="Actualizar" style="cursor:pointer;">
                                     </div>
                                 </form>
                             </div>
+                            <msj-validacion v-if="msjValidacion.password.mensaje">{{msjValidacion.password.mensaje}}</msj-validacion>
                         </div>
 
                     <!-- contenido card derecha -->
@@ -264,6 +347,7 @@ export default {
             email : '',
             nombre : '',
             avatar : '',
+            nuevoPassword : '',
 
             //eventos de seleccion de imagen
             botonImagen : 0,
@@ -280,8 +364,23 @@ export default {
             colorError : {'border':'2px solid rgba(231, 76, 60, 0.5)'},
             msjValidacion : {
                 avatar : {mensaje : '', color : '' },
+                identidad : {mensaje : '', color : '' },
+                informacion : {mensaje : '', color : '' },
+                nombre : {mensaje : '', color : '' },
+                usuario : {mensaje : '', color : '' },
+                email : {mensaje : '', color : '' },
+                password : {mensaje : '', color : '' },
             },
 
+            //campos a desabilitar y habilitar
+            habilitarCambios : {
+                nombre : {campo : false, boton : false},
+                usuario : {campo : false, boton : false},
+                email : {campo : false, boton : false},
+                password : {campo : false, boton : false},
+            },
+            camposSeleccionados : [],
+            passwordActual : '',
         }
     },
     computed : {
@@ -374,7 +473,7 @@ export default {
                 Swal.fire({
                     icon: 'success',
                     title: '¡Genial...!',
-                    text: 'Se ha guardado correctamente'
+                    text: 'Se ha actualizado la imagen correctamente'
                 })
             }).catch(function (error){
                 Swal.fire({
@@ -386,8 +485,277 @@ export default {
             });
 
         },
-        limpiar_campos(){
+        confirmarIdentidad(){
+            if(!this.passwordActual){
+                this.numErrors = 1;
+                this.msjValidacion.identidad.color = this.colorError;
+                this.msjValidacion.identidad.mensaje = "No dejar el campo vacío";
+            }else{
+                this.msjValidacion.identidad.color = '';
+                this.msjValidacion.identidad.mensaje = '';
+
+                let me = this;
+                var identidad = null;
+                var url = '/perfil/confirmarIdentidad?passwordActual=' + me.passwordActual;
+
+                axios.get(url).then(function (response) {
+                    var respuesta = response.data;
+                    identidad = respuesta.identidad;
+                    me.informacion_a_modificar(identidad);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            }
+
+        },
+        informacion_a_modificar(identidad){
+            if(identidad){
+                this.msjValidacion.identidad.color = '';
+                this.msjValidacion.identidad.mensaje = '';
+                this.passwordActual = '';
+                
+                if(this.camposSeleccionados.length > 0){
+                    this.msjValidacion.informacion.color = {'border': 'none'};
+                    this.msjValidacion.informacion.mensaje = '';
+
+                    for(var i = 0; i < this.camposSeleccionados.length; i++){
+                        if(this.camposSeleccionados[i]==='nombre'){
+                            this.habilitarCambios.nombre.campo = true;
+                            this.habilitarCambios.nombre.boton = true;
+                        }
+                        else if(this.camposSeleccionados[i]==='usuario'){
+                            this.habilitarCambios.usuario.campo = true;
+                            this.habilitarCambios.usuario.boton = true;
+                        }
+                        else if(this.camposSeleccionados[i]==='email'){
+                            this.habilitarCambios.email.campo = true;
+                            this.habilitarCambios.email.boton = true;
+                        }
+                        else if(this.camposSeleccionados[i]==='password'){
+                            this.habilitarCambios.password.campo = true;
+                            this.habilitarCambios.password.boton = true;
+                        }
+                    }
+                }else{
+                    this.msjValidacion.informacion.color = this.colorError;
+                    this.msjValidacion.informacion.mensaje = "Seleccione la información a modificar";
+                }
+            }else{
+                this.msjValidacion.identidad.color = this.colorError;
+                this.msjValidacion.identidad.mensaje = "Contraseña invalida";
+            }
+
+        },
+        actualizarNombre(){
+            if(this.validacionCampos()){
+                return;
+            }
+
+            let me = this;
+            //          url del controlador
+            axios.put('/perfil/actualizarNombre', {
+                'nombre' : me.nombre
+            }).then(function (response){
+                me.limpiarSeleccionModificada('nombre');
+                me.obtenerDatosUsuario();        
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Genial...!',
+                    text: 'Se ha actualizado el nombre correctamente'
+                })
+            }).catch(function (error){
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Ups...!',
+                    text: 'Algo salio mal'
+                })
+                console.log(error)
+            });
+        },
+        validar_y_actualizarUsuario(){
+            if(this.validacionCampos()){
+                return;
+            }
+            let me = this;
+            var respuestaUsuario = '';
+            //          url del controlador
+            var url = '/perfil/validarUsuario?usuario=' + this.usuario;
+            axios.get(url).then(function (response){
+                var respuesta = response.data;
+                respuestaUsuario = respuesta.respuestaUsuario;
+                me.actualizarUsuario(respuestaUsuario);        
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        },
+        actualizarUsuario(respuesta){
+            if(respuesta){
+                this.msjValidacion.usuario.color = this.colorError;
+                this.msjValidacion.usuario.mensaje = respuesta;
+            }
+            else{
+                let me = this;
+                this.msjValidacion.usuario.color = '';
+                this.msjValidacion.usuario.mensaje = '';
+                //  url del controlador
+                axios.put('/perfil/actualizarUsuario', {
+                    'usuario' : this.usuario
+                }).then(function (response){
+                    me.limpiarSeleccionModificada('usuario');
+                    me.obtenerDatosUsuario();
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Genial...!',
+                        text: 'Se ha actualizado el usuario correctamente'
+                    })
+                }).catch(function (error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Ups...!',
+                        text: 'Algo salio mal'
+                    })
+                    console.log(error)
+                });
+            }  
+        },
+        validar_y_actualizarEmail(){
+            if(this.validacionCampos()){
+                return;
+            }
+            let me = this;
+            var respuestaEmail = '';
+            //          url del controlador
+            var url = '/perfil/validarEmail?email=' + this.email;
+            axios.get(url).then(function (response){
+                var respuesta = response.data;
+                respuestaEmail = respuesta.respuestaEmail;
+                me.actualizarEmail(respuestaEmail);        
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+        },
+        actualizarEmail(respuesta){
+            if(respuesta){
+                this.msjValidacion.email.color = this.colorError;
+                this.msjValidacion.email.mensaje = respuesta;
+            }
+            else{
+                let me = this;
+                this.msjValidacion.email.color = '';
+                this.msjValidacion.email.mensaje = '';
+                //  url del controlador
+                axios.put('/perfil/actualizarEmail', {
+                    'email' : this.email
+                }).then(function (response){
+                    me.limpiarSeleccionModificada('email');
+                    me.obtenerDatosUsuario();
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Genial...!',
+                        text: 'Se ha actualizado el correo electrónico correctamente'
+                    })
+                }).catch(function (error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: '¡Ups...!',
+                        text: 'Algo salio mal'
+                    })
+                    console.log(error)
+                });
+            }
+        },
+        actualizarPassword(){
+            if(this.validacionCampos()){
+                return;
+            }
+
+            let me = this;
+            //  url del controlador
+            axios.put('/perfil/actualizarPassword', {
+                'nuevoPassword' : this.nuevoPassword
+            }).then(function (response){
+                me.limpiarSeleccionModificada('password');
+                me.obtenerDatosUsuario();
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Genial...!',
+                    text: 'Se ha actualizado la contraseña correctamente'
+                })
+            }).catch(function (error){
+                Swal.fire({
+                    icon: 'error',
+                    title: '¡Ups...!',
+                    text: 'Algo salio mal'
+                })
+                console.log(error)
+            }).then(function () {
+                // always executed
+                me.nuevoPassword = '';
+            });
+        },
+        limpiarSeleccionModificada(opcion){
+            const eleccion = (element) => element === opcion;
+            var indice = this.camposSeleccionados.findIndex(eleccion);
+            this.camposSeleccionados.splice(indice, 1);
             
+            if(opcion==='nombre'){
+                this.habilitarCambios.nombre.campo = false;
+                this.habilitarCambios.nombre.boton = false;
+            }
+            else if(opcion==='usuario'){
+                this.habilitarCambios.usuario.campo = false;
+                this.habilitarCambios.usuario.boton = false;
+            }
+            else if(opcion==='email'){
+                this.habilitarCambios.email.campo = false;
+                this.habilitarCambios.email.boton = false;
+            }
+            else if(opcion==='password'){
+                this.habilitarCambios.password.campo = false;
+                this.habilitarCambios.password.boton = false;
+            }
+
+            if(this.camposSeleccionados.length == 0){
+                this.limpiar_campos();        
+            }
+        },
+        seleccionNombre(){
+            if(!document.getElementById('seleccionNombre').checked){
+                this.habilitarCambios.nombre.campo = false;
+                this.habilitarCambios.nombre.boton = false;
+            }
+        },
+        seleccionUsuario(){
+            if (!document.getElementById('seleccionUsuario').checked){
+                this.habilitarCambios.usuario.campo = false;
+                this.habilitarCambios.usuario.boton = false;
+            }
+        },
+        seleccionEmail(){
+            if (!document.getElementById('seleccionEmail').checked){
+                this.habilitarCambios.email.campo = false;
+                this.habilitarCambios.email.boton = false;
+            }
+        },
+        seleccionPassword(){
+            if (!document.getElementById('seleccionPassword').checked){
+                this.habilitarCambios.password.campo = false;
+                this.habilitarCambios.password.boton = false;
+            }
+        },
+        limpiar_campos(){
             this.rol = '';
             this.carrera = '';
             this.usuario = '';
@@ -404,6 +772,78 @@ export default {
             //Variables para el manejo de imagenes
             this.imagenEs = '';
             this.imagenSeleccionada = '';
+
+            //Campos a desabilitar y habilitar
+            this.camposSeleccionados = [];
+            this.passwordActual = '';
+            this.nuevoPassword = '';
+
+            //Mensajes de validación
+            this.msjValidacion = {
+                avatar : {mensaje : '', color : '' },
+                identidad : {mensaje : '', color : '' },
+                informacion : {mensaje : '', color : '' },
+                nombre : {mensaje : '', color : '' },
+                usuario : {mensaje : '', color : '' },
+                email : {mensaje : '', color : '' },
+                password : {mensaje : '', color : '' },
+            };
+        },
+        validacionCampos(){
+            this.numErrors = 0;
+
+            if(!this.nombre){
+                this.numErrors = 1;
+                this.msjValidacion.nombre.color = this.colorError;
+                this.msjValidacion.nombre.mensaje = "No dejar el campo vacío";
+            }else{
+                this.msjValidacion.nombre.color = '';
+                this.msjValidacion.nombre.mensaje = '';
+            }
+
+            if(!this.usuario){
+                this.numErrors = 1;
+                this.msjValidacion.usuario.color = this.colorError;
+                this.msjValidacion.usuario.mensaje = "No dejar el campo vacío";
+            }else{
+                this.msjValidacion.usuario.color = '';
+                this.msjValidacion.usuario.mensaje = '';
+            }
+            
+            var validarEmail = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            if(!this.email){
+                this.numErrors = 1;
+                this.msjValidacion.email.color = this.colorError;
+                this.msjValidacion.email.mensaje = "No dejar el campo vacío";
+            }
+            else if(validarEmail.test(this.email)==false){
+                this.numErrors = 1;
+                this.msjValidacion.email.color = this.colorError;
+                this.msjValidacion.email.mensaje = "El correo no esta bien escrito";
+            }
+            else{
+                this.msjValidacion.email.color = '';
+                this.msjValidacion.email.mensaje = '';
+            }
+            
+            if(this.habilitarCambios.password.campo == true){
+                if(!this.nuevoPassword){
+                    this.numErrors = 1;
+                    this.msjValidacion.password.color = this.colorError;
+                    this.msjValidacion.password.mensaje = "No dejar el campo vacío";
+                }
+                else if(this.nuevoPassword.length < 8){
+                    this.numErrors = 1;
+                    this.msjValidacion.password.color = this.colorError;
+                    this.msjValidacion.password.mensaje = "La contraseña debe contener minimo 8 caracteres";
+                }
+                else{
+                    this.msjValidacion.password.color = '';
+                    this.msjValidacion.password.mensaje = '';
+                }
+            }
+
+            return this.numErrors;
         }
     },
     mounted(){
@@ -484,4 +924,28 @@ input[type="file"] {
 .estilo-columna-confirmar-contrasena > form{
     max-width: 310px;
 }
+
+/* estilos y justes a la sección de elección de campos */
+.row-seleccion-campos{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.col-seleccion-campos{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.label-seleccion-campos{
+    padding-top: 5px; 
+    padding-bottom: 5px;
+    border-left: none;
+    overflow: hidden;
+}
+.label-seleccion-campos > .texto-label{
+    white-space: nowrap;
+}
+
 </style>

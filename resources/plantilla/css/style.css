@@ -7638,7 +7638,7 @@ base-chart.chart {
   margin: 0;
   background-color: #fff;
   border-bottom: 1px solid #c2cfd6; }
-  .app-header.navbar .navbar-brand {
+  /* .app-header.navbar .navbar-brand {
     display: inline-block;
     width: 155px;
     height: 55px;
@@ -7649,7 +7649,7 @@ base-chart.chart {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
-    border-bottom: 1px solid #c2cfd6; }
+    border-bottom: 1px solid #c2cfd6; } */
   .app-header.navbar .navbar-toggler {
     min-width: 50px;
     padding: 0.25rem 0; }

@@ -26,23 +26,23 @@
             <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button> 
-
+            
             <a class="navbar-brand" href="#"></a>
 
             <!-- boton para Submenus de categorias -->
             <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">
-            <span class="navbar-toggler-icon"></span>
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- Configuraciones  -->
-            <ul class="navbar-nav mr-auto">
+            {{-- <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-3 active">
                     <a class="nav-link" href="#"></a>
                 </li>
                 <li class="nav-item px-3 active">
                     <a class="nav-link" href="#"></a>
                 </li>
-            </ul>
+            </ul> --}}
 
 
             <!-- Menu desplegable -->
@@ -51,7 +51,8 @@
                 <b-nav-item-dropdown right class="nav-menu-usuario">
                     <!-- Using 'button-content' slot -->
                     <template #button-content>
-                        <img src="{{ asset('storage/'.Auth::user()->avatar)  }}" class="img-avatar" alt="Foto de perfil">
+                        <img src="{{ asset('storage/'.Auth::user()->avatar)  }}" class="rounded-circle"
+                        alt="Foto de perfil" width="50px" height="50px">
                         <em style="font-weight: bold;">{{ Auth::user()->usuario }}</em>
                     </template>
                     

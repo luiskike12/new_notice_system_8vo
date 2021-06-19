@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class PerfilController extends Controller
@@ -64,8 +65,141 @@ class PerfilController extends Controller
         }catch (Exception $e){
             DB::rollBack();
         }
+    }
 
+    public function confirmarIdentidad(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        
+        try{
+            DB::beginTransaction();
 
+            $id_usuario = Auth::user()->id;
+
+            //para filtrar el id del usuario
+            $user = User::findOrFail($id_usuario);
+
+            if (Hash::check($request->passwordActual, $user->password)){
+                return ['identidad'=>true];
+            }
+
+            return ['identidad'=>false];
+            
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function actualizarNombre(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        
+        try{
+            DB::beginTransaction();
+
+            $id_usuario = Auth::user()->id;
+            //para filtrar el id del usuario
+            $user = User::findOrFail($id_usuario);
+            $user->name = $request->nombre;
+            $user->save();
+
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function validarUsuario(Request $request){
+        try{
+            DB::beginTransaction();
+            
+            $id_usuario = Auth::user()->id;
+
+            $usuario = User::select('id')->where('usuario','=',$request->usuario)->first();
+            if($usuario['id'] == $id_usuario){
+                $respuestaUsuario = '';
+            }else{
+                $respuestaUsuario = 'El usuario "'.$request->usuario.'" ya existe';
+            }
+            
+            return ['respuestaUsuario' => $respuestaUsuario];
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function actualizarUsuario(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $out->writeln("actualizarUsuario: ".$request->usuario);
+        try{
+            DB::beginTransaction();
+
+            $id_usuario = Auth::user()->id;
+            //para filtrar el id del usuario
+            $user = User::findOrFail($id_usuario);
+            $user->usuario = $request->usuario;
+            $user->save();
+            
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function validarEmail(Request $request){
+        try{
+            DB::beginTransaction();
+            
+            $id_usuario = Auth::user()->id;
+
+            $email = User::select('id')->where('email','=',$request->email)->first();
+            if($email['id'] == $id_usuario){
+                $respuestaEmail = '';
+            }else{
+                $respuestaEmail = 'Este correo ya esta en uso';
+            }
+            
+            return ['respuestaEmail' => $respuestaEmail];
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function actualizarEmail(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        
+        try{
+            DB::beginTransaction();
+
+            $id_usuario = Auth::user()->id;
+            //para filtrar el id del usuario
+            $user = User::findOrFail($id_usuario);
+            $user->email = $request->email;
+            $user->save();
+            
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
+    }
+
+    public function actualizarPassword(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        
+        try{
+            DB::beginTransaction();
+
+            $id_usuario = Auth::user()->id;
+            //para filtrar el id del usuario
+            $user = User::findOrFail($id_usuario);
+            $user->password = bcrypt($request->nuevoPassword);
+            $user->save();
+            
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+        }
     }
 
 }

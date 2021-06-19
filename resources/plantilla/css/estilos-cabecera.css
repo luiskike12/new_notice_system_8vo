@@ -1,6 +1,24 @@
 @charset "utf-8";
 /* CSS Document  */
 
+#boton-desplegable-movil{
+    margin-right: 10px;
+}
+/* logo de notiSchool en la cabecera*/
+.app-header.navbar .navbar-brand {
+    display: inline-block;
+    width: 155px;
+    height: 55px;
+    padding: 0.5rem 1rem;
+    margin-right: 0;
+    background-color: #fff;
+    background-image: url("../img/logo-NotiSchool-escritorio.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 70px auto;
+    border-bottom: 1px solid #c2cfd6; 
+}
+
 /*  
 ################################# Menu desplegable NOTIFICACIONES ####################################
 */

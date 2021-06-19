@@ -1,9 +1,7 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
-        <!-- <registro></registro> -->
-        {{-- <dashboard></dashboard> --}}
-        <perfil-usuario></perfil-usuario>
+        <dashboard></dashboard>
     </template>
 
     <template v-if="menu==1">
@@ -43,7 +41,7 @@
     </template>
 
     <template v-if="menu==10">
-        {{-- <perfil-usuario></perfil-usuario> --}}
+        <perfil-usuario></perfil-usuario>
     </template>
     
 @endsection

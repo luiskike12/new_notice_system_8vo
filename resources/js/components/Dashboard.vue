@@ -372,6 +372,10 @@ export default {
         margin-bottom: 18px;
     }
 
+    .rounded-circle{
+        overflow: hidden !important;
+    }
+
 
     /* ----------- Estilos de la tabla de infrmacion del usuario ----------*/
     .tabla-info-usuario{

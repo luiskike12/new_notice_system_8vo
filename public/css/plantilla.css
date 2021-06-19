@@ -7644,7 +7644,7 @@ base-chart.chart {
   margin: 0;
   background-color: #fff;
   border-bottom: 1px solid #c2cfd6; }
-  .app-header.navbar .navbar-brand {
+  /* .app-header.navbar .navbar-brand {
     display: inline-block;
     width: 155px;
     height: 55px;
@@ -7655,7 +7655,7 @@ base-chart.chart {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
-    border-bottom: 1px solid #c2cfd6; }
+    border-bottom: 1px solid #c2cfd6; } */
   .app-header.navbar .navbar-toggler {
     min-width: 50px;
     padding: 0.25rem 0; }
@@ -9694,6 +9694,24 @@ body
 @charset "utf-8";
 /* CSS Document  */
 
+#boton-desplegable-movil{
+    margin-right: 10px;
+}
+/* logo de notiSchool */
+.app-header.navbar .navbar-brand {
+    display: inline-block;
+    width: 155px;
+    height: 55px;
+    padding: 0.5rem 1rem;
+    margin-right: 0;
+    background-color: #fff;
+    background-image: url("../img/logo-NotiSchool-escritorio.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 70px auto;
+    border-bottom: 1px solid #c2cfd6; 
+}
+
 /*  
 ################################# Menu desplegable NOTIFICACIONES ####################################
 */
@@ -9732,10 +9750,12 @@ body
     margin-left: 15px;
 }
 /* a los 991px cambiar la posision del nav desplegable */
+
 .mensaje-eliminar{
     font-weight: bold;
     font-size: 18px;
 }
+
 
 /* Colocar Scrollbar en los modales cuando 
     sobrepase el limite del modal-body Important part */

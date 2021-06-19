@@ -23,6 +23,13 @@ Route::get('/dashboard', 'DashboardController');
 //Rutas del controlador Perfil del usuario
 Route::get('/perfil', 'PerfilController@index');
 Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
+Route::get('/perfil/confirmarIdentidad', 'PerfilController@confirmarIdentidad');
+Route::put('/perfil/actualizarNombre', 'PerfilController@actualizarNombre');
+Route::get('/perfil/validarUsuario', 'PerfilController@validarUsuario');
+Route::put('/perfil/actualizarUsuario', 'PerfilController@actualizarUsuario');
+Route::get('/perfil/validarEmail', 'PerfilController@validarEmail');
+Route::put('/perfil/actualizarEmail', 'PerfilController@actualizarEmail');
+Route::put('/perfil/actualizarPassword', 'PerfilController@actualizarPassword');
 
 //Rutas del controlador Carrera
 Route::get('/carrera', 'CarreraController@index');
