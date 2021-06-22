@@ -26,8 +26,8 @@ class DashboardController extends Controller
         //Datos del usuario a mostrar en el dashboard
         $datosUsuario = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
         ->join('roles', 'users.id_rol', '=', 'roles.id')
-        ->select('roles.nombre as nombre_rol', 'carreras.nombre as nombre_carrera', 
-        'users.name as nombre', 'users.avatar')
+        ->select('roles.nombre as rol', 'carreras.nombre as carrera', 
+        'users.usuario', 'users.avatar')
         ->where('users.id', '=', $usuario)->get();
 
 

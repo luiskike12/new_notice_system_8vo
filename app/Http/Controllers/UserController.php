@@ -70,7 +70,7 @@ class UserController extends Controller
             $user->email = $request->correo;
             $user->usuario = $request->usuario;
             $user->password = bcrypt($request->password);
-            $user->avatar = 'avatars/avatar.png';
+            $user->avatar = 'img/avatars/avatar.png';
             $user->condicion = '1';
             $user->save();
 
@@ -86,39 +86,16 @@ class UserController extends Controller
         try{
             DB::beginTransaction();
 
-            $ruta_avatar = '';
-
             //para filtrar el id del usuario
             $user = User::findOrFail($request->id);
-
-            if($request->hasFile('avatar')){
-                if(strcmp($request->avatar, 'avatars/avatar.png')===0){
-                    $ruta_avatar = 'avatars/avatar.png';
-                }else{
-                    if(strcmp($user->avatar, $request->avatar)===0){
-                        $ruta_avatar = $user->avatar;
-                    }else{
-                        $url_avatar = 'public/'.$user->avatar;
-                        Storage::delete($url_avatar);
-                        $ruta_avatar = Storage::disk('public')->put('avatars', $request->file('avatar'));
-                    }
-                }
-            }else{
-                if($request->avatar===''){
-                    $ruta_avatar = 'avatars/avatar.png';
-                }
-            }
-
             $user->id_carrera = $request->id_carrera;
             $user->id_rol = $request->id_rol;
             $user->name = $request->nombre;
             $user->email = $request->correo;
             $user->usuario = $request->usuario;
             $user->password = bcrypt($request->password);
-            $user->avatar = $ruta_avatar;
             $user->condicion = '1';
             $user->save();
-
 
             DB::commit();
         }catch (Exception $e){

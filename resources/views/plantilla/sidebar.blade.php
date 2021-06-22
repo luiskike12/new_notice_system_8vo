@@ -65,7 +65,12 @@
 
             <!-- Acerda del sistema... -->
             <li @click="menu=9" class="nav-item">
-                <a class="nav-link" href="#"><i class="icon-info"></i> Acerca de...<span class="badge badge-info">IT</span></a>
+                <a class="nav-link" href="#" ><i class="icon-info"></i> Acerca de...
+                    <span class="acerca-de-notischool">
+                        <img src="{{ url('storage/img/logo/acerda-de-notischool.jpg') }}" alt="NotiSchool" 
+                        class="rounded-circle" width="22px" height="22px">
+                    </span>
+                </a>
             </li>
         </ul>
     </nav>

@@ -33,6 +33,7 @@ Vue.component('aviso', require('./components/Aviso.vue').default);
 Vue.component('tabla-avisos', require('./components/Tabla-avisos.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('perfil-usuario', require('./components/Perfil-usuario.vue').default);
+Vue.component('acerca-de', require('./components/Acerca-de.vue').default);
 
 //*************Componentes de pruebas para el sistema con ruta "test-components" **************/
 //Pruebas de un Alumno registrandose

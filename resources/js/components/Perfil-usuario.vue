@@ -28,7 +28,7 @@
                                 <div class="col-md-2 estilo-columna-imagen">
                                     <img v-if="imagenEs === 'objeto'" class="img-thumbnail imagen" :src="imagen" width="80px" height="80px">
                                     <img v-else-if="imagenEs === 'string'" class="img-thumbnail imagen" :src="'storage/' + avatar" width="80px" height="80px">
-                                    <img v-else class="img-thumbnail imagen" :src="'img/avatars/avatar.png'" width="80px" height="80px">
+                                    <img v-else class="img-thumbnail imagen" :src="'storage/img/avatars/avatar.png'" width="80px" height="80px">
                                 </div>
                                 <div class="col-md-10 my-auto estilo-columna-imagen">
                                     <form @submit.prevent="guardarImagen" enctype="multipart/form-data" class="form-horizontal">

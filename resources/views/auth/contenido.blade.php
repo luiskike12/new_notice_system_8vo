@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>    
-    <link rel="shortcut icon" href="{{asset('img/favicon-NotiSchool.png')}}">
+    <link rel="shortcut icon" href="{{asset('storage/img/logo/favicon-NotiSchool.png')}}">
     <title>NotiSchool</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

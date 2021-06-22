@@ -9697,7 +9697,7 @@ body
 #boton-desplegable-movil{
     margin-right: 10px;
 }
-/* logo de notiSchool */
+/* logo de notiSchool en la cabecera*/
 .app-header.navbar .navbar-brand {
     display: inline-block;
     width: 155px;
@@ -9705,7 +9705,7 @@ body
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #fff;
-    background-image: url("../img/logo-NotiSchool-escritorio.png");
+    background-image: url("../storage/img/logo/logo-NotiSchool-escritorio.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
@@ -9768,8 +9768,21 @@ body
     overflow-y: auto;
 }
 
- /* -----------------------Scroll en la busqueda por filtro------------------------*/
- @media only screen and (max-width:557px){
+/*------------  estilo logo en "Acerca de..."  ----------*/ 
+@media only screen and (min-width: 992px){
+    .acerca-de-notischool{
+        margin-left: 37px;
+    }
+}
+
+@media only screen and (max-width: 991px){
+    .acerca-de-notischool{
+        margin-left: 57px; 
+    }
+}
+
+/* -----------------------Scroll en la busqueda por filtro------------------------*/
+@media only screen and (max-width:557px){
     .scroll-busqueda-filtro{
         padding-left: 15px;
         padding-right: 15px;

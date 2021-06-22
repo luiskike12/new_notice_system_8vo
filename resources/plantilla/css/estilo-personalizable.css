@@ -15,8 +15,21 @@
     overflow-y: auto;
 }
 
- /* -----------------------Scroll en la busqueda por filtro------------------------*/
- @media only screen and (max-width:557px){
+/*------------  estilo logo en "Acerca de..."  ----------*/ 
+@media only screen and (min-width: 992px){
+    .acerca-de-notischool{
+        margin-left: 37px;
+    }
+}
+
+@media only screen and (max-width: 991px){
+    .acerca-de-notischool{
+        margin-left: 57px; 
+    }
+}
+
+/* -----------------------Scroll en la busqueda por filtro------------------------*/
+@media only screen and (max-width:557px){
     .scroll-busqueda-filtro{
         padding-left: 15px;
         padding-right: 15px;

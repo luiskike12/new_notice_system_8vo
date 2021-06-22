@@ -64,7 +64,7 @@
                                             </div>
                                             <div class="col-sm text-center col-imagen-perfil">
                                                 <img v-if="avatar" class="rounded-circle" :src="'storage/' + avatar" width="80px" height="80px">
-                                                <img v-else class="rounded-circle" :src="'img/avatars/avatar.png'" width="80px" height="80px">
+                                                <img v-else class="rounded-circle" :src="'storage/img/avatars/avatar.png'" width="80px" height="80px">
                                             </div>
                                             <div class="col-sm text-center" style="margin-bottom: 18px;">
                                                 <p style="font-weight: bold;color: rgb(0, 0, 0, 0.7);">Imagen de perfil</p>
@@ -96,10 +96,10 @@
                                                                 <td class="col-sm text-center" v-text="carrera"></td>
                                                             </tr>
                                                             <tr class="row etiqueta">
-                                                                <td class="col-sm text-center">Nombre</td>
+                                                                <td class="col-sm text-center">Usuario</td>
                                                             </tr>
                                                             <tr class="row descripcion">
-                                                                <td class="col-sm text-center" v-text="nombre"></td>
+                                                                <td class="col-sm text-center" v-text="usuario"></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -149,7 +149,7 @@ export default {
             arrayDatosUsuario : [],
             rol : '',
             carrera : '',
-            nombre : '',
+            usuario : '',
             avatar : ''
         }
     },
@@ -178,9 +178,9 @@ export default {
         mostrarDatosUsuario(){
             let me = this;
             
-            me.rol = me.arrayDatosUsuario[0]['nombre_rol'];
-            me.carrera = me.arrayDatosUsuario[0]['nombre_carrera'];
-            me.nombre = me.arrayDatosUsuario[0]['nombre'];
+            me.rol = me.arrayDatosUsuario[0]['rol'];
+            me.carrera = me.arrayDatosUsuario[0]['carrera'];
+            me.usuario = me.arrayDatosUsuario[0]['usuario'];
             me.avatar = me.arrayDatosUsuario[0]['avatar'];
         },
         mostrarReporteAvisos(){

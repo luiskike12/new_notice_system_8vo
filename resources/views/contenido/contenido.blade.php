@@ -1,6 +1,7 @@
 @extends('principal')
 @section('contenido')
     <template v-if="menu==0">
+        {{-- <acerca-de></acerca-de> --}}
         <dashboard></dashboard>
     </template>
 
@@ -37,7 +38,7 @@
     </template>
 
     <template v-if="menu==9">
-        <h1>...........................Componente Acerca de...</h1>
+        <acerca-de></acerca-de>
     </template>
 
     <template v-if="menu==10">

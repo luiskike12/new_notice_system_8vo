@@ -41,20 +41,22 @@ class PerfilController extends Controller
             $user = User::findOrFail($id_usuario);
 
             if($request->hasFile('avatar')){
-                if(strcmp($request->avatar, 'avatars/avatar.png')===0){
-                    $ruta_avatar = 'avatars/avatar.png';
+                if(strcmp($request->avatar, 'img/avatars/avatar.png')===0){
+                    $ruta_avatar = 'img/avatars/avatar.png';
                 }else{
                     if(strcmp($user->avatar, $request->avatar)===0){
                         $ruta_avatar = $user->avatar;
                     }else{
                         $url_avatar = 'public/'.$user->avatar;
-                        Storage::delete($url_avatar);
+                        if(strcmp($user->avatar, 'img/avatars/avatar.png')!==0){
+                            Storage::delete($url_avatar);
+                        }
                         $ruta_avatar = Storage::disk('public')->put('avatars', $request->file('avatar'));
                     }
                 }
             }else{
                 if($request->avatar===''){
-                    $ruta_avatar = 'avatars/avatar.png';
+                    $ruta_avatar = 'img/avatars/avatar.png';
                 }
             }
             
