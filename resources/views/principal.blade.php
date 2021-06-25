@@ -87,15 +87,22 @@
         <div class="app-body">
             
             @if(Auth::check())
-                {{-- @if(Auth::user()->id_rol == 1)
-                
-                @endif --}}
-                
-                @include('plantilla.sidebar')
-                <!-- Contenido Principal -->
-                @yield('contenido')
-                <!-- /Fin del contenido principal -->
+                @if(Auth::user()->id_rol == 1)
+                    @include('plantilla.sidebarAdministrador')
+                @elseif(Auth::user()->id_rol == 2)
+                    @include('plantilla.sidebarCoordinador')
+                @elseif(Auth::user()->id_rol == 3)
+                    @include('plantilla.sidebarAsistente')
+                @elseif(Auth::user()->id_rol == 4)
+                    @include('plantilla.sidebarDocente')
+                @else 
+
+                @endif
             @endif
+
+            <!-- Contenido Principal -->
+            @yield('contenido')
+            <!-- /Fin del contenido principal -->
 
         </div>
     </div>
