@@ -5,6 +5,7 @@
     @if(Auth::user()->id_rol == 1)
         {{-- Sección Escritorio --}}
         <template v-if="menu==0">
+            {{-- <registro></registro> --}}
             <dashboard></dashboard>
         </template>
 

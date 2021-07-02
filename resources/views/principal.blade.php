@@ -13,14 +13,13 @@
     <link href="css/plantilla.css" rel="stylesheet">
 
     <!-- bootstrap-datepicker sandbox -->
-    <!-- <link href="css/bootstrap-datepicker.css" rel="stylesheet"> -->
-    
+    <!-- <link href="css/bootstrap-datepicker.css" rel="stylesheet"> -->    
 </head>
 
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
 
     <div id="app">
-        
+    <!--componentes app-->
         <header class="app-header navbar">
             <!-- Boton de espacio - versión móvil -->
             <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">
@@ -33,16 +32,6 @@
             <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <!-- Configuraciones  -->
-            {{-- <ul class="navbar-nav mr-auto">
-                <li class="nav-item px-3 active">
-                    <a class="nav-link" href="#"></a>
-                </li>
-                <li class="nav-item px-3 active">
-                    <a class="nav-link" href="#"></a>
-                </li>
-            </ul> --}}
 
 
             <!-- Menu desplegable -->
@@ -84,8 +73,7 @@
         </header>
 
 
-        <div class="app-body">
-            
+        <div class="app-body">         
             @if(Auth::check())
                 @if(Auth::user()->id_rol == 1)
                     @include('plantilla.sidebarAdministrador')
@@ -99,20 +87,18 @@
 
                 @endif
             @endif
-
             <!-- Contenido Principal -->
             @yield('contenido')
             <!-- /Fin del contenido principal -->
-
         </div>
+
+        <footer class="app-footer">
+            <span><a href="#">NotiSchool</a> &copy; 2020</span>
+            <span class="ml-auto">Desarrollado por <a href="#">NotiSchool</a></span>
+        </footer>
+    <!--componentes app-->    
     </div>
     
-
-    <footer class="app-footer">
-        <span><a href="#">NotiSchool</a> &copy; 2020</span>
-        <span class="ml-auto">Desarrollado por <a href="#">NotiSchool</a></span>
-    </footer>
-
     <!-- Archivos js compilados con Laravel mix -->
     <script src="js/app.js"></script>
     <script src="js/plantilla.js"></script>
@@ -120,7 +106,5 @@
     <!-- bootstrap-datepicker sandbox -->
     <!-- <script src="js/bootstrap-datepicker.min.js"></script>
     <script src="js/bootstrap-datepicker.es.min.js"></script> -->
-
 </body>
-
 </html>

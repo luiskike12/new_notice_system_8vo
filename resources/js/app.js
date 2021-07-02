@@ -56,7 +56,7 @@ Vue.component('acerca-de', require('./components/Acerca-de.vue').default);
         colorHover : {
             perfil : '',
             cerrar : ''
-        }
+        },
     },
     methods : {
         show_menu_cuenta(){
@@ -75,10 +75,30 @@ Vue.component('acerca-de', require('./components/Acerca-de.vue').default);
             }else{
                 this.colorHover.cerrar = '';
             }
-        }
+        },
+        cerrar_sesion_por_inactividad(){
+            // Cerrar sesión por inactividad
+            let t;
+            window.onload = resetTimer;
+            // DOM Events
+            document.onmousemove = resetTimer;
+            // document.onkeypress = resetTimer;
+            document.onkeydown = resetTimer;
+            document.onclick = resetTimer;
+        
+            const logout = () =>{
+                document.getElementById('logout-form').submit();
+            }
+        
+            function resetTimer(){
+                clearTimeout(t);
+                t = setTimeout(logout, 300000) // 5 minutos 300000 milisegundos
+            }
+        },
     },
     mounted(){
         this.show_menu_cuenta();
+        this.cerrar_sesion_por_inactividad();
     }
 });
 
