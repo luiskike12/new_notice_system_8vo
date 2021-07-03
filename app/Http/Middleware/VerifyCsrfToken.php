@@ -16,6 +16,7 @@ class VerifyCsrfToken extends Middleware
         '/alumno/loginApp',
         '/alumno/actualizar',
         '/aviso/TraerAvisosAlumnos',
-        '/aviso/TraerAvisosAlumnosFiltros'
+        '/aviso/TraerAvisosAlumnosFiltros',
+        '/aviso/verificarAviso',
     ];
 }

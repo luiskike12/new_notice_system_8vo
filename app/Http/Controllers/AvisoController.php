@@ -69,7 +69,7 @@ class AvisoController extends Controller
     public function traerAvisosAlumnosFiltros(Request $request)
     {
         try{
-            $string1 = 'SELECT a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido, a.documento, c.nombre as nombre_carrera FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera WHERE a.id_carrera = :a_carrera';
+            $string1 = 'SELECT a.id, a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido, a.documento, c.nombre as nombre_carrera FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera WHERE a.id_carrera = :a_carrera';
             $string2 = '';
             $string3 = '';
             $string4 = '';
@@ -146,12 +146,36 @@ class AvisoController extends Controller
         }
     }
 
+    public function verificarAviso(Request $request)
+    {
+        try{
+            $resultado = DB::select('SELECT
+                a.id, a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo,
+                a.contenido, a.documento FROM avisos a 
+                WHERE a.id = :a_id AND
+                (a.id_carrera = :a_carrera OR a.id_carrera = 1  OR a.id_carrera = 2) AND
+                (a.turno = :a_turno OR a.turno = 0) AND
+                (a.grado = :a_grado OR a.grado = 0)
+                ORDER BY a.created_at DESC',
+                [
+                    'a_id'=>$request->id,
+                    'a_carrera'=>$request->carrera,
+                    'a_turno'=>$request->turno,
+                    'a_grado'=>$request->grado
+                ]);
+            
+            return ['aviso' => $resultado];
+        } catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
     public function traerAvisosAlumnos(Request $request)
     {
         try{
             $resultados = DB::select('SELECT
-                a.id_carrera, a.turno, a.grado, a.general, a.created_at, a.titulo, a.contenido,
-                a.documento, c.nombre as nombre_carrera
+                a.id, a.id_carrera, a.turno, a.grado, a.general, a.created_at,
+                a.titulo, a.contenido, a.documento, c.nombre as nombre_carrera
                 FROM avisos a INNER JOIN carreras c ON c.id = a.id_carrera
                 WHERE (a.id_carrera = :a_carrera OR a.id_carrera = 0) AND
                 (a.turno = :a_turno OR a.turno = 0) AND
@@ -370,7 +394,7 @@ class AvisoController extends Controller
                 
                 foreach($resultados as $usuario){
                     OneSignal::sendNotificationToUser(
-                        $request->titulo, 
+                        $aviso->titulo, 
                         $userId = $usuario->id_dispositivo,
                         $url = null, 
                         $data = ["aviso" => $aviso], 
@@ -401,7 +425,7 @@ class AvisoController extends Controller
 
                 foreach($resultados as $usuario){
                     OneSignal::sendNotificationToUser(
-                        $request->titulo, 
+                        $aviso->titulo, 
                         $userId = $usuario->id_dispositivo,
                         $url = null, 
                         $data = ["aviso" => $aviso], 
