@@ -143,7 +143,7 @@
 
         {{-- Sección Alumnos --}}
         <template v-if="menu==3">
-            <alumno></alumno>
+            <alumno-docente></alumno-docente>
         </template>
 
         {{-- Sección Avisos --}}

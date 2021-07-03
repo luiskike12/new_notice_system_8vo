@@ -245,6 +245,9 @@ Route::group(['middleware' => ['auth']], function(){
         //Ruta del Dashboard de graficos y tarjeta de datos del usuario
         Route::get('/dashboard', 'DashboardController');
         
+        //Ruta controlador Carrera
+        Route::get('/carrera/selectCarrera', 'CarreraController@selectCarrera');
+
         //Rutas del controlador Alumnos (solo puede ver los alumnos registrados)
         Route::get('/alumno', 'AlumnoController@index');
         

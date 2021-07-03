@@ -199,7 +199,7 @@ class CarreraController extends Controller
         DB::insert('INSERT INTO professions (title) VALUES (:title)', ['title'=>'Desarrollador']);
 
         */
-         
+        
         $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
         when 1 then "Escolarizado" 
         when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 

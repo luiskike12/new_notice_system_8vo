@@ -91,13 +91,13 @@
             @yield('contenido')
             <!-- /Fin del contenido principal -->
         </div>
-
-        <footer class="app-footer">
-            <span><a href="#">NotiSchool</a> &copy; 2020</span>
-            <span class="ml-auto">Desarrollado por <a href="#">NotiSchool</a></span>
-        </footer>
     <!--componentes app-->    
     </div>
+
+    <footer class="app-footer">
+        <span><a href="#">NotiSchool</a> &copy; 2020</span>
+        <span class="ml-auto">Desarrollado por <a href="#">NotiSchool</a></span>
+    </footer>
     
     <!-- Archivos js compilados con Laravel mix -->
     <script src="js/app.js"></script>

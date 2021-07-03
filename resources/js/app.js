@@ -23,7 +23,7 @@ Vue.use(BootstrapVue)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-//##################   COMPONENTES GLOBALES DEL SISTEMA ##################################
+//##################   COMPONENTES GLOBALES DEL SISTEMA  ##################################
 Vue.component('carrera', require('./components/Carrera.vue').default);
 Vue.component('rol', require('./components/Rol.vue').default);
 Vue.component('user', require('./components/User.vue').default);
@@ -34,6 +34,11 @@ Vue.component('tabla-avisos', require('./components/Tabla-avisos.vue').default);
 Vue.component('dashboard', require('./components/Dashboard.vue').default);
 Vue.component('perfil-usuario', require('./components/Perfil-usuario.vue').default);
 Vue.component('acerca-de', require('./components/Acerca-de.vue').default);
+
+//############### COMPONENTES ESPECIALES ##############
+//-------------Docente---------------------
+Vue.component('alumno-docente', require('./components/components-docente/Alumno-Docente.vue').default);
+
 
 //*************Componentes de pruebas para el sistema con ruta "test-components" **************/
 //Pruebas de un Alumno registrandose
@@ -92,7 +97,7 @@ Vue.component('acerca-de', require('./components/Acerca-de.vue').default);
         
             function resetTimer(){
                 clearTimeout(t);
-                t = setTimeout(logout, 300000) // 5 minutos 300000 milisegundos
+                t = setTimeout(logout, 600000) // 5 minutos 300000 milisegundos
             }
         },
     },
