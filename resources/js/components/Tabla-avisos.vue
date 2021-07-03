@@ -53,8 +53,8 @@
                         <tr>
                             <th class="text-center">Opciones</th>
                             <th class="text-center">Carrera</th>
-                            <th class="text-center">Turno</th>
                             <th class="text-center">Grado</th>
+                            <th class="text-center">Turno</th>
                             <th class="text-center">Título</th>
                             <th class="text-center">Contenido</th>
                             <th class="text-center">Estado</th>
@@ -74,19 +74,19 @@
                             </td>
                             <th v-text="aviso.nombre_carrera"></th>
                             <th>
-                                <div v-if="aviso.turno==1">Matutino</div>
-                                <div v-else-if="aviso.turno==2">Vespertino</div>
-                                <div v-else-if="aviso.turno==3">Nocturno</div>
-                                <div v-else-if="aviso.turno==4">Mixto</div>
-                                <div v-else>General</div>
-                            </th>
-                            <th>
                                 <div v-if="aviso.grado == 0">
                                     General
                                 </div>
                                 <div v-else>
                                     {{aviso.grado}}º
                                 </div>
+                            </th>
+                            <th>
+                                <div v-if="aviso.turno==1">Matutino</div>
+                                <div v-else-if="aviso.turno==2">Vespertino</div>
+                                <div v-else-if="aviso.turno==3">Nocturno</div>
+                                <div v-else-if="aviso.turno==4">Mixto</div>
+                                <div v-else>General</div>
                             </th>
                             <th v-text="aviso.titulo"></th>
                             <th>

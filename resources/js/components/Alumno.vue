@@ -387,7 +387,7 @@
                 //obtener el valor de un <select>
                 let me = this;
                 var url = '/carrera/selectCarrera';
-                axios.get(url).then(function (response) {
+                axios.get(url).then(function (response){
                     var respuesta = response.data;
                     me.arrayCarrera = respuesta.carreras;
                 })

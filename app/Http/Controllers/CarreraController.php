@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Carrera;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Carrera;
+use Illuminate\Support\Facades\Auth;
 
 class CarreraController extends Controller
 {
@@ -197,17 +198,30 @@ class CarreraController extends Controller
 
         ------------Parametro de sustitucion (cuando tenemos muchos parametros)------
         DB::insert('INSERT INTO professions (title) VALUES (:title)', ['title'=>'Desarrollador']);
-
         */
         
-        $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
-        when 1 then "Escolarizado" 
-        when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
-        turno_nocturno, turno_mixto, num_grados
-        FROM carreras 
-        WHERE turno_matutino = :matutino OR turno_vespertino = :vespertino 
-        OR turno_nocturno = :nocturno OR turno_mixto = :mixto ORDER BY nombre ASC;', 
-        ['matutino' => 1, 'vespertino' => 1, 'nocturno' => 1, 'mixto' => 1]);
+        $rol = Auth::user()->id_rol;
+        $carrera_usuario = Auth::user()->id_carrera;
+
+        if($rol == 1 || $rol == 4){
+            $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
+            when 1 then "Escolarizado" 
+            when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
+            turno_nocturno, turno_mixto, num_grados
+            FROM carreras 
+            WHERE turno_matutino = :matutino OR turno_vespertino = :vespertino 
+            OR turno_nocturno = :nocturno OR turno_mixto = :mixto ORDER BY nombre ASC;', 
+            ['matutino' => 1, 'vespertino' => 1, 'nocturno' => 1, 'mixto' => 1]);
+        }
+        else if($rol == 2 || $rol == 3){
+            $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
+            when 1 then "Escolarizado" 
+            when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
+            turno_nocturno, turno_mixto, num_grados
+            FROM carreras 
+            WHERE id = :id_carrera;', 
+            ['id_carrera'=>$carrera_usuario]);
+        }
 
         return ['carreras' => $carreras];
     }

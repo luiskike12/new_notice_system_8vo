@@ -20,6 +20,7 @@ class AvisoController extends Controller
 
         $buscar = $request->buscar;
         $criterio = $request->criterio;
+
         if($buscar==''){
             $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
             ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
@@ -52,6 +53,8 @@ class AvisoController extends Controller
             ->where('avisos.id_usuario','=',$id_usuario)
             ->orderBy('avisos.id', 'desc')->paginate(5);
         }
+
+
         
         return[
             'pagination' => [
