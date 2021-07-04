@@ -275,16 +275,6 @@ Route::group(['middleware' => ['auth']], function(){
 
 });
 
-Auth::routes();
-//Rutas de app
-Route::get('/alumno/confirmar_matricula', 'AlumnoController@confirmarMatricula');
-Route::post('/alumno/registrar', 'AlumnoController@registrar');
-Route::post('/alumno/loginApp', 'AlumnoController@loginApp');
-Route::put('/alumno/actualizar', 'AlumnoController@actualizar');
-Route::post('/aviso/TraerAvisosAlumnos', 'AvisoController@traerAvisosAlumnos');
-Route::post('/aviso/TraerAvisosAlumnosFiltros', 'AvisoController@traerAvisosAlumnosFiltros');
-Route::post('/aviso/verificarAviso', 'AvisoController@verificarAviso');
-
 // //Acceso al sistema
 // Route::get('/', 'Auth\LoginController@showLoginForm');
 // Route::post('/login', 'Auth\LoginController@login')->name('login');
