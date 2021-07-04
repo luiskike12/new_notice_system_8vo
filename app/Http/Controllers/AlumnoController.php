@@ -62,6 +62,7 @@ class AlumnoController extends Controller
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         
         $rol = Auth::user()->id_rol;
+        $carrera_usuario = Auth::user()->id_carrera;
 
         $criterio = $request->criterio;
         $buscar = $request->buscar;
@@ -159,7 +160,6 @@ class AlumnoController extends Controller
             }
         }
 
-
         //Busqueda para el Rol Coordinador y Asistente
         if($rol == 2 || $rol == 3){
             if($buscar==''){
@@ -171,19 +171,60 @@ class AlumnoController extends Controller
                 'matriculas.matricula as matricula_alumno',
                 'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
                 'alumnos.turno','alumnos.condicion')
+                ->where('matriculas.id_carrera','=',$carrera_usuario)
                 ->orderBy('matriculas.id', 'desc')->paginate(5);
             }
             else{
                 if($criterio=='id_carrera' || $criterio=='matricula' || $criterio=='nombre'){
-                    $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
-                    ->join('carreras','carreras.id','=','matriculas.id_carrera')
-                    ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
-                    DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
-                    'matriculas.matricula as matricula_alumno',
-                    'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
-                    'alumnos.turno','alumnos.condicion')
-                    ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
-                    ->orderBy('matriculas.id', 'desc')->paginate(5);
+                    if($criterio2==='grado' && $criterio3 === 'turno'){
+                        $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
+                        ->join('carreras','carreras.id','=','matriculas.id_carrera')
+                        ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
+                        DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                        'matriculas.matricula as matricula_alumno',
+                        'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
+                        'alumnos.turno','alumnos.condicion')
+                        ->where('matriculas.id_carrera','=',$carrera_usuario)
+                        ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('alumnos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->where('alumnos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('matriculas.id', 'desc')->paginate(5);
+                    }else if($criterio2==='grado'){
+                        $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
+                        ->join('carreras','carreras.id','=','matriculas.id_carrera')
+                        ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
+                        DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                        'matriculas.matricula as matricula_alumno',
+                        'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
+                        'alumnos.turno','alumnos.condicion')
+                        ->where('matriculas.id_carrera','=',$carrera_usuario)
+                        ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('alumnos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->orderBy('matriculas.id', 'desc')->paginate(5);
+                    }else if($criterio3==='turno'){
+                        $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
+                        ->join('carreras','carreras.id','=','matriculas.id_carrera')
+                        ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
+                        DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                        'matriculas.matricula as matricula_alumno',
+                        'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
+                        'alumnos.turno','alumnos.condicion')
+                        ->where('matriculas.id_carrera','=',$carrera_usuario)
+                        ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('alumnos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('matriculas.id', 'desc')->paginate(5);
+                    }else{
+                        $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
+                        ->join('carreras','carreras.id','=','matriculas.id_carrera')
+                        ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
+                        DB::raw('CASE carreras.tipo_modalidad WHEN 1 THEN "Escolarizado" WHEN 2 THEN "Semiescolarizado" END AS modalidad_carrera'),
+                        'matriculas.matricula as matricula_alumno',
+                        'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
+                        'alumnos.turno','alumnos.condicion')
+                        ->where('matriculas.id_carrera','=',$carrera_usuario)
+                        ->where('matriculas.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('matriculas.id', 'desc')->paginate(5);
+                    }
                 }
                 else if($criterio=='tipo_modalidad'){
                     $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
@@ -193,6 +234,7 @@ class AlumnoController extends Controller
                     'matriculas.matricula as matricula_alumno',
                     'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
                     'alumnos.turno','alumnos.condicion')
+                    ->where('matriculas.id_carrera','=',$carrera_usuario)
                     ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
                     ->orderBy('matriculas.id', 'desc')->paginate(5);
                 }
@@ -204,6 +246,7 @@ class AlumnoController extends Controller
                     'matriculas.matricula as matricula_alumno',
                     'matriculas.nombre as nombre_alumno','alumnos.correo','alumnos.grado',
                     'alumnos.turno','alumnos.condicion')
+                    ->where('matriculas.id_carrera','=',$carrera_usuario)
                     ->where('alumnos.'.$criterio, 'like', '%'.$buscar.'%')
                     ->orderBy('matriculas.id', 'desc')->paginate(5);
                 }

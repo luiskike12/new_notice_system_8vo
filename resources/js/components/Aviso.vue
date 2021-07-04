@@ -108,6 +108,34 @@
                                 <div class="row">
                                     <div class="col-6" style="padding: 0 !important;">
                                         <div class="form-group">
+                                            <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Grado</label>
+                                            <div class="col-md">
+                                                <div v-if="tipo_envio == 1">
+                                                    <select class="form-control">
+                                                        <option value="0" disabled selected>Todos los grados</option>
+                                                    </select>
+                                                </div>
+                                                <div v-else-if="tipo_envio == 0">
+                                                    <div v-if="id_carrera != 0">
+                                                        <select class="form-control" @click="tecleo" id="grado" v-model="grado">
+                                                            <option value="0" disabled selected>Seleccione el grado</option>
+                                                            <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
+                                                                {{grupo.num}}º
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div v-else>
+                                                        <select class="form-control" id="grado" v-model="grado">
+                                                            <option value="0" disabled selected>Seleccione una carrera</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <msj-validacion v-if="msjValidacion[4].grado==1">{{msjValidacion[4].mensaje}}</msj-validacion>
+                                        </div>
+                                    </div>
+                                    <div class="col-6" style="padding: 0 !important;">
+                                        <div class="form-group">
                                             <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Turno</label>
                                             <div class="col-md">
                                                 <div v-if="tipo_envio == 1">
@@ -133,34 +161,6 @@
                                                 </div>
                                             </div>
                                             <msj-validacion v-if="msjValidacion[3].turno==1">{{msjValidacion[3].mensaje}}</msj-validacion>
-                                        </div>
-                                    </div>
-                                    <div class="col-6" style="padding: 0 !important;">
-                                        <div class="form-group">
-                                            <label class="col-md form-control-label font-weight-bold text-center" for="text-input">Grado</label>
-                                            <div class="col-md">
-                                                <div v-if="tipo_envio == 1">
-                                                    <select class="form-control">
-                                                        <option value="0" disabled selected>Todos los grados</option>
-                                                    </select>
-                                                </div>
-                                                <div v-else-if="tipo_envio == 0">
-                                                    <div v-if="id_carrera != 0">
-                                                        <select class="form-control" @click="tecleo" id="grado" v-model="grado">
-                                                            <option value="0" disabled selected>Seleccione el grado</option>
-                                                            <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
-                                                                {{grupo.num}}º
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div v-else>
-                                                        <select class="form-control" id="grado" v-model="grado">
-                                                            <option value="0" disabled selected>Seleccione una carrera</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <msj-validacion v-if="msjValidacion[4].grado==1">{{msjValidacion[4].mensaje}}</msj-validacion>
                                         </div>
                                     </div>
                                 </div>
@@ -499,6 +499,8 @@
                 ];
                 //variable para mostrar imagen seleccionada
                 this.imagenSeleccionada = '';
+                //Recargar carreras a seleccionar
+                this.obtener_carreras();
             },
             validarAviso(){// se puede modificar, solo los mensajes de validacion
                 this.numErrors = 0;
