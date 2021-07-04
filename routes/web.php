@@ -275,10 +275,6 @@ Route::group(['middleware' => ['auth']], function(){
 
 });
 
-
-
-
-// Auth::routes();
 // //Acceso al sistema
 // Route::get('/', 'Auth\LoginController@showLoginForm');
 // Route::post('/login', 'Auth\LoginController@login')->name('login');

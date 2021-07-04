@@ -278,6 +278,37 @@ class AlumnoController extends Controller
         }
     }
 
+    public function actualizar_app(Request $request)
+    {
+        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $esVacio = $request->password;
+        try{
+            DB::beginTransaction();
+            
+            $alumno = Alumno::findOrFail($request->id_matricula);
+            
+            if($request->device == true){
+                if(is_null($request->id_dispositivo)){
+                    $alumno->id_dispositivo = null;
+                } else {
+                    $alumno->id_dispositivo = $request->id_dispositivo;
+                }
+            } else {
+                if($esVacio!=''){
+                    $alumno->password = bcrypt($request->password);
+                }
+                $alumno->correo = $request->correo;
+                $alumno->grado = $request->grado;
+                $alumno->turno = $request->turno;
+            }
+            $alumno->save();
+
+            DB::commit();
+        }catch (Exception $e){
+            DB::rollBack();
+        }
+    }
+
     public function listarTurnos(Request $request){        
         $id_alumno = $request->id_alumno;
         $turnos = DB::select('SELECT c.turno_matutino, c.turno_vespertino, c.turno_nocturno, c.turno_mixto
