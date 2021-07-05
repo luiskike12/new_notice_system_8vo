@@ -24,4 +24,4 @@ Route::post('/loginApp', 'AlumnoController@loginApp');
 Route::put('/actualizar', 'AlumnoController@actualizar_app');
 Route::post('/TraerAvisosAlumnos', 'AvisoController@traerAvisosAlumnos');
 Route::post('/TraerAvisosAlumnosFiltros', 'AvisoController@traerAvisosAlumnosFiltros');
-Route::post('//verificarAviso', 'AvisoController@verificarAviso');
+Route::post('/verificarAviso', 'AvisoController@verificarAviso');

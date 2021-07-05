@@ -17,45 +17,105 @@ class AvisoController extends Controller
         if(!$request->ajax())return redirect('/');
         
         $id_usuario = Auth::user()->id;
+        $rol = Auth::user()->id_rol;
+        $carrera_usuario = Auth::user()->id_carrera;
 
-        $buscar = $request->buscar;
         $criterio = $request->criterio;
+        $buscar = $request->buscar;
+        $criterio2 = $request->criterio2;
+        $buscar2 = $request->buscar2;
+        $criterio3 = $request->criterio3;
+        $buscar3 = $request->buscar3;
 
-        if($buscar==''){
-            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
-            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
-            'avisos.general','avisos.turno','avisos.grado','avisos.estado')
-            ->where('avisos.id_usuario','=',$id_usuario)
-            ->orderBy('avisos.id', 'desc')->paginate(5);
-            //->where('avisos.id_usuario','=',$id_usuario)
-            /*  Código Anterior
-            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
-            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            DB::raw('CASE avisos.turno 
-            WHEN 0 THEN "General"
-            WHEN 1 THEN "Matutino"
-            WHEN 2 THEN "Vespertino"
-            WHEN 3 THEN "Nocturno" 
-            WHEN 4 THEN "Mixto" END AS turno'),
-            DB::raw('CASE avisos.grado 
-            WHEN 0 THEN "General" ELSE avisos.grado END AS grado'),
-            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
-            'avisos.general','avisos.turno',)
-            */
+        //Busqueda para el Rol Coordinador y Asistente
+        if($rol == 1 || $rol == 4){
+            if($buscar==''){
+                $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                DB::raw('CASE carreras.tipo_modalidad
+                WHEN 0 THEN "General"
+                WHEN 1 THEN "Escolarizado" 
+                WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                ->where('avisos.id_usuario','=',$id_usuario)
+                ->orderBy('avisos.id', 'desc')->paginate(5);
+            }
+            else{
+                if($criterio === 'tipo_modalidad'){
+                    $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                    ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                    DB::raw('CASE carreras.tipo_modalidad
+                    WHEN 0 THEN "General"
+                    WHEN 1 THEN "Escolarizado" 
+                    WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                    'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                    'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                    ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                    ->where('avisos.id_usuario','=',$id_usuario)
+                    ->orderBy('avisos.id', 'desc')->paginate(5);
+                }else{
+                    if($criterio2 === 'grado' && $criterio3 === 'turno'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_usuario','=',$id_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->where('avisos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else if($criterio2 === 'grado'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_usuario','=',$id_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else if($criterio3 === 'turno'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_usuario','=',$id_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else{
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_usuario','=',$id_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                }
+            }
         }
-        else{
-            $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
-            ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
-            'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
-            'avisos.general','avisos.turno','avisos.grado','avisos.estado')
-            ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
-            ->where('avisos.id_usuario','=',$id_usuario)
-            ->orderBy('avisos.id', 'desc')->paginate(5);
-        }
-
-
         
+
         return[
             'pagination' => [
                 'total'         => $avisos->total(),

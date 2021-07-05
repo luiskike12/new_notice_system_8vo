@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 --------------------------------------------------------------------
     Auth::routes(); => (vendor/laravel/ui/src/AuthRouteMethods.php)
 ---------------------------------------------------------------------
-
 */
 
 //Rutas cuando no esta autenticado
@@ -275,9 +274,5 @@ Route::group(['middleware' => ['auth']], function(){
 
 });
 
-// //Acceso al sistema
-// Route::get('/', 'Auth\LoginController@showLoginForm');
-// Route::post('/login', 'Auth\LoginController@login')->name('login');
-// Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
 // Route::get('/home', 'HomeController@index')->name('home');

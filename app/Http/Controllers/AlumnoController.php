@@ -58,8 +58,6 @@ class AlumnoController extends Controller
     public function index(Request $request)
     {
         if(!$request->ajax())return redirect('/');
-
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         
         $rol = Auth::user()->id_rol;
         $carrera_usuario = Auth::user()->id_carrera;
@@ -70,9 +68,6 @@ class AlumnoController extends Controller
         $buscar2 = $request->buscar2;
         $criterio3 = $request->criterio3;
         $buscar3 = $request->buscar3;
-
-        $out->writeln("rol: ".$rol." | criterio2: ".$criterio2." buscar2: ".$buscar2.
-        " | criterio3: ".$criterio3." buscar3: ".$buscar3);
         
         //Busqueda para el Rol Coordinador y Asistente
         if($rol == 1 || $rol == 4){
@@ -89,7 +84,7 @@ class AlumnoController extends Controller
             }
             else{
                 if($criterio=='id_carrera' || $criterio=='matricula' || $criterio=='nombre'){
-                    if($criterio2==='grado' && $criterio3 === 'turno'){
+                    if($criterio2 === 'grado' && $criterio3 === 'turno'){
                         $alumnos = Alumno::join('matriculas','matriculas.id','=','alumnos.id_matricula')
                         ->join('carreras','carreras.id','=','matriculas.id_carrera')
                         ->select('alumnos.id_matricula','alumnos.password','carreras.nombre as nombre_carrera', 'carreras.num_grados',
