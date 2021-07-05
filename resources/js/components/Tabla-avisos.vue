@@ -56,7 +56,12 @@
                                 <select v-if="criterio==='id_carrera' && buscar !== ''" class="form-control col-md-2" v-model="buscar2">
                                     <option value="" disabled selected>Grado</option>
                                     <option v-for="grado in array_num_grados" :key="grado.num" :value="grado.num">
-                                        {{grado.num}}º
+                                        <div v-if="grado.num===0">
+                                            General
+                                        </div>
+                                        <div v-else>
+                                            {{grado.num}}º
+                                        </div>
                                     </option>
                                 </select>
                                 <!-- turnos -->
@@ -146,13 +151,13 @@
                 <nav>
                     <ul class="pagination">
                         <li class="page-item" v-if="pagination.current_page > 1">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1, buscar, criterio)">Ant</a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1, criterio, buscar, buscar2, buscar3)">Ant</a>
                         </li>
                         <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(page, buscar, criterio)" v-text="page"></a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(page, criterio, buscar, buscar2, buscar3)" v-text="page"></a>
                         </li>
                         <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1, buscar, criterio)">Sig</a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1, criterio, buscar, buscar2, buscar3)">Sig</a>
                         </li>
                     </ul>
                 </nav>
@@ -304,8 +309,13 @@
                                                     <div v-if="id_carrera != 0">
                                                         <select class="form-control" @click="tecleo" id="grado" v-model="grado">
                                                             <option value="0" disabled selected>Seleccione el grado</option>
-                                                            <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
-                                                                {{grupo.num}}º
+                                                            <option v-for="grado in array_num_grados" :key="grado.num" :value="grado.num">
+                                                                <div v-if="grado.num===0">
+                                                                    General
+                                                                </div>
+                                                                <div v-else>
+                                                                    {{grado.num}}º
+                                                                </div>
                                                             </option>
                                                         </select>
                                                     </div>
@@ -611,7 +621,7 @@
                 this.col6 = col6;
                 this.col10 = col10;
             },
-            cambiarPagina(page, buscar, criterio){//No mover
+            cambiarPagina(page, criterio, buscar, buscar2, buscar3){//No mover
                 let me = this;
                 //actualiza la pagina actual
                 me.pagination.current_page = page;
@@ -644,7 +654,7 @@
                     for(var i = 0; i < this.arrayCarrera.length; i++){
                         if(this.buscar == this.arrayCarrera[i]['id']){
                             numGrados = this.arrayCarrera[i]['num_grados'];
-                            for(var i = 1; i <= numGrados; i++){
+                            for(var i = 0; i <= numGrados; i++){
                                 this.array_num_grados.push({num: i})
                             }
                         }
@@ -675,7 +685,7 @@
                         }
                     }
 
-                    for(var i = 1; i <= grados; i++){
+                    for(var i = 0; i <= grados; i++){
                         this.array_num_grados.push({num: i})
                     }
                 }     
@@ -700,7 +710,7 @@
                     }
                 }
 
-                for(var i = 1; i <= grados; i++){
+                for(var i = 0; i <= grados; i++){
                     this.array_num_grados.push({num: i})
                 }
                 

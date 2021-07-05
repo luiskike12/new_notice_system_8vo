@@ -87,7 +87,7 @@
                                 <div class="col-md-12 select-carrera">
                                     <!-- Seleccionar carrera -->
                                     <div v-if="tipo_envio == 1">
-                                        <select class="form-control"  v-model="id_carrera">
+                                        <select class="form-control" v-model="id_carrera">
                                             <option value="1" disabled selected>Todas las carreras</option>
                                         </select>
                                     </div>
@@ -118,9 +118,14 @@
                                                 <div v-else-if="tipo_envio == 0">
                                                     <div v-if="id_carrera != 0">
                                                         <select class="form-control" @click="tecleo" id="grado" v-model="grado">
-                                                            <option value="0" disabled selected>Seleccione el grado</option>
+                                                            <option value="" disabled selected>Seleccione el grado</option>
                                                             <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
-                                                                {{grupo.num}}º
+                                                                <div v-if="grupo.num===0">
+                                                                    General
+                                                                </div>
+                                                                <div v-else>
+                                                                    {{grupo.num}}º
+                                                                </div>
                                                             </option>
                                                         </select>
                                                     </div>
@@ -146,7 +151,8 @@
                                                 <div v-else-if="tipo_envio == 0">
                                                     <div v-if="id_carrera != 0">
                                                         <select class="form-control" @click="tecleo" id="turno" v-model="turno">
-                                                            <option value="0" disabled selected>Seleccione el turno</option>
+                                                            <option value="" disabled selected>Seleccione el turno</option>
+                                                            <option value="0" v-if="id_carrera > 2">General</option>
                                                             <option value="1" v-if="t_matutino==1">Matutino</option>
                                                             <option value="2" v-if="t_vespertino==1">Vespertino</option>
                                                             <option value="3" v-if="t_nocturno==1">Nocturno</option>
@@ -256,8 +262,8 @@
                 //Variables para guardar y actualizar el aviso
                 tipo_envio: 0,
                 id_carrera: 1,
-                turno : 0,
-                grado : 0,
+                grado : '',
+                turno : '',
                 titulo_aviso : '',
                 documento: '',
                 contenido_aviso : '',
@@ -311,8 +317,8 @@
                 });
             },
             mostrar_turnos_y_grados_carrera(event){
-                this.turno = 0;
-                this.grado = 0;
+                this.grado = '';
+                this.turno = '';
                 this.array_num_grados = [];
                 this.t_matutino = 0;
                 this.t_vespertino = 0;
@@ -332,7 +338,7 @@
                         }
                     }
 
-                    for(var i = 1; i <= grados; i++){
+                    for(var i = 0; i <= grados; i++){
                         this.array_num_grados.push({num: i})
                     }
                 }     
@@ -343,8 +349,8 @@
             seleccion_de_envio(){
                 if(this.tipo_envio == 1){
                     this.id_carrera = 1;
-                    this.turno = 0;
-                    this.grado = 0;
+                    this.turno = '';
+                    this.grado = '';
                     //Identificadores de apoyo en el select Turno
                     this.t_matutino = 0;
                     this.t_vespertino = 0;
@@ -473,8 +479,8 @@
                 //Variables para guardar y actualizar el aviso
                 //this.tipo_envio = 0;
                 this.id_carrera = 1; 
-                this.turno = 0; 
-                this.grado = 0; 
+                this.turno = ''; 
+                this.grado = ''; 
                 this.titulo_aviso = '';
                 this.documento = '';
                 this.contenido_aviso = '';
@@ -537,7 +543,7 @@
                         document.getElementById('id_carrera').style.cssText = this.colorGood;
                     }
 
-                    if(this.turno == 0){
+                    if(this.turno === ''){
                         this.numErrors = 1;
                         document.getElementById('turno').style.cssText = this.colorError;
                         this.msjValidacion[3].turno = 1;
@@ -547,7 +553,7 @@
                         document.getElementById('turno').style.cssText = this.colorGood;
                     }
 
-                    if(this.grado == 0){
+                    if(this.grado === ''){
                         this.numErrors = 1;
                         document.getElementById('grado').style.cssText = this.colorError;
                         this.msjValidacion[4].grado = 1;

@@ -114,8 +114,94 @@ class AvisoController extends Controller
                 }
             }
         }
-        
 
+        if($rol == 2 || $rol == 3){
+            if($buscar==''){
+                $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                DB::raw('CASE carreras.tipo_modalidad
+                WHEN 0 THEN "General"
+                WHEN 1 THEN "Escolarizado" 
+                WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                ->where('avisos.id_carrera','=',$carrera_usuario)
+                ->orderBy('avisos.id', 'desc')->paginate(5);
+            }
+            else{
+                if($criterio === 'tipo_modalidad'){
+                    $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                    ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                    DB::raw('CASE carreras.tipo_modalidad
+                    WHEN 0 THEN "General"
+                    WHEN 1 THEN "Escolarizado" 
+                    WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                    'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                    'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                    ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                    ->where('avisos.id_carrera','=',$carrera_usuario)
+                    ->orderBy('avisos.id', 'desc')->paginate(5);
+                }else{
+                    if($criterio2 === 'grado' && $criterio3 === 'turno'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_carrera','=',$carrera_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->where('avisos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else if($criterio2 === 'grado'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_carrera','=',$carrera_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio2, 'like', '%'.$buscar2.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else if($criterio3 === 'turno'){
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_carrera','=',$carrera_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->where('avisos.'.$criterio3, 'like', '%'.$buscar3.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                    else{
+                        $avisos = Aviso::join('carreras','carreras.id','=','avisos.id_carrera')
+                        ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
+                        DB::raw('CASE carreras.tipo_modalidad
+                        WHEN 0 THEN "General"
+                        WHEN 1 THEN "Escolarizado" 
+                        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+                        'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
+                        'avisos.general','avisos.turno','avisos.grado','avisos.estado')
+                        ->where('avisos.id_carrera','=',$carrera_usuario)
+                        ->where('avisos.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('avisos.id', 'desc')->paginate(5);
+                    }
+                }
+            }
+        }
+        
         return[
             'pagination' => [
                 'total'         => $avisos->total(),
