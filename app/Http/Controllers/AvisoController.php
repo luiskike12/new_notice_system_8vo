@@ -26,7 +26,7 @@ class AvisoController extends Controller
         $buscar2 = $request->buscar2;
         $criterio3 = $request->criterio3;
         $buscar3 = $request->buscar3;
-
+        
         //Busqueda para el Rol Coordinador y Asistente
         if($rol == 1 || $rol == 4){
             if($buscar==''){
@@ -34,7 +34,7 @@ class AvisoController extends Controller
                 ->select('avisos.id','avisos.id_carrera','carreras.nombre as nombre_carrera',
                 DB::raw('CASE carreras.tipo_modalidad
                 WHEN 0 THEN "General"
-                WHEN 1 THEN "Escolarizado" 
+                WHEN 1 THEN "Escolarizado"
                 WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
                 'avisos.titulo','avisos.contenido','avisos.documento as url_documento',
                 'avisos.general','avisos.turno','avisos.grado','avisos.estado')

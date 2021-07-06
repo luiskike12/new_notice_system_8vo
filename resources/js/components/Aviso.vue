@@ -70,7 +70,8 @@
                                         <tr>
                                             <td style="border-top: none;">Envío a...</td>
                                             <td style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_todas" @change="tipo_de_envio($event)" v-model="tipo_envio" value="1">
+                                                <input class="form-check-input" type="radio" id="radio_todas" v-bind:disabled="rolUsuario == false"
+                                                @change="tipo_de_envio($event)" v-model="tipo_envio" value="1">
                                                 todas las carreras.
                                             </td>
                                             <td style="border-top: none;">
@@ -293,6 +294,8 @@
                 msjValidacionDocumento : '',
                 colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
                 colorGood : 'border: 1px solid #BBCDD5;',
+                //Habilitar o desabilitar campos
+                rolUsuario : false,
             }
         },
         computed : {
@@ -301,6 +304,20 @@
             }
         },
         methods : {
+            rol_de_usuario(){
+                let me = this;
+                axios.get('/perfil/rolUsuario')
+                .then(function (response) {
+                    var respuesta = response.data;
+                    me.rolUsuario = respuesta.rolUsuario;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            },
             obtener_carreras(){//se puede modificar
                 //obtener el valor de un <select>
                 let me = this;
@@ -573,6 +590,7 @@
             }
         },
         mounted() {//no modificar
+            this.rol_de_usuario();
             this.seleccion_de_envio();
             
             // $('.asignar-fecha').datepicker({

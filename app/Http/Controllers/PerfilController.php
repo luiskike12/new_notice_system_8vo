@@ -26,9 +26,19 @@ class PerfilController extends Controller
         return ['datosUsuario' => $datosUsuario];
     }
 
+    public function rolUsuario(Request $request){
+
+        $rol = Auth::user()->id_rol;
+
+        if($rol === 1)
+            $respuesta = true;
+        else
+            $respuesta = false;
+
+        return ['rolUsuario'=>$respuesta];
+    }
+
     public function guardarImagen(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("guardarImagen: ");
 
         try{
             DB::beginTransaction();

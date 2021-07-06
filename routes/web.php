@@ -122,6 +122,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         //Rutas del controlador Perfil del usuario
         Route::get('/perfil', 'PerfilController@index');
+        Route::get('/perfil/rolUsuario', 'PerfilController@rolUsuario');
         Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
         Route::get('/perfil/confirmarIdentidad', 'PerfilController@confirmarIdentidad');
         Route::put('/perfil/actualizarNombre', 'PerfilController@actualizarNombre');
@@ -181,6 +182,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         //Rutas del controlador Perfil del usuario
         Route::get('/perfil', 'PerfilController@index');
+        Route::get('/perfil/rolUsuario', 'PerfilController@rolUsuario');
         Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
         Route::get('/perfil/confirmarIdentidad', 'PerfilController@confirmarIdentidad');
         Route::put('/perfil/actualizarNombre', 'PerfilController@actualizarNombre');
@@ -227,6 +229,7 @@ Route::group(['middleware' => ['auth']], function(){
         
         //Rutas del controlador Perfil del usuario
         Route::get('/perfil', 'PerfilController@index');
+        Route::get('/perfil/rolUsuario', 'PerfilController@rolUsuario');
         Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
         Route::get('/perfil/confirmarIdentidad', 'PerfilController@confirmarIdentidad');
         Route::put('/perfil/actualizarNombre', 'PerfilController@actualizarNombre');
@@ -262,6 +265,7 @@ Route::group(['middleware' => ['auth']], function(){
         
         //Rutas del controlador Perfil del usuario
         Route::get('/perfil', 'PerfilController@index');
+        Route::get('/perfil/rolUsuario', 'PerfilController@rolUsuario');
         Route::post('/perfil/guardarImagen', 'PerfilController@guardarImagen');
         Route::get('/perfil/confirmarIdentidad', 'PerfilController@confirmarIdentidad');
         Route::put('/perfil/actualizarNombre', 'PerfilController@actualizarNombre');
