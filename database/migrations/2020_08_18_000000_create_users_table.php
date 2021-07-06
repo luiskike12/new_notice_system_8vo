@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateUsersTable extends Migration
 {
@@ -32,6 +33,12 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        //Usuario principal al ejecutar las migrasiones
+        DB::table('users')->insert(
+        ['id'=>1,'id_carrera'=>1,'id_rol'=>1, 'name'=>'admin',
+        'email'=>'admin@email.com', 'usuario'=>'admin', 'password'=>bcrypt('password'),
+        'avatar'=>'img/avatars/avatar.png', 'condicion'=>1]);
     }
 
     /**
