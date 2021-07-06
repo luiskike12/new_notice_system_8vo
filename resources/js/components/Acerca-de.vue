@@ -8,7 +8,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <i class="icon-info"></i> Acerca de NotiSchool
+                <i class="icon-info"></i> Acerca de Notischool
             </div>
             <div class="card-body">
             <!-- card-body Principal -->
@@ -20,12 +20,12 @@
                             <div class="alert alert-dark text-center" role="alert">
                                 <img :src="'storage/img/logo/acerda-de-notischool.jpg'" alt="NotiSchool" 
                                 class="rounded-circle" width="50px" height="50px">
-                                <strong>NotiSchool</strong>
+                                <strong>Notischool</strong>
                             </div>
                             <div id="info">
                                 <p>
                                     <em> 
-                                        <b>NotiSchool</b> es un sistema basado en computadoras y dispositivos móviles, que provee una interfaz, 
+                                        <b>Notischool</b> es un sistema basado en computadoras y dispositivos móviles, que provee una interfaz, 
                                         para asistir a las actividades de comunicación, entre alumnos e institución educativa, y que también 
                                         administra la información, tanto del remitente como el destinatario, creando un <b>ambiente colaborativo</b>, 
                                         a través del envío de avisos escolares, del sistema de administración a la aplicación móvil.

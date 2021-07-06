@@ -4,7 +4,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-4 text-center logo-login-notischool">
-            <img class="rounded-circle" src="{{url('storage/img/logo/logo-NotiSchool-login.jpg')}}">
+            <img class="rounded-circle" src="{{url('storage/img/logo/logo-Notischool-login.jpg')}}">
         </div>
     </div>
 
