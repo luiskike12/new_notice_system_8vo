@@ -39,9 +39,9 @@
                                                 </tr>
                                                 <tr class="row botones">
                                                     <td>
-                                                        <div v-if="botonImagen == 0">
+                                                        <div v-if="botonImagen === 0">
                                                             <label class="btn btn-outline-secondary btn-sm archivo-imagen" v-bind:style="msjValidacion.avatar.color">
-                                                                <input type="file" @change="getDocumento"/>
+                                                                <input type="file" id="archivoImagen" @change="getDocumento"/>
                                                                 Seleccionar imagen
                                                             </label>
                                                         </div>
@@ -422,24 +422,15 @@ export default {
                 this.msjValidacion.avatar.mensaje = "El navegador no soporta este tipo de archivos";
                 return;
             }else{
-                if (!(/\.(jpg|png)$/i).test(file.name)){
-                    this.msjValidacion.avatar.color = this.colorError;
-                    this.msjValidacion.avatar.mensaje = "El archivo debe ser una imagen (jpg, png)";
-                }
-                else if (file.size > 200000){
-                    this.msjValidacion.avatar.color = this.colorError;
-                    this.msjValidacion.avatar.mensaje = "El peso mínimo requerido de la imagen es de 200kb";
-                }
-                else{    
-                    this.msjValidacion.avatar.color = '';
-                    this.msjValidacion.avatar.mensaje = '';
+                if(this.validar_archivo_imagen(file)){
+                    return;
+                }else{
                     this.avatar = file;
                     this.imagenEs = 'objeto';
                     this.cargarImagen(file);
                     this.botonImagen = 1;
                 }
             }
-
         },
         cargarImagen(file){
             let reader = new FileReader();
@@ -460,6 +451,10 @@ export default {
             this.botonImagen = 0;
         },
         guardarImagen(){
+            if(this.validar_archivo_imagen(this.avatar)){
+                return;
+            }
+
             let me = this;
 
             let data = new FormData();
@@ -484,6 +479,35 @@ export default {
                 console.log(error)
             });
 
+        },
+        validar_archivo_imagen(archivo){
+            this.numErrors = 0;
+            var campoImagen = document.getElementById('archivoImagen');
+
+            if(typeof(archivo) !== 'object'){
+                this.numErrors = 1;
+                this.msjValidacion.avatar.color = this.colorError;
+                this.msjValidacion.avatar.mensaje = "Seleccione una imagen";
+                campoImagen.value = '';
+            }
+            else if(!(/\.(jpg|png)$/i).test(archivo.name)){
+                this.numErrors = 1;
+                this.msjValidacion.avatar.color = this.colorError;
+                this.msjValidacion.avatar.mensaje = "El archivo debe ser una imagen (jpg, png)";
+                campoImagen.value = '';
+            }
+            else if (archivo.size > 200000){
+                this.numErrors = 1;
+                this.msjValidacion.avatar.color = this.colorError;
+                this.msjValidacion.avatar.mensaje = "El peso mínimo requerido de la imagen es de 200kb";
+                campoImagen.value = '';
+            }
+            else{    
+                this.msjValidacion.avatar.color = '';
+                this.msjValidacion.avatar.mensaje = '';
+            }
+
+            return this.numErrors;
         },
         confirmarIdentidad(){
             if(!this.passwordActual){
