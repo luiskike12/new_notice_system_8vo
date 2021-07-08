@@ -55,6 +55,18 @@
                                     <li data-target="#carrusel-imagenes-notischool" data-slide-to="0" class="active"></li>
                                     <li data-target="#carrusel-imagenes-notischool" data-slide-to="1"></li>
                                     <li data-target="#carrusel-imagenes-notischool" data-slide-to="2"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="3"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="4"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="5"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="6"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="7"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="8"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="9"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="10"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="11"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="12"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="13"></li>
+                                    <li data-target="#carrusel-imagenes-notischool" data-slide-to="14"></li>
                                 </ol>
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
@@ -65,6 +77,42 @@
                                     </div>
                                     <div class="carousel-item">
                                         <img class="d-block w-100" src="storage/img/acerca-de/3.jpg" alt="Tercera diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/4.jpg" alt="Cuarta diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/5.jpg" alt="Quinta diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/6.jpg" alt="Sexta diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/7.jpg" alt="Septima diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/8.jpg" alt="Octava diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/9.jpg" alt="Novena diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/10.jpg" alt="Décima diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/11.jpg" alt="Décima primera diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/12.jpg" alt="Décima segunda diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/13.jpg" alt="Décima tercera diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/14.jpg" alt="Décima cuarta diapositiva">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="storage/img/acerca-de/15.jpg" alt="Décima quinta diapositiva">
                                     </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#carrusel-imagenes-notischool" role="button" data-slide="prev">
@@ -104,5 +152,9 @@ export default{
 
 .card-carrusel-derecha{
     margin-bottom: 0;
+}
+
+.carousel-indicators{
+    margin-bottom: 3px;
 }
 </style>

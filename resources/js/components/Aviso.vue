@@ -25,16 +25,18 @@
                             <div class="form-group">
                                 <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Título del aviso</label>
                                 <div class="col-md">
-                                    <input type="text" id="titulo_aviso" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Ingrese el título del aviso">
+                                    <input type="text" v-model="titulo_aviso" @keypress="tecleo" @keyup.delete="tecleo" 
+                                    class="form-control" placeholder="Ingrese el título del aviso" :style="msjValidacion.titulo_aviso.color">
                                 </div>
-                                <msj-validacion v-if="msjValidacion[0].titulo_aviso==1">{{msjValidacion[0].mensaje}}</msj-validacion>
+                                <msj-validacion v-if="msjValidacion.titulo_aviso.mensaje">{{msjValidacion.titulo_aviso.mensaje}}</msj-validacion>
                             </div>
                             <div class="form-group">
                                 <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Archivo</label>
                                 <div class="col-md">
-                                    <input type="file" id="campoDocumento" class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
+                                    <input type="file" :style="msjValidacion.documento.color" id="campoDocumento"
+                                    class="form-control" @change="getDocumento" placeholder="Seleccione un documento">
                                 </div>
-                                <msj-validacion v-if="msjValidacionDocumento">{{msjValidacionDocumento}}</msj-validacion>
+                                <msj-validacion v-if="msjValidacion.documento.mensaje">{{msjValidacion.documento.mensaje}}</msj-validacion>
                             </div>
                             <!-- mostrar la imagen seleccionada -->
                             <div class="form-group text-center">
@@ -51,9 +53,10 @@
                                 <label class="col-md form-control-label font-weight-bold text-center" for="email-input">Contenido del aviso</label>
                                 <div class="col-md">
                                     <input type="hidden" id="contenido_aviso">
-                                    <trix-editor input="contenido_aviso" id="contenido_del_aviso" @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
+                                    <trix-editor input="contenido_aviso" id="contenido_del_aviso" :style="msjValidacion.contenido_aviso.color"
+                                    @keypress="tecleo" @keyup.delete="tecleo" class="trix-editor"></trix-editor>
                                 </div>
-                                <msj-validacion v-if="msjValidacion[1].contenido_aviso==1">{{msjValidacion[1].mensaje}}</msj-validacion>
+                                <msj-validacion v-if="msjValidacion.contenido_aviso.mensaje">{{msjValidacion.contenido_aviso.mensaje}}</msj-validacion>
                             </div>
                       
                     <!--FIN terjeta IZQUIERDA -->
@@ -75,7 +78,8 @@
                                                 todas las carreras.
                                             </td>
                                             <td style="border-top: none;">
-                                                <input class="form-check-input" type="radio" id="radio_una" @change="tipo_de_envio($event)" v-model="tipo_envio" value="0">
+                                                <input class="form-check-input" type="radio" id="radio_una" 
+                                                @change="tipo_de_envio($event)" v-model="tipo_envio" value="0">
                                                 solo una carrera.
                                             </td>
                                         </tr>
@@ -88,20 +92,21 @@
                                 <div class="col-md-12 select-carrera">
                                     <!-- Seleccionar carrera -->
                                     <div v-if="tipo_envio == 1">
-                                        <select class="form-control" v-model="id_carrera">
+                                        <select class="form-control">
                                             <option value="1" disabled selected>Todas las carreras</option>
                                         </select>
                                     </div>
                                     <div v-else-if="tipo_envio == 0">
-                                        <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
-                                            <option value="1" disabled selected>Seleccione una carrera</option>
+                                        <select class="form-control" @click="tecleo" :style="msjValidacion.id_carrera.color" 
+                                        @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
+                                            <option value="" disabled selected>Seleccione una carrera</option>
                                             <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
                                                 {{carrera.nombre}} - {{carrera.tipo_modalidad}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
-                                <msj-validacion v-if="msjValidacion[2].id_carrera==1">{{msjValidacion[2].mensaje}}</msj-validacion>
+                                <msj-validacion v-if="msjValidacion.id_carrera.mensaje">{{msjValidacion.id_carrera.mensaje}}</msj-validacion>
                             </div>
 
                             <!-- sección de parametros especificos de la carrera seleccionada -->
@@ -117,8 +122,9 @@
                                                     </select>
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
-                                                    <div v-if="id_carrera != 0">
-                                                        <select class="form-control" @click="tecleo" id="grado" v-model="grado">
+                                                    <div v-if="id_carrera != ''">
+                                                        <select class="form-control" @click="tecleo" 
+                                                        :style="msjValidacion.grado.color" v-model="grado">
                                                             <option value="" disabled selected>Seleccione el grado</option>
                                                             <option v-for="grupo in array_num_grados" :key="grupo.num" :value="grupo.num">
                                                                 <div v-if="grupo.num===0">
@@ -131,13 +137,13 @@
                                                         </select>
                                                     </div>
                                                     <div v-else>
-                                                        <select class="form-control" id="grado" v-model="grado">
+                                                        <select class="form-control" :style="msjValidacion.grado.color">
                                                             <option value="0" disabled selected>Seleccione una carrera</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <msj-validacion v-if="msjValidacion[4].grado==1">{{msjValidacion[4].mensaje}}</msj-validacion>
+                                            <msj-validacion v-if="msjValidacion.grado.mensaje">{{msjValidacion.grado.mensaje}}</msj-validacion>
                                         </div>
                                     </div>
                                     <div class="col-6" style="padding: 0 !important;">
@@ -150,8 +156,9 @@
                                                     </select>
                                                 </div>
                                                 <div v-else-if="tipo_envio == 0">
-                                                    <div v-if="id_carrera != 0">
-                                                        <select class="form-control" @click="tecleo" id="turno" v-model="turno">
+                                                    <div v-if="id_carrera != ''">
+                                                        <select class="form-control" @click="tecleo" 
+                                                        :style="msjValidacion.turno.color" v-model="turno">
                                                             <option value="" disabled selected>Seleccione el turno</option>
                                                             <option value="0" v-if="id_carrera > 2">General</option>
                                                             <option value="1" v-if="t_matutino==1">Matutino</option>
@@ -161,13 +168,13 @@
                                                         </select>
                                                     </div>
                                                     <div v-else>
-                                                        <select class="form-control" id="turno">
+                                                        <select class="form-control" :style="msjValidacion.turno.color">
                                                             <option value="0" disabled selected>Seleccione una carrera</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <msj-validacion v-if="msjValidacion[3].turno==1">{{msjValidacion[3].mensaje}}</msj-validacion>
+                                            <msj-validacion v-if="msjValidacion.turno.mensaje">{{msjValidacion.turno.mensaje}}</msj-validacion>
                                         </div>
                                     </div>
                                 </div>
@@ -262,7 +269,7 @@
             return{
                 //Variables para guardar y actualizar el aviso
                 tipo_envio: 0,
-                id_carrera: 1,
+                id_carrera: '',
                 grado : '',
                 turno : '',
                 titulo_aviso : '',
@@ -284,16 +291,15 @@
                 guardar_enviar: 1,
                 //Validación de campos
                 numErrors : 0,
-                msjValidacion : [
-                    {titulo_aviso : 0, mensaje : ''},
-                    {contenido_aviso : 0, mensaje : ''},
-                    {id_carrera : 0, mensaje : ''},
-                    {turno : 0, mensaje : ''},
-                    {grado : 0, mensaje : ''}
-                ],
-                msjValidacionDocumento : '',
-                colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
-                colorGood : 'border: 1px solid #BBCDD5;',
+                msjValidacion : {
+                    titulo_aviso: {mensaje : '', color : ''},
+                    documento: {mensaje : '', color : ''},
+                    contenido_aviso: {mensaje : '', color : ''},
+                    id_carrera: {mensaje : '', color : ''},
+                    grado: {mensaje : '', color : ''},
+                    turno: {mensaje : '', color : ''}
+                },
+                colorError : {'border':'2px solid rgba(231, 76, 60, 0.5)'},
                 //Habilitar o desabilitar campos
                 rolUsuario : false,
             }
@@ -366,8 +372,8 @@
             seleccion_de_envio(){
                 if(this.tipo_envio == 1){
                     this.id_carrera = 1;
-                    this.turno = '';
-                    this.grado = '';
+                    this.turno = 0;
+                    this.grado = 0;
                     //Identificadores de apoyo en el select Turno
                     this.t_matutino = 0;
                     this.t_vespertino = 0;
@@ -377,41 +383,39 @@
                     this.arrayCarrera = [];
                     this.array_num_grados = [];
                     //Limpiar validacion
-                    this.msjValidacion[2].mensaje = "";
-                    document.getElementById('id_carrera').style.cssText = this.colorGood;
-                    this.msjValidacion[3].mensaje = "";
-                    document.getElementById('turno').style.cssText = this.colorGood;
-                    this.msjValidacion[4].mensaje = "";
-                    document.getElementById('grado').style.cssText = this.colorGood;
+                    this.msjValidacion.id_carrera.mensaje = '';
+                    this.msjValidacion.id_carrera.color = '';
+                    this.msjValidacion.turno.mensaje = '';
+                    this.msjValidacion.turno.color = '';
+                    this.msjValidacion.grado.mensaje = '';
+                    this.msjValidacion.grado.color = '';
                 }
                 else if(this.tipo_envio == 0){
+                    this.id_carrera = '';
+                    this.turno = '';
+                    this.grado = '';
                     this.obtener_carreras();
                 }
             },
             getDocumento(event){
                 let file = event.target.files[0];
-
-                var campoDocumento = document.getElementById('campoDocumento');
                 
                 if (!window.FileReader){
-                    campoDocumento.style.cssText = this.colorError;
-                    this.msjValidacionDocumento = "El navegador no soporta la lectura de archivos";
-                    campoDocumento.value = "";
+                    this.msjValidacion.documento.color = this.colorError;
+                    this.msjValidacion.documento.mensaje = "El navegador no soporta la lectura de archivos";
                     return;
                 }else{
                     if (!(/\.(jpg|png|gif)$/i).test(file.name)){
-                        campoDocumento.style.cssText = this.colorError;
-                        this.msjValidacionDocumento = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
-                        campoDocumento.value = "";
+                        this.msjValidacion.documento.color = this.colorError;
+                        this.msjValidacion.documento.mensaje = "El archivo a adjuntar debe ser una imagen (jpg, png, gif)";
                     }
                     else if (file.size > 200000){
-                        campoDocumento.style.cssText = this.colorError;
-                        this.msjValidacionDocumento = "El peso mínimo requerido de la imagen es de 200kb";
-                        campoDocumento.value = "";
+                        this.msjValidacion.documento.color = this.colorError;
+                        this.msjValidacion.documento.mensaje = "El peso mínimo requerido de la imagen es de 200kb";
                     }
                     else{    
-                        campoDocumento.style.cssText = this.colorGood;
-                        this.msjValidacionDocumento = "";
+                        this.msjValidacion.documento.color = '';
+                        this.msjValidacion.documento.color = '';
                         this.documento = file;
                         this.cargarImagen(file);
                     }
@@ -494,8 +498,7 @@
                 //atajo para restablecer trix-editor
                 element.value = "";
                 //Variables para guardar y actualizar el aviso
-                //this.tipo_envio = 0;
-                this.id_carrera = 1; 
+                this.id_carrera = '';
                 this.turno = ''; 
                 this.grado = ''; 
                 this.titulo_aviso = '';
@@ -513,13 +516,14 @@
                 this.guardar_enviar = 1;
                 //Validacion
                 this.numErrors = 0;
-                this.msjValidacion = [
-                    {titulo_aviso : 0, mensaje : ''},
-                    {contenido_aviso : 0, mensaje : ''},
-                    {id_carrera : 0, mensaje : ''},
-                    {turno : 0, mensaje : ''},
-                    {grado : 0, mensaje : ''}
-                ];
+                this.msjValidacion = {
+                    titulo_aviso: {mensaje : '', color : ''},
+                    documento: {mensaje : '', color : ''},
+                    contenido_aviso: {mensaje : '', color : ''},
+                    id_carrera: {mensaje : '', color : ''},
+                    grado: {mensaje : '', color : ''},
+                    turno: {mensaje : '', color : ''}
+                };
                 //variable para mostrar imagen seleccionada
                 this.imagenSeleccionada = '';
                 //Recargar carreras a seleccionar
@@ -530,54 +534,49 @@
 
                 if(!this.titulo_aviso){
                     this.numErrors = 1;
-                    document.getElementById('titulo_aviso').style.cssText = this.colorError;
-                    this.msjValidacion[0].titulo_aviso = 1;
-                    this.msjValidacion[0].mensaje = "No puede estar vacío el título del aviso";
+                    this.msjValidacion.titulo_aviso.color = this.colorError;
+                    this.msjValidacion.titulo_aviso.mensaje = "No puede estar vacío el título del aviso";
                 }else{
-                    this.msjValidacion[0].mensaje = "";
-                    document.getElementById('titulo_aviso').style.cssText = this.colorGood;
+                    this.msjValidacion.titulo_aviso.mensaje = '';
+                    this.msjValidacion.titulo_aviso.color = '';
                 }
 
                 this.contenido_aviso = document.getElementById('contenido_aviso').value;
                 if(!this.contenido_aviso){
                     this.numErrors = 1;
-                    document.getElementById('contenido_del_aviso').style.cssText = this.colorError;
-                    this.msjValidacion[1].contenido_aviso = 1;
-                    this.msjValidacion[1].mensaje = "No puede estar vacío el contenido del aviso";
+                    this.msjValidacion.contenido_aviso.color = this.colorError;
+                    this.msjValidacion.contenido_aviso.mensaje = "No puede estar vacío el contenido del aviso";
                 }else{
-                    this.msjValidacion[1].mensaje = "";
-                    document.getElementById('contenido_del_aviso').style.cssText = this.colorGood;
+                    this.msjValidacion.contenido_aviso.color = '';
+                    this.msjValidacion.contenido_aviso.mensaje = ''
                 }
 
                 if(this.tipo_envio==0){
-                    if(this.id_carrera==1){
+                    if(this.id_carrera===''){
                         this.numErrors = 1;
-                        document.getElementById('id_carrera').style.cssText = this.colorError;
-                        this.msjValidacion[2].id_carrera = 1;
-                        this.msjValidacion[2].mensaje = "Seleccione una carrera";
+                        this.msjValidacion.id_carrera.color = this.colorError;
+                        this.msjValidacion.id_carrera.mensaje = "Seleccione una carrera";
                     }else{
-                        this.msjValidacion[2].mensaje = "";
-                        document.getElementById('id_carrera').style.cssText = this.colorGood;
+                        this.msjValidacion.id_carrera.color = '';
+                        this.msjValidacion.id_carrera.mensaje = '';
                     }
 
                     if(this.turno === ''){
                         this.numErrors = 1;
-                        document.getElementById('turno').style.cssText = this.colorError;
-                        this.msjValidacion[3].turno = 1;
-                        this.msjValidacion[3].mensaje = "Seleccione un turno";
+                        this.msjValidacion.turno.color = this.colorError;
+                        this.msjValidacion.turno.mensaje = "Seleccione un turno";
                     }else{
-                        this.msjValidacion[3].mensaje = "";
-                        document.getElementById('turno').style.cssText = this.colorGood;
+                        this.msjValidacion.turno.color = '';
+                        this.msjValidacion.turno.mensaje = '';
                     }
 
                     if(this.grado === ''){
                         this.numErrors = 1;
-                        document.getElementById('grado').style.cssText = this.colorError;
-                        this.msjValidacion[4].grado = 1;
-                        this.msjValidacion[4].mensaje = "Seleccione el grado";
+                        this.msjValidacion.grado.color = this.colorError;
+                        this.msjValidacion.grado.mensaje = "Seleccione el grado";
                     }else{
-                        this.msjValidacion[4].mensaje = "";
-                        document.getElementById('grado').style.cssText = this.colorGood;
+                        this.msjValidacion.grado.color = '';
+                        this.msjValidacion.grado.mensaje = '';
                     }
                 }
 

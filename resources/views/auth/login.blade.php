@@ -19,12 +19,12 @@
                         <div class="card-body">
                         {{-- card-body --}}
 
-                            <div class="titulo-login">Login to Dashboard</div>
+                            <div class="titulo-login">Iniciar sesión en el panel</div>
                             <hr style="border: 1px solid #ccc;">
 
                             <div class="input-group mb-3">
                                 <span class="input-group-addon"><i class="icon-user"></i></span>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email" autofocus>
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Usuario" autofocus>
                             </div>
                             {!!$errors->first('email','<div class="row">
                                                             <div class="col text-center">
@@ -88,7 +88,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <span style="font-size: 25px; text-align: center; display: block; color: #E6E6E6;">
-            Panel de acceso a la administración de notificaciones
+            Panel de acceso a la administración de avisos escolares
             </span>
         </div>
         </div>

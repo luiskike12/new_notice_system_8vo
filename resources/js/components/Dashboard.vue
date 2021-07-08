@@ -265,7 +265,7 @@ export default {
                 //Muestra el valor en el DOM mediante v-text="hora" 
                 this.hora = `${CERO(hora)}:${CERO(minutos)}:${CERO(segundos)} ${meridiano}`;            
             }
-
+            
             /*Llama a la función RELOJ cada segundo para que se vaya actualizando la hora*/
             setInterval(RELOJ, 1000);
         }

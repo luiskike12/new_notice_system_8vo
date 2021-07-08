@@ -95,8 +95,8 @@
     </div>
 
     <footer class="app-footer">
-        <span><a href="#">NotiSchool</a> &copy; 2020</span>
-        <span class="ml-auto">Desarrollado por <a href="#">NotiSchool</a></span>
+        <span><a href="#">Notischool</a> &copy; 2021</span>
+        <span class="ml-auto">Desarrollado por <a href="#">Notischool</a></span>
     </footer>
     
     <!-- Archivos js compilados con Laravel mix -->

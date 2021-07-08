@@ -345,12 +345,14 @@ class AvisoController extends Controller
 
     public function guardar_aviso(Request $request){
         
-        $ruta_documento = null;
-        
         try{
             DB::beginTransaction();
-            
+            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+            $out->writeln("guardar_aviso");
+
+            $ruta_documento = null;
             $fecha = Carbon::now('America/Mexico_City');
+            $id_usuario = Auth::user()->id;
 
             if ($request->hasFile('documento')){
                 //$nombre = $file->getClientOriginalName();//nombre del archivo
@@ -359,7 +361,7 @@ class AvisoController extends Controller
             }
             
             $aviso = new Aviso();
-            $aviso->id_usuario = Auth::user()->id;
+            $aviso->id_usuario = $id_usuario;
             $aviso->id_carrera = $request->id_carrera;
             $aviso->turno = $request->turno;
             $aviso->grado = $request->grado;
@@ -379,14 +381,12 @@ class AvisoController extends Controller
     }
 
     public function guardar_y_enviar_aviso(Request $request){
-        // $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        // $out->writeln("guardar_y_enviar_aviso");
-        $ruta_documento = null;
-
         try{
             DB::beginTransaction();
 
+            $ruta_documento = null;
             $fecha = Carbon::now('America/Mexico_City');
+            $id_usuario = Auth::user()->id;
             
             if ($request->hasFile('documento')){
                 //$nombre = $file->getClientOriginalName();//nombre del archivo
@@ -395,7 +395,7 @@ class AvisoController extends Controller
             }
             
             $aviso = new Aviso();
-            $aviso->id_usuario = Auth::user()->id;
+            $aviso->id_usuario = $id_usuario;
             $aviso->id_carrera = $request->id_carrera;
             $aviso->turno = $request->turno;
             $aviso->grado = $request->grado;
