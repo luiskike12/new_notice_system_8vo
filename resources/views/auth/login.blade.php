@@ -24,9 +24,9 @@
 
                             <div class="input-group mb-3">
                                 <span class="input-group-addon"><i class="icon-user"></i></span>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Usuario" autofocus>
+                                <input id="email" type="text" class="form-control @error('usuario') is-invalid @enderror" name="usuario" value="{{ old('usuario') }}" required autocomplete="usuario" placeholder="Usuario" autofocus>
                             </div>
-                            {!!$errors->first('email','<div class="row">
+                            {!!$errors->first('usuario','<div class="row">
                                                             <div class="col text-center">
                                                                 <p class="mensaje-error-login">
                                                                     :message

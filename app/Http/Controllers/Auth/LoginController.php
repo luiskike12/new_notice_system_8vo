@@ -20,6 +20,27 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    /*    
+    -------Loguear con "usuario" en vez del campo "email"--------------
+    Pasos (Laravel 7)
+    1. Controlador 
+    App\Http\Controllers\Auth\LoginController
+
+    2. AuthenticatesUsers
+    vendor\laravel\ui\auth-backend\AuthenticatesUsers.php 
+
+    *********cambiar********
+    public function username()
+    {
+        return 'email';
+    }
+
+    ******por*******
+    public function username()
+    {
+        return 'usuario';
+    }
+    */
 
     /**
      * Where to redirect users after login.
@@ -37,4 +58,5 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
 }
