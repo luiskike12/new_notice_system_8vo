@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         //Rutas del controlador Carrera
         Route::get('/carrera', 'CarreraController@index');
+        Route::get('/carrera/validarCarrera', 'CarreraController@validarCarrera');
         Route::post('/carrera/registrar', 'CarreraController@registrar');
         Route::put('/carrera/actualizar', 'CarreraController@actualizar');
         Route::put('/carrera/desactivar_matutino', 'CarreraController@desactivar_matutino');

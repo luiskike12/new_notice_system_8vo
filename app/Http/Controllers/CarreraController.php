@@ -48,6 +48,31 @@ class CarreraController extends Controller
         ];
     }
 
+    public function validarCarrera(Request $request){
+
+        if(!$request->ajax())return redirect('/');//Seguridad en las rutas
+
+        $planEstudio = '';
+        $modalidad = '';
+
+        $carreraPlan = Carrera::where('nombre', '=', $request->nombre)
+        ->where('tipo_plan', '=', $request->planEstudio)
+        ->first();
+
+        if($carreraPlan != null){
+            $planEstudio = 'Carrera ya registrada con el mismo plan de estudios';
+        }
+
+        $carreraModalidad = Carrera::where('nombre', '=', $request->nombre)
+        ->where('tipo_modalidad', '=', $request->modalidad)
+        ->first();
+
+        if($carreraModalidad != null){
+            $modalidad = 'Carrera ya registrada con la misma modalidad';
+        }
+        
+        return ['planEstudio'=>$planEstudio, 'modalidad'=>$modalidad];
+    }
     
     /**
      * Store a newly created resource in storage.

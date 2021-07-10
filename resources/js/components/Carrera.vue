@@ -199,45 +199,49 @@
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="text-input">Nombre</label>
                             <div class="col-md-9">
-                                <input type="text" id="nombre" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Nombre de la carrera">
+                                <input type="text" v-model="nombre" @keypress="tecleo" @keyup.delete="tecleo" 
+                                :style="msjValidacion.nombre.color" class="form-control" placeholder="Nombre de la carrera">
                             </div>
-                            <msj-validacion v-if="msjValidacion[0].nombre==1">{{msjValidacion[0].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.nombre.mensaje">{{msjValidacion.nombre.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Plan de estudios</label>
                             <div class="col-md-9">
-                                <select class="form-control" id="tipo_plan" @change="obtenerPlanEstudio($event)" v-model="tipo_plan" @click="tecleo">
+                                <select class="form-control" @change="obtenerPlanEstudio($event)" 
+                                :style="msjValidacion.tipo_plan.color" v-model="tipo_plan" @click="tecleo">
                                     <option value="" disabled selected>Seleccione una opción</option>
                                     <option value="6">Semestral</option>
                                     <option value="4">Cuatrimestral</option>
                                 </select>
                             </div>
-                            <msj-validacion v-if="msjValidacion[1].tipo_plan==1">{{msjValidacion[1].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.tipo_plan.mensaje">{{msjValidacion.tipo_plan.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">Modalidad</label>
                             <div class="col-md-9">
-                                <select class="form-control" id="tipo_modalidad" @change="obtenerModalidad($event)" v-model="tipo_modalidad" @click="tecleo">
+                                <select class="form-control" id="tipo_modalidad" @change="obtenerModalidad($event)" 
+                                :style="msjValidacion.tipo_modalidad.color" v-model="tipo_modalidad" @click="tecleo">
                                     <option value="" disabled selected>Seleccione una opción</option>
                                     <option value="1">Escolarizado</option>
                                     <option value="2">Semiescolarizado</option>
                                 </select>
                             </div>
-                            <msj-validacion v-if="msjValidacion[2].tipo_modalidad==1">{{msjValidacion[2].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.tipo_modalidad.mensaje">{{msjValidacion.tipo_modalidad.mensaje}}</msj-validacion>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 form-control-label" for="email-input">No. Grados</label>
                             <div class="col-md-9">
-                                <input type="text" id="num_grados" v-model="num_grados" @keypress="tecleo" @keyup.delete="tecleo" class="form-control" placeholder="Número de grados que tiene la carrera">
+                                <input type="text" v-model="num_grados" @keypress="tecleo" @keyup.delete="tecleo" 
+                                :style="msjValidacion.num_grados.color" class="form-control" placeholder="Número de grados que tiene la carrera">
                             </div>
-                            <msj-validacion v-if="msjValidacion[3].num_grados==1">{{msjValidacion[3].mensaje}}</msj-validacion>
+                            <msj-validacion v-if="msjValidacion.num_grados.mensaje">{{msjValidacion.num_grados.mensaje}}</msj-validacion>
                         </div>
                         <!-- inputs del Modal agregar -->
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="cerrarModal()">Cerrar</button>
-                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="registrarCarrera()">Guardar</button>
+                    <button type="button" v-if="tipoAccion==1" class="btn btn-primary" @click="validar_y_registrarCarrera()">Guardar</button>
                     <button type="button" v-if="tipoAccion==2" class="btn btn-primary" @click="actualizarCarrera()">Actualizar</button>
                 </div>
             </div>
@@ -272,12 +276,12 @@
                 tipoAccion : 0,
                 //Validación de campos
                 numErrors : 0,
-                msjValidacion : [
-                    {nombre : 0, mensaje : ''},
-                    {tipo_plan : 0, mensaje : ''},
-                    {tipo_modalidad : 0, mensaje : ''},
-                    {num_grados : 0, mensaje : ''}
-                ],
+                msjValidacion : {
+                    nombre : {mensaje : '', color : ''},
+                    tipo_plan : {mensaje : '', color : ''},
+                    tipo_modalidad : {mensaje : '', color : ''},
+                    num_grados : {mensaje : '', color : ''}
+                },
                 colorError : 'border: 2px solid rgba(231, 76, 60, 0.5);',
                 colorGood : 'border: 1px solid #BBCDD5;',
                 pagination:{
@@ -370,25 +374,59 @@
                 //obtener el valor del <select> modalidad de estudio
                 this.tipo_modalidad = event.target.value;
             },
-            registrarCarrera(){//se puede modificar, funcion guardar
+            validar_y_registrarCarrera(){
                 if(this.validarCarrera()){
                     return;
                 }
-                
+
                 let me = this;
-                //          url del controlador donde se guarda
-                axios.post('/carrera/registrar', {
-                    //Clave  :    Valor    (poner las variables tal y como estan en la DB)
-                    'nombre' : this.nombre,
-                    'tipo_plan' : this.tipo_plan,
-                    'num_grados' : this.num_grados,
-                    'tipo_modalidad' : this.tipo_modalidad
-                }).then(function (response){//no modificar
-                    me.cerrarModal();
-                    me.listarCarrera(1, '', 'nombre');
+                var planEstudio = '', modalidad = '';
+
+                //verificar si existe otra carrera con parametros similares
+                var url = '/carrera/validarCarrera?'+'nombre='+this.nombre+
+                '&planEstudio='+this.tipo_plan+'&modalidad='+this.tipo_modalidad;
+                axios.get(url).then(function (response){//no modificar
+                    var respuesta = response.data;
+                    planEstudio = respuesta.planEstudio;
+                    modalidad = respuesta.modalidad;
+                    me.registrarCarrera(planEstudio, modalidad);
                 }).catch(function (error){
                     console.log(error)
                 });
+            },
+            registrarCarrera(planEstudio, modalidad){//se puede modificar, funcion guardar
+                if(planEstudio != ''){
+                    this.msjValidacion.tipo_plan.color = this.colorError;
+                    this.msjValidacion.tipo_plan.mensaje = planEstudio;
+                }else{
+                    this.msjValidacion.tipo_plan.color = '';
+                    this.msjValidacion.tipo_plan.mensaje = '';
+                }
+
+                if(modalidad != ''){
+                    this.msjValidacion.tipo_modalidad.color = this.colorError;
+                    this.msjValidacion.tipo_modalidad.mensaje = modalidad;
+                }else{
+                    this.msjValidacion.tipo_modalidad.color = '';
+                    this.msjValidacion.tipo_modalidad.mensaje = '';
+                }
+                
+                if(planEstudio === '' && modalidad === ''){
+                    let me = this;
+                    // registrar carrera
+                    axios.post('/carrera/registrar', {
+                        //Clave  :    Valor    (poner las variables tal y como estan en la DB)
+                        'nombre' : this.nombre,
+                        'tipo_plan' : this.tipo_plan,
+                        'num_grados' : this.num_grados,
+                        'tipo_modalidad' : this.tipo_modalidad
+                    }).then(function (response){//no modificar
+                        me.cerrarModal();
+                        me.listarCarrera(1, '', 'nombre');
+                    }).catch(function (error){
+                        console.log(error)
+                    });
+                }
             },
             actualizarCarrera(){//se puede modificar, aqui se actualiza
                 if(this.validarCarrera()){
@@ -752,54 +790,48 @@
 
                 if(!this.nombre){
                     this.numErrors = 1;
-                    document.getElementById('nombre').style.cssText = this.colorError;
-                    this.msjValidacion[0].nombre = 1;
-                    this.msjValidacion[0].mensaje = "El campo nombre de la carrera no puede estar vacío";
+                    this.msjValidacion.nombre.color = this.colorError;
+                    this.msjValidacion.nombre.mensaje = "El campo nombre de la carrera no puede estar vacío";
                 }else{
-                    this.msjValidacion[0].mensaje = "";
-                    document.getElementById('nombre').style.cssText = this.colorGood;
+                    this.msjValidacion.nombre.color = '';
+                    this.msjValidacion.nombre.mensaje = ''
                 }
 
                 if(!this.tipo_plan){
                     this.numErrors = 1;
-                    document.getElementById('tipo_plan').style.cssText = this.colorError;
-                    this.msjValidacion[1].tipo_plan = 1;
-                    this.msjValidacion[1].mensaje = "Seleccione un plan de estudios";
+                    this.msjValidacion.tipo_plan.color = this.colorError;
+                    this.msjValidacion.tipo_plan.mensaje = "Seleccione un plan de estudios";
                 }else{
-                    this.msjValidacion[1].mensaje = "";
-                    document.getElementById('tipo_plan').style.cssText = this.colorGood;
+                    this.msjValidacion.tipo_plan.color = '';
+                    this.msjValidacion.tipo_plan.mensaje = '';
                 }
 
                 if(!this.tipo_modalidad){
                     this.numErrors = 1;
-                    document.getElementById('tipo_modalidad').style.cssText = this.colorError;
-                    this.msjValidacion[2].tipo_modalidad = 1;
-                    this.msjValidacion[2].mensaje = "Seleccione la modalidad de estudio";
+                    this.msjValidacion.tipo_modalidad.color = this.colorError;
+                    this.msjValidacion.tipo_modalidad.mensaje = "Seleccione la modalidad de estudio";
                 }else{
-                    this.msjValidacion[2].mensaje = "";
-                    document.getElementById('tipo_modalidad').style.cssText = this.colorGood;
+                    this.msjValidacion.tipo_modalidad.color = '';
+                    this.msjValidacion.tipo_modalidad.mensaje = '';
                 }
 
                 if(!this.num_grados){
                     this.numErrors = 1;
-                    document.getElementById('num_grados').style.cssText = this.colorError;
-                    this.msjValidacion[3].num_grados = 1;
-                    this.msjValidacion[3].mensaje = "El campo No. Grados no debe estar vacío";
+                    this.msjValidacion.num_grados.color = this.colorError;
+                    this.msjValidacion.num_grados.mensaje = "El campo No. Grados no debe estar vacío";
                 }else if(isNaN(this.num_grados)){//isNaN() funcion que regresa True (si no es numero) y False (si si es un numero)
                     this.numErrors = 1;
-                    document.getElementById('num_grados').style.cssText = this.colorError;
-                    this.msjValidacion[3].num_grados = 1;
-                    this.msjValidacion[3].mensaje = "El campo No. Grados debe ser escrito con numeros enteros";
+                    this.msjValidacion.num_grados.color = this.colorError;
+                    this.msjValidacion.num_grados.mensaje = "El campo No. Grados debe ser escrito con numeros enteros";
                 }else{
                     var valor = parseFloat(this.num_grados);
                     if(Number.isInteger(valor)==false){
                         this.numErrors = 1;
-                        document.getElementById('num_grados').style.cssText = this.colorError;
-                        this.msjValidacion[3].num_grados = 1;
-                        this.msjValidacion[3].mensaje = "El campo No. Grados debe ser escrito con numeros enteros";
+                        this.msjValidacion.num_grados.color = this.colorError;
+                        this.msjValidacion.num_grados.mensaje = "El campo No. Grados debe ser escrito con numeros enteros";
                     }else{
-                        this.msjValidacion[3].mensaje = "";
-                        document.getElementById('num_grados').style.cssText = this.colorGood;
+                        this.msjValidacion.num_grados.color = '';
+                        this.msjValidacion.num_grados.mensaje = '';
                     }
                 }
 
@@ -808,17 +840,17 @@
             cerrarModal(){//modificar solo variables
                 this.modal = 0;//no
                 this.tituloModal = '';//no
-                this.nombre = ''; document.getElementById('nombre').style.cssText = this.colorGood;
-                this.tipo_plan = ''; document.getElementById('tipo_plan').style.cssText = this.colorGood;
-                this.num_grados = ''; document.getElementById('num_grados').style.cssText = this.colorGood;
-                this.tipo_modalidad = ''; document.getElementById('tipo_modalidad').style.cssText = this.colorGood;
+                this.nombre = ''; 
+                this.tipo_plan = ''; 
+                this.num_grados = ''; 
+                this.tipo_modalidad = '';
                 this.numErrors = 0;
-                this.msjValidacion = [
-                    {nombre : 0, mensaje : ''},
-                    {tipo_plan : 0, mensaje : ''},
-                    {tipo_modalidad : 0, mensaje : ''},
-                    {num_grados : 0, mensaje : ''}
-                ];
+                this.msjValidacion = {
+                    nombre : {mensaje : '', color : ''},
+                    tipo_plan : {mensaje : '', color : ''},
+                    tipo_modalidad : {mensaje : '', color : ''},
+                    num_grados : {mensaje : '', color : ''}
+                };
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 switch(modelo){

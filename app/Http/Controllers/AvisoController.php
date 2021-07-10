@@ -347,8 +347,6 @@ class AvisoController extends Controller
         
         try{
             DB::beginTransaction();
-            $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-            $out->writeln("guardar_aviso");
 
             $ruta_documento = null;
             $fecha = Carbon::now('America/Mexico_City');
