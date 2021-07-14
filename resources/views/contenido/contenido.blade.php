@@ -40,7 +40,7 @@
 
         {{-- Sección Ayuda --}}
         <template v-if="menu==8">
-            <h1>...........................Componente Ayuda</h1>
+            <ayuda></ayuda>
         </template>
 
         {{-- Sección Acerca de... --}}
@@ -85,7 +85,7 @@
 
         {{-- Sección Ayuda --}}
         <template v-if="menu==8">
-            <h1>...........................Componente Ayuda</h1>
+            <ayuda></ayuda>
         </template>
 
         {{-- Sección Acerca de... --}}
@@ -122,7 +122,7 @@
 
         {{-- Sección Ayuda --}}
         <template v-if="menu==8">
-            <h1>...........................Componente Ayuda</h1>
+            <ayuda></ayuda>
         </template>
 
         {{-- Sección Acerca de... --}}
@@ -156,7 +156,7 @@
 
         {{-- Sección Ayuda --}}
         <template v-if="menu==8">
-            <h1>...........................Componente Ayuda</h1>
+            <ayuda></ayuda>
         </template>
 
         {{-- Sección Acerca de... --}}
