@@ -31,7 +31,7 @@
                                 <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
                                     <option value="" disabled selected>Seleccione una carrera</option>
                                     <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                        {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                     </option>
                                 </select>
                                 <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
@@ -157,7 +157,7 @@
                                 <select class="form-control" id="carrera" v-model="id_carrera" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione una carrera</option>
                                     <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                        {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                     </option>
                                 </select>
                             </div>

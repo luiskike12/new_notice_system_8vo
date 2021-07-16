@@ -6,42 +6,168 @@ use App\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {   
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+
         if(!$request->ajax())return redirect('/');
 
-        $buscar = $request->buscar;
+        $rol = Auth::user()->id_rol;
+        $id_carrera = Auth::user()->id_carrera;
         $criterio = $request->criterio;
-        if($buscar==''){
-            //se crea un array de todo lo que devuelva el metodo
-            $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
-            ->join('roles', 'users.id_rol', '=', 'roles.id')
-            ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
-            'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
-            'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
-            ->orderBy('users.id', 'desc')->paginate(5);
+        $criterio2 = $request->criterio2;
+        $buscar = $request->buscar;
+        $buscar2 = $request->buscar2;
+
+        $out->writeln("Users | rol:".$rol." | criterio:".$criterio." | buscar:".$buscar
+        ." | criterio2:".$criterio2." | buscar2:".$buscar2);
+
+        if($rol == 1){
+            if($buscar==''){
+                //se crea un array de todo lo que devuelva el metodo
+                $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                ->join('roles', 'users.id_rol', '=', 'roles.id')
+                ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                ->orderBy('users.id', 'desc')->paginate(5);
+            }
+            else{
+                if($criterio2 == 'id_rol'){
+                    $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                    ->join('roles', 'users.id_rol', '=', 'roles.id')
+                    ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                    'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                    'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                    ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                    ->where('users.'.$criterio2, 'like', '%'.$buscar2.'%')
+                    ->orderBy('users.id', 'desc')->paginate(5);
+                }
+                else{
+                    if($criterio === 'tipo_modalidad'){
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }else{
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }
+                }
+            }
         }
-        else{
-            if($criterio=='tipo_modalidad'){
+        else if($rol == 2){
+            if($buscar==''){
+                //se crea un array de todo lo que devuelva el metodo
                 $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
                 ->join('roles', 'users.id_rol', '=', 'roles.id')
                 ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
                 'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
                 'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
-                ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                ->where('users.id_carrera', '=', $id_carrera)
+                ->where('users.id_rol', '!=', '2')
                 ->orderBy('users.id', 'desc')->paginate(5);
-            }else{
+            }
+            else{
+                if($criterio2 == 'id_rol'){
+                    $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                    ->join('roles', 'users.id_rol', '=', 'roles.id')
+                    ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                    'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                    'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                    ->where('users.id_rol', '!=', '2')
+                    ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                    ->where('users.'.$criterio2, 'like', '%'.$buscar2.'%')
+                    ->orderBy('users.id', 'desc')->paginate(5);
+                }
+                else{
+                    if($criterio === 'tipo_modalidad'){
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('users.id_carrera', '=', $id_carrera)
+                        ->where('users.id_rol', '!=', '2')
+                        ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }else{
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('users.id_carrera', '=', $id_carrera)
+                        ->where('users.id_rol', '!=', '2')
+                        ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }
+                }
+            }
+        }
+        else if($rol == 3){
+            if($buscar==''){
+                //se crea un array de todo lo que devuelva el metodo
                 $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
                 ->join('roles', 'users.id_rol', '=', 'roles.id')
                 ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
                 'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
                 'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
-                ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                ->where('users.id_carrera', '=', $id_carrera)
+                ->where('users.id_rol', '!=', '2')
+                ->where('users.id_rol', '!=', '3')
                 ->orderBy('users.id', 'desc')->paginate(5);
+            }
+            else{
+                if($criterio2 == 'id_rol'){
+                    $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                    ->join('roles', 'users.id_rol', '=', 'roles.id')
+                    ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                    'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                    'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                    ->where('users.id_rol', '!=', '2')
+                    ->where('users.id_rol', '!=', '3')
+                    ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                    ->where('users.'.$criterio2, 'like', '%'.$buscar2.'%')
+                    ->orderBy('users.id', 'desc')->paginate(5);
+                }
+                else{
+                    if($criterio === 'tipo_modalidad'){
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('users.id_carrera', '=', $id_carrera)
+                        ->where('users.id_rol', '!=', '2')
+                        ->where('users.id_rol', '!=', '3')
+                        ->where('carreras.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }else{
+                        $users = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
+                        ->join('roles', 'users.id_rol', '=', 'roles.id')
+                        ->select('users.id', 'users.id_carrera', 'users.id_rol', 'users.usuario', 
+                        'users.password', 'users.name as nombre', 'users.email as correo', 'users.condicion', 
+                        'carreras.tipo_modalidad', 'carreras.nombre as nombre_carrera', 'roles.nombre as nombre_rol')
+                        ->where('users.id_carrera', '=', $id_carrera)
+                        ->where('users.id_rol', '!=', '2')
+                        ->where('users.id_rol', '!=', '3')
+                        ->where('users.'.$criterio, 'like', '%'.$buscar.'%')
+                        ->orderBy('users.id', 'desc')->paginate(5);
+                    }
+                }
             }
         }
         

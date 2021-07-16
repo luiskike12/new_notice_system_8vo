@@ -9,6 +9,19 @@
                 Mantenimiento
             </li>
 
+            <!-- Accesos al sistema -->
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#"><i class="fa fa-key"></i>Accesos</a>
+                <ul class="nav-dropdown-items">
+                    <li @click="menu=1" class="nav-item">
+                        <a class="nav-link" href="#"><i class="icon-people"></i>Tabla de Usuarios</a>
+                    </li>
+                    <li @click="menu=2" class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-address-book-o"></i>Roles de Usuario</a>
+                    </li>
+                </ul>
+            </li>
+
             <!-- Alumnos (añadir y actulizar) -->
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-user-follow"></i>Alumnos</a>

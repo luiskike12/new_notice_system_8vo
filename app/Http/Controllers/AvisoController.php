@@ -375,7 +375,6 @@ class AvisoController extends Controller
         }catch (Exception $e){
             DB::rollBack();
         }
-
     }
 
     public function guardar_y_enviar_aviso(Request $request){
@@ -393,8 +392,8 @@ class AvisoController extends Controller
             }
             
             $aviso = new Aviso();
-            $aviso->id_usuario = $id_usuario;
             $aviso->id_carrera = $request->id_carrera;
+            $aviso->id_usuario = $id_usuario;
             $aviso->turno = $request->turno;
             $aviso->grado = $request->grado;
             $aviso->titulo = $request->titulo;
@@ -413,7 +412,7 @@ class AvisoController extends Controller
                 
                 foreach($resultados as $usuario){
                     OneSignal::sendNotificationToUser(
-                        $request->titulo, 
+                        $aviso->titulo,
                         $userId = $usuario->id_dispositivo,
                         $url = null, 
                         $data = ["aviso" => $aviso], 
@@ -421,19 +420,19 @@ class AvisoController extends Controller
                         $schedule = null
                     );
                 }
-            } else {
+            }
+            else{
                 // especificos usuarios
                 $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo IS NOT NULL ';
-                $string2 = '';
-                $string3 = '';
-
+                $string2 = 'AND a.turno = :a_turno';
+                $string3 = 'AND a.grado = :a_grado';
                 // dinamic query
-                if($aviso->turno != 0){
-                    $string2 = 'AND a.turno = :a_turno';
-                }
-                if($aviso->grado != 0){
-                    $string3 = 'AND a.grado = :a_grado';
-                }
+                // if($aviso->turno != 0){
+                //     $string2 = 'AND a.turno = :a_turno';
+                // }
+                // if($aviso->grado != 0){
+                //     $string3 = 'AND a.grado = :a_grado';
+                // }
                 $string4 = 'AND a.condicion = 1';
                 $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
                 $resultados = DB::select($finalQuery, [
@@ -444,21 +443,19 @@ class AvisoController extends Controller
 
                 foreach($resultados as $usuario){
                     OneSignal::sendNotificationToUser(
-                        $request->titulo, 
+                        $aviso->titulo, 
                         $userId = $usuario->id_dispositivo,
-                        $url = null, 
+                        $url = null,
                         $data = ["aviso" => $aviso], 
                         $buttons = null, 
                         $schedule = null
                     );
                 }
             }
-            
             DB::commit();
         }catch (Exception $e){
             DB::rollBack();
-        }
-
+        }        
     }
 
     public function actualizar_aviso(Request $request){

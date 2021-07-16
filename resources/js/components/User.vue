@@ -18,32 +18,33 @@
             <div class="card-body">
                 <div class="form-group">
                     <div class="row scroll-busqueda-filtro">
-                        <div class="col-md-6 scroll-busqueda-filtro-x">
+                        <div v-bind:class="{'col-md-6': col6, 'col-md-8': col8}" class="scroll-busqueda-filtro-x">
                             <div class="input-group">
-                                <select class="form-control col-md-3" v-model="criterio">
-                                    <option value="id_rol">Rol</option>
+                                <select :class="{'col-md-2': col2, 'col-md-3': col3}" class="form-control" v-model="criterio">
                                     <option value="id_carrera">Carrera</option>
+                                    <option value="id_rol">Rol</option>
                                     <option value="tipo_modalidad">Modalidad</option>
                                     <option value="usuario">Usuario</option>
                                     <option value="nombre">Nombre</option>
                                     <option value="correo">Correo</option>
                                     <option value="condicion">Estado</option>
                                 </select>
-                                <select v-if="criterio==='id_rol'" class="form-control" v-model="buscar">
+                                <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar" @click="expandir_filtro">
+                                    <option value="" disabled selected>Seleccione una carrera</option>
+                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
+                                        {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
+                                    </option>
+                                </select>
+                                <select v-else-if="criterio==='id_rol'" class="form-control" v-model="buscar">
                                     <option value="" disabled selected>Seleccione una opción</option>
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Coordinador</option>
+                                    <option v-if="rolUsuario === 1" value="1">Administrador</option>
+                                    <option v-if="rolUsuario === 1" value="2">Coordinador</option>
                                     <option value="3">Asistente</option>
                                     <option value="4">Docente</option>
                                 </select>
-                                <select v-else-if="criterio==='id_carrera'" class="form-control" v-model="buscar">
-                                    <option value="" disabled selected>Seleccione una carrera</option>
-                                    <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
-                                    </option>
-                                </select>
                                 <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
                                     <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="0">N/A</option>
                                     <option value="1">Escolarizado</option>
                                     <option value="2">Semiescolarizado</option>
                                 </select>
@@ -52,8 +53,18 @@
                                     <option value="1">Activo</option>
                                     <option value="0">Desactivado</option>
                                 </select>
-                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarUser(1, buscar, criterio)" class="form-control" placeholder="Texto a buscar">
-                                <button type="submit" @click="listarUser(1, buscar, criterio)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
+                                <input v-else type="text" id="buscar" v-model="buscar" @keyup.enter="listarUser(1, criterio, buscar, buscar2)" class="form-control" placeholder="Texto a buscar">
+                                <!-- opciones de filtro enlazadas -->
+                                <!-- roles -->
+                                <select v-if="criterio==='id_carrera' && buscar !== ''" class="col-md-2 form-control" v-model="buscar2">
+                                    <option value="" disabled selected>Rol</option>
+                                    <option v-if="rolUsuario === 1" value="1">Administrador</option>
+                                    <option v-if="rolUsuario === 1" value="2">Coordinador</option>
+                                    <option v-if="rolUsuario === 1 || rolUsuario === 2" value="3">Asistente</option>
+                                    <option value="4">Docente</option>
+                                </select>
+                                <!-- opciones de filtro enlazadas -->
+                                <button type="submit" @click="listarUser(1, criterio, buscar, buscar2)" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
                             </div>
                         </div>
                     </div>
@@ -62,8 +73,8 @@
                     <thead>
                         <tr>
                             <th class="text-center">Opciones</th>
-                            <th class="text-center">Rol</th>
                             <th class="text-center">Carrera</th>
+                            <th class="text-center">Rol</th>
                             <th class="text-center">Modalidad</th>
                             <th class="text-center">Usuario</th>
                             <th class="text-center">Nombre</th>
@@ -77,12 +88,8 @@
                             <td>
                                 <button type="button" @click="abrirModal('usuario', 'actualizar', user)" class="btn btn-warning btn-sm">
                                     <i class="icon-pencil"></i>
-                                </button> &nbsp;
-                                <!-- <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalEliminar">
-                                    <i class="icon-trash"></i>
-                                </button> -->
+                                </button> 
                             </td>
-                            <th v-text="user.nombre_rol"></th>
                             <th >
                                 <div v-if="user.nombre_carrera==='Funciones Generales'">
                                     <span class="badge badge-dark">Funciones Generales</span>
@@ -91,6 +98,7 @@
                                     <p v-text="user.nombre_carrera"></p> 
                                 </div>
                             </th>
+                            <th v-text="user.nombre_rol"></th>
                             <th>
                                 <div v-if="user.tipo_modalidad==1">Escolarizado</div>
                                 <div v-else-if="user.tipo_modalidad==2">Semiescolarizado</div>
@@ -118,13 +126,13 @@
                 <nav>
                     <ul class="pagination">
                         <li class="page-item" v-if="pagination.current_page > 1">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1, buscar, criterio)">Ant</a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page - 1, criterio, buscar, buscar2)">Ant</a>
                         </li>
                         <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[page == isActived ? 'active' : '']">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(page, buscar, criterio)" v-text="page"></a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(page, criterio, buscar, buscar2)" v-text="page"></a>
                         </li>
                         <li class="page-item" v-if="pagination.current_page < pagination.last_page">
-                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1, buscar, criterio)">Sig</a>
+                            <a class="page-link" href="#" @click.prevent="cambiarPagina(pagination.current_page + 1, criterio, buscar, buscar2)">Sig</a>
                         </li>
                     </ul>
                 </nav>
@@ -152,8 +160,10 @@
                             <div class="col-md-9">
                                 <select class="form-control" :style="msjValidacion.rol.color" @change="obtenerIdRol($event)" v-model="id_rol" @click="tecleo">
                                     <option value="0" disabled selected>Seleccione un rol</option>
-                                    <option v-for="rol in arrayRol" :key="rol.id" :value="rol.id" v-text="rol.nombre">
-                                    </option>
+                                    <option v-if="rolUsuario === 1" value="1">Administrador</option>
+                                    <option v-if="rolUsuario === 1" value="2">Coordinador</option>
+                                    <option v-if="rolUsuario === 1 || rolUsuario === 2" value="3">Asistente</option>
+                                    <option value="4">Docente</option>
                                 </select>
                             </div>
                             <msj-validacion v-if="msjValidacion.rol.mensaje != ''">{{msjValidacion.rol.mensaje}}</msj-validacion>
@@ -166,16 +176,11 @@
                                         <option value="1" disabled selected>Funciones Generales</option>
                                     </select>
                                 </div>
-                                <div v-else-if="id_rol==4">
-                                    <select class="form-control">
-                                        <option value="2" disabled selected>Cualquier programa</option>
-                                    </select>
-                                </div>
                                 <div v-else>
                                     <select class="form-control" :style="msjValidacion.carrera.color" v-model="id_carrera" @click="tecleo">
                                         <option value="0" disabled selected>Seleccione una carrera</option>
                                         <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                            {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                            {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                         </option>
                                     </select>
                                  </div>
@@ -270,8 +275,7 @@
                 nombre : '',
                 correo : '',
                 correoExiste : '',//mensaje en caso de que ya este en uso un correo
-                arrayUsers : [],  
-                arrayRol : [],
+                arrayUsers : [],
                 arrayCarrera : [],
 
                 //variables para las funciones especificas del componente
@@ -299,8 +303,16 @@
                     'to' : 0,
                 },
                 offset : 3,
-                criterio : 'id_rol',
-                buscar : ''
+                criterio : 'id_carrera',
+                buscar : '',
+                buscar2 : '',
+                //Habilitar o desabilitar campos
+                rolUsuario : 0,
+                //Control del ancho de la columna de busqueda por filtro
+                col2 : false,
+                col3 : true,
+                col6 : true,
+                col8 : false,
             }
         },
         computed : {
@@ -333,19 +345,37 @@
         },
         watch : {
             criterio : function(opcion){
-                if(opcion=='id_rol')this.buscar = '';
-                if(opcion=='id_carrera')this.buscar = '';
-                if(opcion=='tipo_modalidad')this.buscar = '';
-                if(opcion=='usuario')this.buscar = '';
-                if(opcion=='nombre')this.buscar = '';
-                if(opcion=='correo')this.buscar = '';
-                if(opcion=='condicion')this.buscar = '';
+                /*busqueda_por_filtro(campoBuscar = true, col2 = false, col3 = true, col6 = true, col8 = false)*/
+                if(opcion=='id_carrera')this.busqueda_por_filtro();
+                if(opcion=='id_rol')this.busqueda_por_filtro();
+                if(opcion=='tipo_modalidad')this.busqueda_por_filtro();
+                if(opcion=='usuario')this.busqueda_por_filtro();
+                if(opcion=='nombre')this.busqueda_por_filtro();
+                if(opcion=='correo')this.busqueda_por_filtro();
+                if(opcion=='condicion')this.busqueda_por_filtro();
             }
         },
         methods : {
-            listarUser(page, buscar, criterio){
+            rol_de_usuario(){
                 let me = this;
-                var url = '/user?page=' + page + '&buscar=' + buscar + '&criterio=' + criterio;
+                axios.get('/perfil/rolUsuario')
+                .then(function (response) {
+                    var respuesta = response.data;
+                    me.rolUsuario = respuesta.rolUsuario;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+            },
+            listarUser(page, criterio, buscar, buscar2){
+                let me = this;
+                var url = '', criterio2 = '';
+                if(buscar2 !== '') criterio2 = 'id_rol';
+
+                url = '/user?page='+page+'&criterio='+criterio+'&buscar='+buscar+'&criterio2='+criterio2+'&buscar2='+buscar2;
                 //devuelve lo que regresa el controlador de la url /user
                 axios.get(url).then(function (response) {
                     var respuesta = response.data;
@@ -357,19 +387,36 @@
                 })
                 .then(function () {
                     // always executed
-                    me.limpiarTextBuscar(); 
+                    if(criterio2 === 'id_rol'){
+                        /*busqueda_por_filtro(campoBuscar, col2, col3, col6, col8)*/
+                        me.busqueda_por_filtro(false,true,false,false,true);
+                    }else{
+                        me.busqueda_por_filtro();
+                    }
                 });
             },
-            cambiarPagina(page, buscar, criterio){//No mover
+            busqueda_por_filtro(campoBuscar = true, col2 = false, col3 = true,col6 = true, col8 = false){
+                if(campoBuscar){
+                    $('#buscar').val('');
+                    this.buscar = '';
+                    this.buscar2 = '';
+                }
+                this.col2 = col2;
+                this.col3 = col3;
+                this.col6 = col6;
+                this.col8 = col8;
+            },
+            expandir_filtro(){
+                if(this.buscar !== ''){
+                    this.busqueda_por_filtro(false,true,false,false,true);
+                }
+            },
+            cambiarPagina(page, criterio, buscar, buscar2){//No mover
                 let me = this;
                 //actualiza la pagina actual
                 me.pagination.current_page = page;
                 //Envia la peticion para visualizar la data de esa pagina, es para buscar
-                me.listarUser(page, buscar, criterio);
-            },
-            limpiarTextBuscar(){
-                $('#buscar').val('');
-                this.buscar = '';
+                me.listarUser(page, criterio, buscar, buscar2);
             },
             seleccionarCarrera(){//se puede modificar
                 //obtener el valor de un <select>
@@ -378,21 +425,6 @@
                 axios.get(url).then(function (response) {
                     var respuesta = response.data;
                     me.arrayCarrera = respuesta.carreras;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
-            },
-            seleccionarRoles(){
-                //obtener el valor de un <select>
-                let me = this;
-                var url = '/rol/selectRol';
-                axios.get(url).then(function (response) {
-                    var respuesta = response.data;
-                    me.arrayRol = respuesta.roles;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -418,7 +450,7 @@
                     'correo' : this.correo
                 }).then(function (response){//no modificar
                     me.cerrarModal();
-                    me.listarUser(1, '', 'nombre');
+                    me.listarUser(1, '', '', '');
                 }).catch(function (error){
                     console.log(error)
                 });
@@ -440,7 +472,7 @@
                     'id' : this.id_usuario
                 }).then(function (response){//no modificar
                     me.cerrarModal();
-                    me.listarUser(1, '', 'nombre');
+                    me.listarUser(1, '', '', '');
                 }).catch(function (error){
                     console.log(error)
                 });
@@ -512,7 +544,7 @@
                         axios.put('/user/desactivar', {
                             'id' : id
                         }).then(function (response){
-                            me.listarUser(1, '', 'nombre');
+                            me.listarUser(1, '', '', '');
                             swalWithBootstrapButtons.fire(
                             'Usuario Desactivado!',
                             'El usuario ha sido desactivado con éxito.',
@@ -706,7 +738,6 @@
             },
             abrirModal(modelo, accion, data = []){//modificar solo variables
                 this.seleccionarCarrera();
-                this.seleccionarRoles();
                 switch(modelo){
                     case "usuario":
                     {
@@ -752,7 +783,8 @@
             }
         },
         mounted() {//no modificar
-            this.listarUser(1, this.buscar, this.criterio);
+            this.rol_de_usuario();
+            this.listarUser(1, this.criterio, this.buscar, this.buscar2);
             this.seleccionarCarrera();
         }
     }

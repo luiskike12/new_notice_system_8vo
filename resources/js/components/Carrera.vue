@@ -210,8 +210,8 @@
                                 <select class="form-control" @change="obtenerPlanEstudio($event)" 
                                 :style="msjValidacion.tipo_plan.color" v-model="tipo_plan" @click="tecleo">
                                     <option value="" disabled selected>Seleccione una opción</option>
-                                    <option value="6">Semestral</option>
-                                    <option value="4">Cuatrimestral</option>
+                                    <option value="6">Semestral (S)</option>
+                                    <option value="4">Cuatrimestral (C)</option>
                                 </select>
                             </div>
                             <msj-validacion v-if="msjValidacion.tipo_plan.mensaje">{{msjValidacion.tipo_plan.mensaje}}</msj-validacion>
@@ -413,6 +413,7 @@
                 
                 if(planEstudio === '' && modalidad === ''){
                     let me = this;
+                    console.log("Registrar carrera")
                     // registrar carrera
                     axios.post('/carrera/registrar', {
                         //Clave  :    Valor    (poner las variables tal y como estan en la DB)

@@ -23,15 +23,12 @@ class CarreraController extends Controller
         if($buscar==''){
             //se crea un array de todo lo que devuelva el metodo
             $carreras = Carrera::where('id','!=','1')
-            ->where('id','!=','2')
             ->orderBy('id', 'desc')
             ->paginate(5);
         }
         else{
             $carreras = Carrera::where($criterio, 'like', '%'.$buscar.'%')
-            ->where(function ($query) {
-                $query->where('id','!=','1')->where('id','!=','2');
-            })
+            ->where('id','!=','1')
             ->orderBy('id', 'desc')->paginate(5);
         }
         
@@ -231,8 +228,11 @@ class CarreraController extends Controller
         if($rol == 1 || $rol == 4){
             $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
             when 1 then "Escolarizado" 
-            when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
-            turno_nocturno, turno_mixto, num_grados
+            when 2 then "Semiescolarizado" end as tipo_modalidad, 
+            CASE tipo_plan 
+            when 6 then "S"
+            when 4 then "C" end as tipo_plan,
+            turno_matutino, turno_vespertino, turno_nocturno, turno_mixto, num_grados
             FROM carreras 
             WHERE turno_matutino = :matutino OR turno_vespertino = :vespertino 
             OR turno_nocturno = :nocturno OR turno_mixto = :mixto ORDER BY nombre ASC;', 
@@ -241,8 +241,11 @@ class CarreraController extends Controller
         else if($rol == 2 || $rol == 3){
             $carreras = DB::select('SELECT id, nombre, CASE tipo_modalidad
             when 1 then "Escolarizado" 
-            when 2 then "Semiescolarizado" end as tipo_modalidad, turno_matutino, turno_vespertino, 
-            turno_nocturno, turno_mixto, num_grados
+            when 2 then "Semiescolarizado" end as tipo_modalidad, 
+            CASE tipo_plan 
+            when 6 then "S"
+            when 4 then "C" end as tipo_plan,
+            turno_matutino, turno_vespertino, turno_nocturno, turno_mixto, num_grados
             FROM carreras 
             WHERE id = :id_carrera;', 
             ['id_carrera'=>$carrera_usuario]);

@@ -101,7 +101,7 @@
                                         @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
                                             <option value="" disabled selected>Seleccione una carrera</option>
                                             <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                                {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                                {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                             </option>
                                         </select>
                                     </div>
@@ -137,8 +137,8 @@
                                                         </select>
                                                     </div>
                                                     <div v-else>
-                                                        <select class="form-control" :style="msjValidacion.grado.color">
-                                                            <option value="0" disabled selected>Seleccione una carrera</option>
+                                                        <select class="form-control" :style="msjValidacion.grado.color" v-model="grado">
+                                                            <option value="" disabled selected>Seleccione una carrera</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -160,7 +160,7 @@
                                                         <select class="form-control" @click="tecleo" 
                                                         :style="msjValidacion.turno.color" v-model="turno">
                                                             <option value="" disabled selected>Seleccione el turno</option>
-                                                            <option value="0" v-if="id_carrera > 2">General</option>
+                                                            <option value="0" v-if="id_carrera > 1">General</option>
                                                             <option value="1" v-if="t_matutino==1">Matutino</option>
                                                             <option value="2" v-if="t_vespertino==1">Vespertino</option>
                                                             <option value="3" v-if="t_nocturno==1">Nocturno</option>
@@ -168,8 +168,8 @@
                                                         </select>
                                                     </div>
                                                     <div v-else>
-                                                        <select class="form-control" :style="msjValidacion.turno.color">
-                                                            <option value="0" disabled selected>Seleccione una carrera</option>
+                                                        <select class="form-control" :style="msjValidacion.turno.color" v-model="turno">
+                                                            <option value="" disabled selected>Seleccione una carrera</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -315,7 +315,10 @@
                 axios.get('/perfil/rolUsuario')
                 .then(function (response) {
                     var respuesta = response.data;
-                    me.rolUsuario = respuesta.rolUsuario;
+                    var numero = respuesta.rolUsuario;
+                    if(numero === 1){
+                        me.rolUsuario = true;
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -327,8 +330,7 @@
             obtener_carreras(){//se puede modificar
                 //obtener el valor de un <select>
                 let me = this;
-                var url = '/carrera/selectCarrera';
-                axios.get(url).then(function (response) {
+                axios.get('/carrera/selectCarrera').then(function (response) {
                     var respuesta = response.data;
                     me.arrayCarrera = respuesta.carreras;
                 })
@@ -440,19 +442,19 @@
                 }
 
                 let me = this;
-                this.contenido_aviso = document.getElementById('contenido_aviso').value;
+                me.contenido_aviso = document.getElementById('contenido_aviso').value;
 
                 let data = new FormData();
-                data.append('id_carrera', this.id_carrera);
-                data.append('turno', this.turno);
-                data.append('grado', this.grado);
-                data.append('titulo', this.titulo_aviso);
-                data.append('contenido', this.contenido_aviso);
-                data.append('documento', this.documento);
-                data.append('general', this.tipo_envio);
-                data.append('estado', this.guardar_enviar);
+                data.append('id_carrera', me.id_carrera);
+                data.append('turno', me.turno);
+                data.append('grado', me.grado);
+                data.append('titulo', me.titulo_aviso);
+                data.append('contenido', me.contenido_aviso);
+                data.append('documento', me.documento);
+                data.append('general', me.tipo_envio);
+                data.append('estado', me.guardar_enviar);
                 let conf = {headers: {'Content-Type': 'multipart/form-data' }};
-
+                
                 if(this.guardar_enviar == 0){
                     axios.post('/aviso/guardar_aviso', data, conf).then(function (response){//no modificar
                         // always executed

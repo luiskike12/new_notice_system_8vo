@@ -398,6 +398,11 @@ export default {
 
                 me.rol = me.arrayDatos[0]['nombre_rol'];
                 me.carrera = me.arrayDatos[0]['nombre_carrera'];
+                var p = me.arrayDatos[0]['tipo_plan'];
+                var m = me.arrayDatos[0]['tipo_modalidad'];
+                if(p != null && m != null){
+                    me.carrera = me.carrera+" ("+p+") - "+m;
+                }
                 me.usuario = me.arrayDatos[0]['usuario'];
                 me.email = me.arrayDatos[0]['email'];
                 me.nombre = me.arrayDatos[0]['nombre'];

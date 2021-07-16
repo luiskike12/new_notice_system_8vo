@@ -14,15 +14,24 @@ class PerfilController extends Controller
 {
     
     public function index(Request $request){
+        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
+
         $id_usuario = Auth::user()->id;
         
         //Datos del usuario a mostrar en el dashboard
         $datosUsuario = User::join('carreras', 'users.id_carrera', '=', 'carreras.id')
         ->join('roles', 'users.id_rol', '=', 'roles.id')
-        ->select('roles.nombre as nombre_rol', 'carreras.nombre as nombre_carrera',
-        'users.usuario', 'users.email', 'users.name as nombre', 'users.avatar')
+        ->select('roles.nombre as nombre_rol','users.usuario', 'users.email', 'users.name as nombre', 
+        'users.avatar', 'carreras.nombre as nombre_carrera',
+        DB::raw('CASE carreras.tipo_modalidad
+        WHEN 1 THEN "Escolarizado"
+        WHEN 2 THEN "Semiescolarizado" END AS tipo_modalidad'),
+        DB::raw('CASE carreras.tipo_plan 
+        when 6 then "S"
+        when 4 then "C" end as tipo_plan'))
         ->where('users.id', '=', $id_usuario)->get();
-
+        
+        $out->writeln("Perfil: ".$datosUsuario);
         return ['datosUsuario' => $datosUsuario];
     }
 
@@ -30,12 +39,7 @@ class PerfilController extends Controller
 
         $rol = Auth::user()->id_rol;
 
-        if($rol === 1)
-            $respuesta = true;
-        else
-            $respuesta = false;
-
-        return ['rolUsuario'=>$respuesta];
+        return ['rolUsuario'=>$rol];
     }
 
     public function guardarImagen(Request $request){
@@ -79,9 +83,7 @@ class PerfilController extends Controller
         }
     }
 
-    public function confirmarIdentidad(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        
+    public function confirmarIdentidad(Request $request){        
         try{
             DB::beginTransaction();
 
@@ -103,8 +105,6 @@ class PerfilController extends Controller
     }
 
     public function actualizarNombre(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        
         try{
             DB::beginTransaction();
 
@@ -141,8 +141,6 @@ class PerfilController extends Controller
     }
 
     public function actualizarUsuario(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln("actualizarUsuario: ".$request->usuario);
         try{
             DB::beginTransaction();
 
@@ -179,8 +177,6 @@ class PerfilController extends Controller
     }
 
     public function actualizarEmail(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        
         try{
             DB::beginTransaction();
 
@@ -197,8 +193,6 @@ class PerfilController extends Controller
     }
 
     public function actualizarPassword(Request $request){
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        
         try{
             DB::beginTransaction();
 

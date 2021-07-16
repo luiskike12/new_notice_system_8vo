@@ -28,7 +28,7 @@
                                 <select v-if="criterio==='id_carrera'" class="form-control" v-model="buscar" @click="listarGradosCarrera()">
                                     <option value="" disabled selected>Seleccione una carrera</option>
                                     <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                        {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                        {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                     </option>
                                 </select>
                                 <select v-else-if="criterio==='tipo_modalidad'" class="form-control" v-model="buscar">
@@ -256,7 +256,7 @@
                                         <select class="form-control" @click="tecleo" id="id_carrera" @change="mostrar_turnos_y_grados_carrera($event)" v-model="id_carrera">
                                             <option value="1" disabled selected>Seleccione una carrera</option>
                                             <option v-for="carrera in arrayCarrera" :key="carrera.id" :value="carrera.id">
-                                                {{carrera.nombre}} - {{carrera.tipo_modalidad}}
+                                                {{carrera.nombre}} ({{carrera.tipo_plan}}) - {{carrera.tipo_modalidad}}
                                             </option>
                                         </select>
                                     </div>

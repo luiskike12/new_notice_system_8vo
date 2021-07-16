@@ -104,6 +104,14 @@
             <dashboard></dashboard>
         </template>
 
+        {{-- Sección Accesos --}}
+        <template v-if="menu==1">
+            <user></user>
+        </template>
+        <template v-if="menu==2">
+            <rol></rol>
+        </template>
+
         {{-- Sección Alumnos --}}
         <template v-if="menu==3">
             <alumno></alumno>
