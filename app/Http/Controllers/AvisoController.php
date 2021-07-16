@@ -424,15 +424,22 @@ class AvisoController extends Controller
             else{
                 // especificos usuarios
                 $string1 = 'SELECT a.id_dispositivo FROM alumnos a INNER JOIN matriculas m ON m.id = a.id_matricula WHERE m.id_carrera = :a_carrera AND a.id_dispositivo IS NOT NULL ';
-                $string2 = 'AND a.turno = :a_turno';
-                $string3 = 'AND a.grado = :a_grado';
+                $string2 = '';
+                $string3 = '';
+
                 // dinamic query
-                // if($aviso->turno != 0){
-                //     $string2 = 'AND a.turno = :a_turno';
-                // }
-                // if($aviso->grado != 0){
-                //     $string3 = 'AND a.grado = :a_grado';
-                // }
+                if($aviso->turno == 0){
+                    $string2 = 'AND a.turno > :a_turno';
+                }else{
+                    $string2 = 'AND a.turno = :a_turno';
+                }
+
+                if($aviso->grado == 0){
+                    $string3 = 'AND a.grado > :a_grado';
+                }else{
+                    $string3 = 'AND a.grado = :a_grado';
+                }
+                
                 $string4 = 'AND a.condicion = 1';
                 $finalQuery = DB::raw("$string1 $string2 $string3 $string4");
                 $resultados = DB::select($finalQuery, [
